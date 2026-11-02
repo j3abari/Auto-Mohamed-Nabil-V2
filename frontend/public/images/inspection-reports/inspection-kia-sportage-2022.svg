@@ -1,0 +1,268 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" width="1200" height="850" style="background:#F4F4F6; font-family:'Cairo', 'Segoe UI', Tahoma, sans-serif;">
+  <defs>
+    <!-- Shadow Filter -->
+    <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="110%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.14" />
+    </filter>
+    <filter id="stampShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="#7B1113" flood-opacity="0.25" />
+    </filter>
+
+    <!-- Linear Gradients -->
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0A0A0A" />
+      <stop offset="60%" stop-color="#1A1A1A" />
+      <stop offset="100%" stop-color="#050505" />
+    </linearGradient>
+
+    <linearGradient id="badgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF4B16" />
+      <stop offset="100%" stop-color="#E03E0F" />
+    </linearGradient>
+
+    <linearGradient id="paperGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#FAFAFA" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Certificate Paper with Shadow -->
+  <rect x="40" y="30" width="1120" height="790" rx="20" fill="url(#paperGrad)" filter="url(#cardShadow)" stroke="#D8DCE3" stroke-width="2" />
+  
+  <!-- Guilloche Security Border Accent -->
+  <rect x="52" y="42" width="1096" height="766" rx="14" fill="none" stroke="#FF4B16" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="12 6" />
+  <rect x="58" y="48" width="1084" height="754" rx="10" fill="none" stroke="#0A0A0A" stroke-width="1" stroke-opacity="0.15" />
+
+  <!-- Security Watermark Background -->
+  <g opacity="0.04" transform="translate(600, 440) rotate(-25)" text-anchor="middle">
+    <text x="0" y="-30" font-size="95" font-weight="900" fill="#111111" letter-spacing="12">فحص فني معتمد</text>
+    <text x="0" y="60" font-size="54" font-weight="800" fill="#111111" letter-spacing="16">VERIFIED &amp; APPROVED</text>
+  </g>
+
+  <!-- ==================== HEADER SECTION ==================== -->
+  <rect x="65" y="55" width="1070" height="110" rx="12" fill="url(#headerGrad)" />
+  
+  <!-- Gold Accent Header Bar -->
+  <rect x="65" y="162" width="1070" height="4" fill="#FF4B16" />
+
+  <!-- Dealership Logo Badge (Right in RTL) -->
+  <g transform="translate(1055, 110)">
+    <circle cx="0" cy="0" r="38" fill="#111111" stroke="#FF4B16" stroke-width="3" />
+    <circle cx="0" cy="0" r="32" fill="#000000" />
+    <!-- Car Graphic Silhouette -->
+    <path d="M-18 6 L-12 -6 Q-8 -14 0 -14 Q8 -14 12 -6 L18 6 Z" fill="#FF4B16" />
+    <circle cx="-10" cy="8" r="4" fill="#FFFFFF" />
+    <circle cx="10" cy="8" r="4" fill="#FFFFFF" />
+    <text x="0" y="24" font-size="8" font-weight="bold" fill="#CCCCCC" text-anchor="middle">SINCE 2007</text>
+  </g>
+
+  <!-- Header Text Titles -->
+  <text x="990" y="92" font-size="22" font-weight="900" fill="#FFFFFF" text-anchor="end" direction="rtl">المركز الهندسي المعتمد لفحص وتشخيص السيارات</text>
+  <text x="990" y="116" font-size="13" font-weight="700" fill="#FF4B16" text-anchor="end" direction="rtl">بالتعاون الفني الرسمي مع: سوق أوتو محمد نبيل للسيارات (منذ عام 2007)</text>
+  <text x="990" y="140" font-size="11" font-weight="500" fill="#AAAAAA" text-anchor="end" direction="rtl">طريق ميت غمر الزقازيق – أمام محطة دنديط – الدقهلية • هاتف: 01201298587</text>
+
+  <!-- Header Left: Certificate Badge & Number -->
+  <rect x="85" y="70" width="220" height="42" rx="8" fill="#FF4B16" />
+  <text x="195" y="96" font-size="14" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">شهادة فحص معتمدة</text>
+  <text x="85" y="130" font-size="12" font-weight="bold" fill="#BBBBBB">رقم الوثيقة: <tspan fill="#FFFFFF" font-family="monospace">MN-2026-SPORT-06</tspan></text>
+  <text x="85" y="148" font-size="11" font-weight="600" fill="#888888">تاريخ الفحص: <tspan fill="#CCCCCC">2026-09-18</tspan></text>
+
+  <!-- ==================== VEHICLE INFO BAR ==================== -->
+  <rect x="65" y="180" width="1070" height="74" rx="10" fill="#F0F3F8" stroke="#E2E8F0" stroke-width="1.5" />
+  
+  <g transform="translate(1115, 205)" text-anchor="end" direction="rtl">
+    <text x="0" y="0" font-size="11" font-weight="700" fill="#64748B">بيانات السيارة المفحوصة:</text>
+    <text x="0" y="24" font-size="18" font-weight="900" fill="#0F172A">كيا سبورتاج GT-Line موديل 2022</text>
+  </g>
+
+  <g transform="translate(680, 205)" text-anchor="end" direction="rtl">
+    <text x="0" y="0" font-size="11" font-weight="700" fill="#64748B">قراءة العداد الموثقة:</text>
+    <text x="0" y="24" font-size="17" font-weight="900" fill="#FF4B16">41,000 كم</text>
+  </g>
+
+  <g transform="translate(480, 205)" text-anchor="end" direction="rtl">
+    <text x="0" y="0" font-size="11" font-weight="700" fill="#64748B">رقم الشاسيه (VIN):</text>
+    <text x="0" y="24" font-size="13" font-weight="800" fill="#1E293B" font-family="monospace">KNAFX81AA4N519842</text>
+  </g>
+
+  <g transform="translate(250, 205)" text-anchor="end" direction="rtl">
+    <text x="0" y="0" font-size="11" font-weight="700" fill="#64748B">المحرك واللون:</text>
+    <text x="0" y="24" font-size="12" font-weight="800" fill="#334155">1.6 Turbo GDI 177 HP</text>
+  </g>
+
+  <!-- Overall Score Pill (Top Left) -->
+  <rect x="80" y="190" width="105" height="54" rx="8" fill="#FFF2EE" stroke="#FF4B16" stroke-width="1.5" />
+  <text x="132" y="210" font-size="10" font-weight="800" fill="#E03E0F" text-anchor="middle">التقييم الإجمالي</text>
+  <text x="132" y="234" font-size="22" font-weight="900" fill="#FF4B16" text-anchor="middle">94%</text>
+
+  <!-- ==================== 6 CORE TECHNICAL CHECKLIST ROWS ==================== -->
+  <g transform="translate(65, 270)">
+    <!-- Checklist Header -->
+    <rect x="0" y="0" width="700" height="32" rx="6" fill="#1E293B" />
+    <text x="680" y="21" font-size="12" font-weight="900" fill="#FFFFFF" text-anchor="end" direction="rtl">بنود الفحص الفني الهندسي والتشخيص الدقيق</text>
+    <text x="350" y="21" font-size="11" font-weight="700" fill="#94A3B8" text-anchor="middle">الحالة الفنية والملاحظات الهندسية</text>
+    <text x="50" y="21" font-size="12" font-weight="900" fill="#FFFFFF" text-anchor="middle">النتيجة</text>
+
+    <!-- Row 1: Chassis -->
+    <rect x="0" y="38" width="700" height="42" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" />
+    <text x="680" y="64" font-size="13" font-weight="800" fill="#0F172A" text-anchor="end" direction="rtl">1. الشاسيه وقوائم الهيكل ونقاط اللحام</text>
+    <text x="500" y="64" font-size="11" font-weight="600" fill="#475569" text-anchor="end" direction="rtl">سليم 100% - فحص الشاسيه والقواعد فابريكا بالكامل</text>
+    <rect x="20" y="47" width="60" height="24" rx="4" fill="#ECFDF5" stroke="#10B981" stroke-width="1" />
+    <text x="50" y="63" font-size="11" font-weight="900" fill="#059669" text-anchor="middle">سليم ✔</text>
+
+    <!-- Row 2: Body & Paint Thickness -->
+    <rect x="0" y="86" width="700" height="42" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1" />
+    <text x="680" y="112" font-size="13" font-weight="800" fill="#0F172A" text-anchor="end" direction="rtl">2. فحص سماكة الدهان والبودي (ميكرون)</text>
+    <text x="500" y="112" font-size="11" font-weight="600" fill="#475569" text-anchor="end" direction="rtl">فابريكا بالكامل بحالة الزيرو بدون أي ملاحظات</text>
+    <rect x="20" y="95" width="60" height="24" rx="4" fill="#ECFDF5" stroke="#10B981" stroke-width="1" />
+    <text x="50" y="111" font-size="11" font-weight="900" fill="#059669" text-anchor="middle">فابريكا ✔</text>
+
+    <!-- Row 3: Engine -->
+    <rect x="0" y="134" width="700" height="42" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" />
+    <text x="680" y="160" font-size="13" font-weight="800" fill="#0F172A" text-anchor="end" direction="rtl">3. أداء المحرك وضغط غرف الاحتراق والتزييت</text>
+    <text x="500" y="160" font-size="11" font-weight="600" fill="#475569" text-anchor="end" direction="rtl">كفاءة 94% - محرك التيربو يعمل بأعلى كفاءة</text>
+    <rect x="20" y="143" width="60" height="24" rx="4" fill="#ECFDF5" stroke="#10B981" stroke-width="1" />
+    <text x="50" y="159" font-size="11" font-weight="900" fill="#059669" text-anchor="middle">ممتاز ✔</text>
+
+    <!-- Row 4: Transmission -->
+    <rect x="0" y="182" width="700" height="42" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1" />
+    <text x="680" y="208" font-size="13" font-weight="800" fill="#0F172A" text-anchor="end" direction="rtl">4. ناقل الحركة (الفتيس) وسلاسة النقلات</text>
+    <text x="500" y="208" font-size="11" font-weight="600" fill="#475569" text-anchor="end" direction="rtl">ناقل أوتوماتيك رياضي سلس بدون أي تأخير</text>
+    <rect x="20" y="191" width="60" height="24" rx="4" fill="#ECFDF5" stroke="#10B981" stroke-width="1" />
+    <text x="50" y="207" font-size="11" font-weight="900" fill="#059669" text-anchor="middle">ممتاز ✔</text>
+
+    <!-- Row 5: Suspension & Brakes -->
+    <rect x="0" y="230" width="700" height="42" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" />
+    <text x="680" y="256" font-size="13" font-weight="800" fill="#0F172A" text-anchor="end" direction="rtl">5. نظام التعليق (العفشة) والفرامل والمساعدين</text>
+    <text x="500" y="256" font-size="11" font-weight="600" fill="#475569" text-anchor="end" direction="rtl">عفشة رياضية GT-Line متماسكة وممتازة</text>
+    <rect x="20" y="239" width="60" height="24" rx="4" fill="#ECFDF5" stroke="#10B981" stroke-width="1" />
+    <text x="50" y="255" font-size="11" font-weight="900" fill="#059669" text-anchor="middle">ممتاز ✔</text>
+
+    <!-- Row 6: OBD Computer Diagnostics -->
+    <rect x="0" y="278" width="700" height="42" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1" />
+    <text x="680" y="304" font-size="13" font-weight="800" fill="#0F172A" text-anchor="end" direction="rtl">6. الفحص بالكمبيوتر لجميع الحساسات (OBD-II)</text>
+    <text x="500" y="304" font-size="11" font-weight="600" fill="#475569" text-anchor="end" direction="rtl">كشف الكمبيوتر الشامل نظيف وخالٍ من أي أكواد أعطال</text>
+    <rect x="20" y="287" width="60" height="24" rx="4" fill="#ECFDF5" stroke="#10B981" stroke-width="1" />
+    <text x="50" y="303" font-size="11" font-weight="900" fill="#059669" text-anchor="middle">0 أعطال ✔</text>
+  </g>
+
+  <!-- ==================== RIGHT SIDE: CAR BODY DIAGRAM & PAINT MEASUREMENTS ==================== -->
+  <g transform="translate(790, 270)">
+    <rect x="0" y="0" width="345" height="320" rx="10" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5" />
+    <rect x="0" y="0" width="345" height="32" rx="6" fill="#1E293B" />
+    <text x="172" y="21" font-size="12" font-weight="900" fill="#FFFFFF" text-anchor="middle" direction="rtl">مخطط سماكة دهان البودي (فابريكا 100%)</text>
+
+    <!-- Car Blueprint Silhouette Outline -->
+    <g transform="translate(172, 165)" stroke="#334155" stroke-width="2" fill="none">
+      <!-- Car Body Contour -->
+      <path d="M-45 -95 C-45 -115, 45 -115, 45 -95 L48 -50 L56 -35 L56 45 L48 65 L45 95 C45 110, -45 110, -45 95 L-48 65 L-56 45 L-56 -35 L-48 -50 Z" fill="#E2E8F0" />
+      <!-- Roof & Windshields -->
+      <rect x="-35" y="-40" width="70" height="80" rx="6" fill="#CBD5E1" stroke="#475569" stroke-width="1.5" />
+      <path d="M-35 -40 L-42 -65 L42 -65 L35 -40 Z" fill="#94A3B8" />
+      <path d="M-35 40 L-40 65 L40 65 L35 40 Z" fill="#94A3B8" />
+      <!-- Mirrors -->
+      <rect x="-62" y="-38" width="6" height="14" rx="2" fill="#334155" />
+      <rect x="56" y="-38" width="6" height="14" rx="2" fill="#334155" />
+    </g>
+
+    <!-- Green Factory Paint Badges on Car Panels -->
+    <!-- Front Hood -->
+    <circle cx="172" cy="85" r="13" fill="#10B981" />
+    <text x="172" y="89" font-size="9" font-weight="bold" fill="#FFFFFF" text-anchor="middle">فابريكا</text>
+    
+    <!-- Roof -->
+    <circle cx="172" cy="165" r="13" fill="#10B981" />
+    <text x="172" y="169" font-size="9" font-weight="bold" fill="#FFFFFF" text-anchor="middle">فابريكا</text>
+
+    <!-- Trunk -->
+    <circle cx="172" cy="245" r="13" fill="#10B981" />
+    <text x="172" y="249" font-size="9" font-weight="bold" fill="#FFFFFF" text-anchor="middle">فابريكا</text>
+
+    <!-- Right Doors -->
+    <circle cx="250" cy="140" r="12" fill="#10B981" />
+    <text x="250" y="144" font-size="8" font-weight="bold" fill="#FFFFFF" text-anchor="middle">أصلي</text>
+    <circle cx="250" cy="190" r="12" fill="#10B981" />
+    <text x="250" y="194" font-size="8" font-weight="bold" fill="#FFFFFF" text-anchor="middle">أصلي</text>
+
+    <!-- Left Doors -->
+    <circle cx="95" cy="140" r="12" fill="#10B981" />
+    <text x="95" y="144" font-size="8" font-weight="bold" fill="#FFFFFF" text-anchor="middle">أصلي</text>
+    <circle cx="95" cy="190" r="12" fill="#10B981" />
+    <text x="95" y="194" font-size="8" font-weight="bold" fill="#FFFFFF" text-anchor="middle">أصلي</text>
+
+    <!-- Paint Legend -->
+    <rect x="20" y="280" width="305" height="28" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+    <circle cx="40" cy="294" r="5" fill="#10B981" />
+    <text x="52" y="298" font-size="10" font-weight="bold" fill="#334155" direction="rtl">فابريكا بالكامل (90-120 µm)</text>
+    <text x="280" y="298" font-size="10" font-weight="bold" fill="#10B981">خالية من أي دهانات</text>
+  </g>
+
+  <!-- ==================== GUARANTEE & SIGNATURES SECTION ==================== -->
+  <g transform="translate(65, 608)">
+    <rect x="0" y="0" width="1070" height="175" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5" />
+
+    <!-- Legal Guarantee Statement -->
+    <rect x="15" y="12" width="1040" height="42" rx="8" fill="#FFF2EE" stroke="#FF4B16" stroke-width="1" stroke-dasharray="4 2" />
+    <text x="1035" y="37" font-size="12" font-weight="800" fill="#9A2C0C" text-anchor="end" direction="rtl">
+      إقرار وضمان رسمي: نضمن للمشتري مطابقة حالة السيارة بنسبة 100% مع تقرير الفحص الفني المعتمد أعلاه، وللمشتري الحق الكامل في إعادة الفحص بأي مركز معتمد أو توكيل قبل إتمام الشراء.
+    </text>
+
+    <!-- Signatures and Stamp Block -->
+    <!-- Column 1: Inspector Engineer Signature -->
+    <g transform="translate(900, 75)" text-anchor="middle">
+      <text x="0" y="16" font-size="11" font-weight="700" fill="#64748B">مهندس الفحص المعتمد:</text>
+      <text x="0" y="42" font-size="15" font-family="'Brush Script MT', cursive, sans-serif" font-weight="bold" fill="#1E3A8A">Eng. Ahmed Abdelrahman</text>
+      <line x1="-80" y1="52" x2="80" y2="52" stroke="#CBD5E1" stroke-width="1" />
+      <text x="0" y="70" font-size="10" font-weight="600" fill="#94A3B8">اعتماد نقابة المهندسين المصرية</text>
+    </g>
+
+    <!-- Column 2: Dealership Manager -->
+    <g transform="translate(620, 75)" text-anchor="middle">
+      <text x="0" y="16" font-size="11" font-weight="700" fill="#64748B">مدير المعرض والجودة:</text>
+      <text x="0" y="42" font-size="15" font-family="'Brush Script MT', cursive, sans-serif" font-weight="bold" fill="#0A0A0A">M. Nabil Motors Admin</text>
+      <line x1="-80" y1="52" x2="80" y2="52" stroke="#CBD5E1" stroke-width="1" />
+      <text x="0" y="70" font-size="10" font-weight="600" fill="#94A3B8">سوق أوتو محمد نبيل (منذ عام 2007)</text>
+    </g>
+
+    <!-- Column 3: OFFICIAL WET RUBBER STAMP (Tilted -7 deg) -->
+    <g transform="translate(250, 95) rotate(-7)" filter="url(#stampShadow)">
+      <!-- Outer Double Circle in Reddish Rubber Ink -->
+      <circle cx="0" cy="0" r="62" fill="none" stroke="#B91C1C" stroke-width="3.5" stroke-dasharray="8 2 2 2" opacity="0.88" />
+      <circle cx="0" cy="0" r="56" fill="none" stroke="#B91C1C" stroke-width="1.5" opacity="0.85" />
+      
+      <!-- Stamp Inner Content -->
+      <circle cx="0" cy="0" r="38" fill="#FEF2F2" fill-opacity="0.6" stroke="#B91C1C" stroke-width="1" opacity="0.8" />
+      
+      <!-- Stamp Texts -->
+      <text x="0" y="-40" font-size="8.5" font-weight="900" fill="#991B1B" text-anchor="middle" letter-spacing="1">مركز الفحص الفني المعتمد</text>
+      <text x="0" y="-18" font-size="11" font-weight="900" fill="#B91C1C" text-anchor="middle">★ معتمد رسمياً ★</text>
+      <text x="0" y="0" font-size="13" font-weight="900" fill="#7F1D1D" text-anchor="middle" letter-spacing="2">APPROVED</text>
+      <text x="0" y="18" font-size="9" font-weight="bold" fill="#991B1B" text-anchor="middle">سوق أوتو محمد نبيل</text>
+      <text x="0" y="30" font-size="7.5" font-weight="bold" fill="#B91C1C" text-anchor="middle">مطابق للمواصفات</text>
+      <text x="0" y="44" font-size="8" font-family="monospace" font-weight="bold" fill="#7F1D1D" text-anchor="middle">2026-09-18</text>
+    </g>
+
+    <!-- Column 4: Verification QR & Badge -->
+    <g transform="translate(70, 75)" text-anchor="middle">
+      <rect x="-35" y="0" width="70" height="70" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1" />
+      <!-- Simplified Stylized QR Code -->
+      <rect x="-26" y="9" width="16" height="16" fill="#0F172A" />
+      <rect x="-23" y="12" width="10" height="10" fill="#FFFFFF" />
+      <rect x="-20" y="15" width="4" height="4" fill="#0F172A" />
+
+      <rect x="10" y="9" width="16" height="16" fill="#0F172A" />
+      <rect x="13" y="12" width="10" height="10" fill="#FFFFFF" />
+      <rect x="16" y="15" width="4" height="4" fill="#0F172A" />
+
+      <rect x="-26" y="45" width="16" height="16" fill="#0F172A" />
+      <rect x="-23" y="48" width="10" height="10" fill="#FFFFFF" />
+      <rect x="-20" y="51" width="4" height="4" fill="#0F172A" />
+
+      <rect x="4" y="34" width="8" height="8" fill="#FF4B16" />
+      <rect x="16" y="45" width="10" height="10" fill="#0F172A" />
+      <text x="0" y="86" font-size="9" font-weight="bold" fill="#64748B">امسح للتحقق الرقمي</text>
+    </g>
+
+  </g>
+
+</svg>

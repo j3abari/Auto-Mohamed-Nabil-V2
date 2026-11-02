@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-orange: #FF4B16;
+  --color-brand-hover: #E03E0F;
+  --color-brand-dark: #C93308;
+  --color-brand-subtle: rgba(255, 75, 22, 0.1);
+  --color-brand-border: rgba(255, 75, 22, 0.35);
+
+  --color-dark-950: #050505;
+  --color-dark-900: #0A0A0A;
+  --color-dark-850: #121212;
+  --color-dark-800: #161616;
+  --color-dark-750: #1C1C1C;
+  --color-dark-700: #222222;
+
+  --font-cairo: 'Cairo', sans-serif;
+  --shadow-brand: 0 8px 30px rgba(255, 75, 22, 0.25);
+}
+
+:root {
+  --brand-orange: #FF4B16;
+  --brand-orange-hover: #E03E0F;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0A0A0A;
+}
+::-webkit-scrollbar-thumb {
+  background: #262626;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #FF4B16;
+}
+
+/* Luxury Glow & Glass */
+.glass-panel {
+  background: rgba(22, 22, 22, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-nav {
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: #161616;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 75, 22, 0.4);
+  box-shadow: 0 10px 30px -10px rgba(255, 75, 22, 0.25);
+  transform: translateY(-4px);
+}
+
+.badge-orange {
+  background: rgba(255, 75, 22, 0.15);
+  color: #FF4B16;
+  border: 1px solid rgba(255, 75, 22, 0.3);
+}
+
+.badge-green {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}

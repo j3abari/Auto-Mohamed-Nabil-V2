@@ -1,4 +1,6 @@
 require('dotenv').config();
+const path         = require('path');
+const fs           = require('fs');
 const express      = require('express');
 const helmet       = require('helmet');
 const cors         = require('cors');
@@ -86,12 +88,17 @@ app.use(morgan('combined', {
     stream: { write: msg => logger.info(msg.trim()) }
 }));
 
-// ── Root ───────────────────────────────────────────────────────────────────
-app.get('/', (req, res) => {
-    res.json({ service: 'Auto Mohamed Nabil V2 API', status: 'running', version: '1.0.1' });
-});
+// ── Static Frontend (if built) ─────────────────────────────────────────────
+const publicDistPath = fs.existsSync(path.join(__dirname, 'public'))
+    ? path.join(__dirname, 'public')
+    : path.join(__dirname, '../frontend/dist');
+const hasFrontendDist = fs.existsSync(publicDistPath);
 
-// ── Health check (Render.com keep-alive) ──────────────────────────────────
+if (hasFrontendDist) {
+    app.use(express.static(publicDistPath));
+}
+
+// ── Root / Health ──────────────────────────────────────────────────────────
 app.get('/health', (req, res) => {
     res.json({
         status: 'ok',
@@ -100,11 +107,25 @@ app.get('/health', (req, res) => {
     });
 });
 
+if (!hasFrontendDist) {
+    app.get('/', (req, res) => {
+        res.json({ service: 'Auto Mohamed Nabil V2 API', status: 'running', version: '1.0.2' });
+    });
+}
+
 // ── API Routes ─────────────────────────────────────────────────────────────
 app.use('/api/auth',       authLimiter, authRoutes);
 app.use('/api/cars',       carsRoutes);
 app.use('/api/inquiries',  inquiryRoutes);
 app.use('/api/analytics',  analyticsRoutes);
+
+// ── SPA Catch-all (serves index.html for React Router if frontend exists) ──
+if (hasFrontendDist) {
+    app.get('*', (req, res, next) => {
+        if (req.path.startsWith('/api/')) return next();
+        res.sendFile(path.join(publicDistPath, 'index.html'));
+    });
+}
 
 // ── 404 + Error handlers ───────────────────────────────────────────────────
 app.use(notFound);
