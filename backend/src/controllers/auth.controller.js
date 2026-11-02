@@ -111,6 +111,18 @@ const login = catchAsync(async (req, res) => {
 
     logger.info(`[Auth] Admin "${username}" logged in from ${ip}`);
 
+    // Write audit log for successful login
+    supabase.from('audit_logs').insert({
+        user_id:     user.id,
+        user_email:  user.email || user.username,
+        action:      `تسجيل دخول آمن إلى لوحة إدارة المعرض والـ CRM`,
+        entity_type: 'auth',
+        client_ip:   ip,
+        user_agent:  (req.headers['user-agent'] || '').slice(0, 255),
+    }).then(({ error: logErr }) => {
+        if (logErr) logger.warn('[Audit] login log failed:', logErr.message);
+    });
+
     return apiResponse.success(res, {
         accessToken,
         refreshToken,

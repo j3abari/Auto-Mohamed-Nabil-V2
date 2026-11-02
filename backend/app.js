@@ -13,6 +13,7 @@ const authRoutes      = require('./src/routes/auth.routes');
 const carsRoutes      = require('./src/routes/cars.routes');
 const inquiryRoutes   = require('./src/routes/inquiries.routes');
 const analyticsRoutes = require('./src/routes/analytics.routes');
+const auditRoutes     = require('./src/routes/audit.routes');
 
 // Error handlers
 const { notFound, errorHandler } = require('./src/middlewares/error.middleware');
@@ -115,6 +116,7 @@ app.use('/api/auth',       authLimiter, authRoutes);
 app.use('/api/cars',       carsRoutes);
 app.use('/api/inquiries',  inquiryRoutes);
 app.use('/api/analytics',  analyticsRoutes);
+app.use('/api/audit-logs', auditRoutes);
 
 // ── SPA Fallback (serve index.html for all non-API paths) ───────────────────
 if (hasFrontendDist) {

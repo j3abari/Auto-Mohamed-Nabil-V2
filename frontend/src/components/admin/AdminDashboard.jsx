@@ -11,6 +11,8 @@ import {
   deleteAdminCar,
   toggleCarPublish,
   toggleCarFeature,
+  fetchAuditLogs,
+  postAuditLog,
 } from '../../services/adminApi';
 import { SHOWROOM_CONTACT, FALLBACK_CARS } from '../../services/api';
 
@@ -305,24 +307,8 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
     email: '',
   });
 
-  const [auditLogs, setAuditLogs] = useState(() => {
-    try {
-      const saved = localStorage.getItem('mnabil_audit_logs');
-      if (saved) return JSON.parse(saved);
-    } catch {
-      // ignore
-    }
-    return [
-      {
-        id: 1,
-        timestamp: new Date().toISOString(),
-        action: 'تسجيل دخول آمن إلى لوحة إدارة المعرض والـ CRM (JWT Verified)',
-        actor: currentAdmin.username || 'performax',
-        ip: 'Active Session',
-        event_type: 'auth',
-      },
-    ];
-  });
+  // Audit logs — start empty, real data loads from Supabase in loadAllData()
+  const [auditLogs, setAuditLogs] = useState([]);
   const [auditSearch, setAuditSearch] = useState('');
   const [auditFilter, setAuditFilter] = useState('');
 
@@ -333,34 +319,31 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
     }, 3200);
   };
 
-  const appendAuditLog = (action, event_type = 'crm') => {
+  const appendAuditLog = (action, event_type = 'admin_action') => {
+    // Write to Supabase via backend API (real persistent log)
+    postAuditLog(action, event_type);
+
+    // Also update local state immediately so UI reflects the action without a refresh
     const entry = {
       id: Date.now(),
-      timestamp: new Date().toISOString(),
+      created_at: new Date().toISOString(),
       action,
-      actor: currentAdmin.username || 'performax',
-      ip: 'Supabase Cloud',
-      event_type,
+      user_email: currentAdmin.username || 'performax',
+      client_ip: 'Supabase Cloud',
+      entity_type: event_type,
     };
-    setAuditLogs((prev) => {
-      const next = [entry, ...prev].slice(0, 150);
-      try {
-        localStorage.setItem('mnabil_audit_logs', JSON.stringify(next));
-      } catch {
-        // ignore
-      }
-      return next;
-    });
+    setAuditLogs((prev) => [entry, ...prev].slice(0, 200));
   };
 
   // Load All Data from Supabase Backend
   const loadAllData = async () => {
     setLoading(true);
     try {
-      const [overviewRes, inqRes, carsRes] = await Promise.allSettled([
+      const [overviewRes, inqRes, carsRes, logsRes] = await Promise.allSettled([
         fetchAnalyticsOverview(),
         fetchAdminInquiries({ limit: 100 }),
         fetchAdminCars({ limit: 100 }),
+        fetchAuditLogs(200),
       ]);
 
       if (overviewRes.status === 'fulfilled' && overviewRes.value) {
@@ -392,6 +375,19 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
         setCars(carsRes.value.data);
       } else {
         setCars(FALLBACK_CARS);
+      }
+
+      // Load real audit logs from Supabase
+      if (logsRes.status === 'fulfilled' && Array.isArray(logsRes.value) && logsRes.value.length > 0) {
+        // Normalize Supabase format to match local state shape
+        setAuditLogs(logsRes.value.map((l) => ({
+          id: l.id,
+          created_at: l.created_at,
+          action: l.action,
+          user_email: l.user_email || 'admin',
+          client_ip: l.client_ip || 'Supabase Cloud',
+          entity_type: l.entity_type || 'admin_action',
+        })));
       }
 
       setLastSyncTime(new Date().toLocaleTimeString('ar-EG'));
@@ -3116,7 +3112,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                     <tbody>
                       {auditLogs
                         .filter((log) => {
-                          if (auditFilter && log.event_type !== auditFilter) return false;
+                          if (auditFilter && (log.entity_type || log.event_type) !== auditFilter) return false;
                           if (
                             auditSearch &&
                             !String(log.action).toLowerCase().includes(auditSearch.toLowerCase())
@@ -3127,14 +3123,14 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                         .map((log) => (
                           <tr key={log.id}>
                             <td style={{ whiteSpace: 'nowrap' }}>
-                              {new Date(log.timestamp).toLocaleString('ar-EG')}
+                              {new Date(log.created_at || log.timestamp).toLocaleString('ar-EG')}
                             </td>
                             <td style={{ fontWeight: 600 }}>{log.action}</td>
                             <td>
-                              <strong>{log.actor}</strong>
+                              <strong>{log.user_email || log.actor || 'admin'}</strong>
                             </td>
                             <td dir="ltr">
-                              <code>{log.ip}</code>
+                              <code>{log.client_ip || log.ip || 'Supabase Cloud'}</code>
                             </td>
                           </tr>
                         ))}

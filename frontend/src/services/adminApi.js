@@ -110,3 +110,21 @@ export async function toggleCarFeature(id) {
   const res = await api.patch(`/cars/admin/${id}/feature`);
   return res.data?.data;
 }
+
+// Audit Logs
+export async function fetchAuditLogs(limit = 200) {
+  try {
+    const res = await api.get('/audit-logs', { params: { limit } });
+    return res.data?.data || [];
+  } catch {
+    return [];
+  }
+}
+
+export async function postAuditLog(action, entity_type = 'admin_action') {
+  try {
+    await api.post('/audit-logs', { action, entity_type });
+  } catch {
+    // fail silently — log is best-effort
+  }
+}
