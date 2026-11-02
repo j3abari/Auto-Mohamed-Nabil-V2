@@ -245,7 +245,7 @@ export default function App() {
   // 2. DEDICATED VEHICLE DOSSIER PAGE (/vehicles/:slug)
   // ----------------------------------------------------
   const isVehicleDetailRoute = currentPath.startsWith('/vehicles/');
-  const activeVehicle = useMemo(() => {
+  const activeVehicle = (() => {
     if (!isVehicleDetailRoute) return null;
     const slug = decodeURIComponent(currentPath.replace('/vehicles/', '')).trim();
     return (
@@ -253,11 +253,50 @@ export default function App() {
       FALLBACK_CARS.find((c) => c.slug === slug || String(c.id) === slug) ||
       null
     );
-  }, [isVehicleDetailRoute, currentPath, cars]);
+  })();
+
+  const goto = (p) => (e) => { e.preventDefault(); navigate(p); };
+  const selectCar = (car) => navigate(`/vehicles/${car.slug || car.id}`);
+  const inquireCar = (car) => setInquiryContext({ carId: car.id, title: `استفسار عن ${car.make} ${car.model}` });
+  const crumb = (label) => (
+    <div className="bg-[#f4f0e6] border-b border-black/10 py-3.5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-2 text-xs text-[#4b5563]">
+        <a href="/" onClick={goto('/')} className="hover:text-[#9a7226]">الرئيسية</a>
+        <span>/</span>
+        <span className="text-[#1f2937] font-bold">{label}</span>
+      </div>
+    </div>
+  );
+  const renderPage = () => {
+    switch (currentPath) {
+      case '/inventory':
+        return (<>{crumb('أسطول المعرض')}<InventorySection cars={filteredCars} loading={loading} onSelectCar={selectCar} onInquire={inquireCar} /></>);
+      case '/viewing':
+        return (<>{crumb('حجز معاينة')}<PrivateViewingSection cars={cars} /></>);
+      case '/services':
+        return (<>{crumb('خدمات المعرض')}<ShowroomServices /></>);
+      case '/finance':
+        return (<>{crumb('حاسبة التمويل')}<FinanceCalculator onOpenInquiry={(ctx) => setInquiryContext(ctx || {})} /></>);
+      case '/inspection':
+        return (<>{crumb('الفحص المعتمد')}<InspectionShowcase onOpenInquiry={(ctx) => setInquiryContext(ctx || {})} /></>);
+      case '/about':
+        return (<>{crumb('عن المعرض')}<WhyChooseUs /></>);
+      case '/contact':
+        return (<>{crumb('موقعنا')}<section className="py-20"><div className="max-w-3xl mx-auto px-4 text-center space-y-4"><h2 className="text-3xl font-bold text-[#1f2937]">تفضل بزيارة صالة العرض</h2><p className="text-[#4b5563]">{SHOWROOM_CONTACT.address}</p><p className="text-[#4b5563]">{SHOWROOM_CONTACT.workingHours}</p><div className="flex justify-center gap-3 pt-4"><a href={SHOWROOM_CONTACT.mapsUrl} target="_blank" rel="noopener noreferrer" className="px-6 py-3 rounded-xl bg-[#9a7226] text-white font-bold text-sm">الاتجاهات على الخريطة</a><a href={`tel:${SHOWROOM_CONTACT.phone}`} className="px-6 py-3 rounded-xl border border-black/10 text-[#1f2937] font-bold text-sm">اتصال مباشر</a></div></div></section></>);
+      default:
+        return (<>
+          <HeroSection filters={heroFilters} setFilters={setHeroFilters} onSearchSubmit={handleHeroSearch} availableMakes={availableMakes} onNavigate={navigate} />
+          <InventorySection cars={filteredCars.slice(0, 6)} loading={loading} onSelectCar={selectCar} onInquire={inquireCar} />
+          <div className="text-center pb-16"><a href="/inventory" onClick={goto('/inventory')} className="inline-flex px-8 py-3.5 rounded-xl bg-[#9a7226] hover:bg-[#7d5c1c] text-white font-bold text-sm">عرض كل الأسطول</a></div>
+          <ShowroomServices />
+          <WhyChooseUs />
+        </>);
+    }
+  };
 
   return (
     <div
-      className="min-h-screen bg-[#0A0C0B] text-[#F1EEE6] font-sans selection:bg-[#FF4B16] selection:text-white"
+      className="min-h-screen bg-[#faf8f3] text-[#1f2937] font-sans selection:bg-[#9a7226] selection:text-white"
       dir="rtl"
     >
       {/* Luxury Sticky Navbar (Clean Paths, Zero #) */}
@@ -277,48 +316,7 @@ export default function App() {
           />
         </main>
       ) : (
-        <main>
-          {/* 1. Cinematic Luxury Hero */}
-          <HeroSection
-            filters={heroFilters}
-            setFilters={setHeroFilters}
-            onSearchSubmit={handleHeroSearch}
-            availableMakes={availableMakes}
-            onNavigate={navigate}
-          />
-
-          {/* 2. Showroom Collection & Inventory */}
-          <InventorySection
-            cars={filteredCars}
-            loading={loading}
-            onSelectCar={(car) => navigate(`/vehicles/${car.slug || car.id}`)}
-            onInquire={(car) =>
-              setInquiryContext({
-                carId: car.id,
-                title: `استفسار عن ${car.make} ${car.model}`,
-              })
-            }
-          />
-
-          {/* 3. Private Viewing & VIP Test Drive Booking Form */}
-          <PrivateViewingSection cars={cars} />
-
-          {/* 4. Showroom Premium Services */}
-          <ShowroomServices />
-
-          {/* 5. Finance & Instalment Calculator */}
-          <FinanceCalculator
-            onOpenInquiry={(ctx) => setInquiryContext(ctx || {})}
-          />
-
-          {/* 6. 100-Point Certified Inspection Showcase */}
-          <InspectionShowcase
-            onOpenInquiry={(ctx) => setInquiryContext(ctx || {})}
-          />
-
-          {/* 7. Heritage & Showroom Story */}
-          <WhyChooseUs />
-        </main>
+        <main>{renderPage()}</main>
       )}
 
       {/* 8. Luxury Footer (Clean Paths, Zero #, Zero Admin Leaks) */}
@@ -338,7 +336,7 @@ export default function App() {
         {showScrollTop && (
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="w-11 h-11 rounded-full bg-[#141715]/90 border border-white/10 text-white hover:text-[#FF4B16] hover:border-[#FF4B16]/50 shadow-xl flex items-center justify-center transition-all backdrop-blur-md"
+            className="w-11 h-11 rounded-full bg-[#ffffff]/90 border border-black/10 text-[#1f2937] hover:text-[#9a7226] hover:border-[#9a7226]/50 shadow-xl flex items-center justify-center transition-all backdrop-blur-md"
             aria-label="العودة لأعلى الصفحة"
           >
             <ArrowUp className="w-5 h-5" />
@@ -351,13 +349,13 @@ export default function App() {
           )}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="relative group p-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-2xl shadow-emerald-900/50 hover:scale-110 active:scale-95 transition-all flex items-center justify-center"
+          className="relative group p-3.5 rounded-full bg-[#9a7226] hover:bg-[#9a7226] text-white shadow-2xl shadow-[#9a7226]/50 hover:scale-110 active:scale-95 transition-all flex items-center justify-center"
           title="تواصل مباشرة عبر واتساب"
           aria-label="محادثة واتساب مباشرة"
         >
           <MessageCircle className="w-6 h-6" />
-          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-[#0A0C0B] animate-ping" />
-          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-[#0A0C0B]" />
+          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-[#faf8f3] animate-ping" />
+          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-[#faf8f3]" />
         </a>
       </div>
     </div>

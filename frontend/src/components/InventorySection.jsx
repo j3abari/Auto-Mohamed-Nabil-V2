@@ -54,7 +54,7 @@ export default function InventorySection({ cars = [], loading = false, onSelectC
   }, [cars, activeCategory, searchTerm, sortBy]);
 
   return (
-    <section id="inventory" className="py-24 bg-[#0A0C0B] relative">
+    <section id="inventory" className="py-24 bg-[#faf8f3] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -63,23 +63,23 @@ export default function InventorySection({ cars = [], loading = false, onSelectC
             <span className="gx-kicker gx-kicker-orange mb-3">
               المجموعة المتاحة للتسليم الفوري • The Showroom Collection
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F1EEE6] tracking-tight mt-2">
-              أسطول استثنائي <span className="text-[#FF4B16]">منتقى بعناية.</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1f2937] tracking-tight mt-2">
+              أسطول استثنائي <span className="text-[#9a7226]">منتقى بعناية.</span>
             </h2>
-            <p className="text-sm text-[#B7B9B0] mt-2 max-w-xl leading-relaxed">
+            <p className="text-sm text-[#4b5563] mt-2 max-w-xl leading-relaxed">
               جميع السيارات تخضع لفحص فني معتمد 100 نقطة، بحالة الزيرو وفابريكا بالكامل مع إمكانية المعاينة والتجربة الفورية.
             </p>
           </div>
 
-          <div className="text-xs text-[#B7B9B0] bg-[#141715] border border-white/10 px-4 py-2.5 rounded-xl self-start md:self-auto flex items-center gap-2">
+          <div className="text-xs text-[#4b5563] bg-[#ffffff] border border-black/10 px-4 py-2.5 rounded-xl self-start md:self-auto flex items-center gap-2">
             <span>السيارات المتاحة:</span>
-            <span className="font-extrabold text-[#FF4B16] font-mono text-sm">{filteredCars.length}</span>
+            <span className="font-extrabold text-[#9a7226] font-mono text-sm">{filteredCars.length}</span>
             <span>سيارة</span>
           </div>
         </div>
 
         {/* Filters Toolbar */}
-        <div className="bg-[#141715] border border-white/8 p-4 sm:p-5 rounded-2xl mb-10 space-y-4 shadow-xl">
+        <div className="bg-[#ffffff] border border-black/10 p-4 sm:p-5 rounded-2xl mb-10 space-y-4 shadow-xl">
           
           {/* Category Tabs */}
           <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
@@ -89,8 +89,8 @@ export default function InventorySection({ cars = [], loading = false, onSelectC
                 onClick={() => setActiveCategory(cat.id)}
                 className={`py-2 px-4 rounded-xl text-xs font-bold whitespace-nowrap transition-all border ${
                   activeCategory === cat.id
-                    ? 'bg-[#FF4B16] text-white border-[#FF4B16] shadow-md shadow-[#FF4B16]/25'
-                    : 'bg-[#0E1110] text-[#B7B9B0] border-white/5 hover:text-white hover:bg-white/5'
+                    ? 'bg-[#9a7226] text-white border-[#9a7226] shadow-md shadow-[#9a7226]/25'
+                    : 'bg-[#f4f0e6] text-[#4b5563] border-black/10 hover:text-[#1f2937] hover:bg-black/5'
                 }`}
               >
                 {cat.label}
@@ -99,24 +99,24 @@ export default function InventorySection({ cars = [], loading = false, onSelectC
           </div>
 
           {/* Search and Sort Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-white/5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-black/10">
             <div className="relative sm:col-span-2">
               <input
                 type="text"
                 placeholder="ابحث بالاسم، الماركة، أو الموديل (مثال: C200, BMW 320i, فورتشنر)..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-[#0E1110] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-[#F1EEE6] placeholder-gray-500 focus:outline-none focus:border-[#FF4B16] transition-colors"
+                className="w-full bg-[#f4f0e6] border border-black/10 rounded-xl px-4 py-2.5 text-xs text-[#1f2937] placeholder-gray-500 focus:outline-none focus:border-[#9a7226] transition-colors"
               />
               <Search className="w-4 h-4 text-gray-500 absolute left-3 top-3 pointer-events-none" />
             </div>
 
             <div className="flex items-center gap-2">
-              <SlidersHorizontal className="w-4 h-4 text-[#C9B37E] flex-shrink-0" />
+              <SlidersHorizontal className="w-4 h-4 text-[#9a7226] flex-shrink-0" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full bg-[#0E1110] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-[#F1EEE6] focus:outline-none focus:border-[#FF4B16] transition-colors appearance-none cursor-pointer"
+                className="w-full bg-[#f4f0e6] border border-black/10 rounded-xl px-3 py-2.5 text-xs text-[#1f2937] focus:outline-none focus:border-[#9a7226] transition-colors appearance-none cursor-pointer"
               >
                 <option value="newest">ترتيب: الأحدث موديل</option>
                 <option value="price-desc">ترتيب: السعر من الأعلى للأقل</option>
@@ -131,7 +131,7 @@ export default function InventorySection({ cars = [], loading = false, onSelectC
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[1, 2, 3, 4, 5, 6].map((n) => (
-              <div key={n} className="luxury-card rounded-2xl h-96 animate-pulse bg-white/5" />
+              <div key={n} className="luxury-card rounded-2xl h-96 animate-pulse bg-black/5" />
             ))}
           </div>
         ) : filteredCars.length > 0 ? (
@@ -146,13 +146,13 @@ export default function InventorySection({ cars = [], loading = false, onSelectC
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 bg-[#141715] rounded-2xl border border-white/5">
-            <Car className="w-12 h-12 text-[#9EA199] mx-auto mb-3 opacity-40" />
-            <h3 className="text-lg font-bold text-[#F1EEE6]">لا توجد سيارات مطابقة لخيارات البحث</h3>
-            <p className="text-xs text-[#9EA199] mt-1 mb-4">جرب تغيير معايير البحث أو تصفية الماركات</p>
+          <div className="text-center py-16 bg-[#ffffff] rounded-2xl border border-black/10">
+            <Car className="w-12 h-12 text-[#6b7280] mx-auto mb-3 opacity-40" />
+            <h3 className="text-lg font-bold text-[#1f2937]">لا توجد سيارات مطابقة لخيارات البحث</h3>
+            <p className="text-xs text-[#6b7280] mt-1 mb-4">جرب تغيير معايير البحث أو تصفية الماركات</p>
             <button
               onClick={() => { setActiveCategory('all'); setSearchTerm(''); }}
-              className="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs text-white font-semibold transition-colors inline-flex items-center gap-1.5"
+              className="px-5 py-2 rounded-xl bg-black/5 hover:bg-black/5 text-xs text-white font-semibold transition-colors inline-flex items-center gap-1.5"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               <span>إعادة ضبط الفلاتر</span>

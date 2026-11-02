@@ -267,7 +267,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
       email: SHOWROOM_CONTACT.email || 'info@autonabil.com',
       working_hours: SHOWROOM_CONTACT.workingHours,
       address: SHOWROOM_CONTACT.address,
-      announcement_bar: '🔥 عروض خاصة لفترة محدودة: استلم سيارتك الفاخرة اليوم بمقدم يبدأ من 20% وفحص معتمد 100 نقطة!',
+      announcement_bar: ' عروض خاصة لفترة محدودة: استلم سيارتك الفاخرة اليوم بمقدم يبدأ من 20% وفحص معتمد 100 نقطة!',
       announcement_start: '',
       announcement_end: '',
       google_sheets_webhook_url: '',
@@ -517,7 +517,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
       new: { label: 'جديد (New)', cls: 'status-new' },
       contacted: { label: 'تم التواصل', cls: 'status-contacted' },
       negotiating: { label: 'معاينة مؤكدة', cls: 'status-confirmed' },
-      won: { label: 'تم البيع والتعاقد ✅', cls: 'status-confirmed' },
+      won: { label: 'تم البيع والتعاقد ', cls: 'status-confirmed' },
       lost: { label: 'لم يتم التعاقد', cls: 'status-cancelled' },
       cancelled: { label: 'ملغي', cls: 'status-cancelled' },
     };
@@ -594,7 +594,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
         `تحديث ملف وحالة العميل (${lead.customer_name}) [${lead.inquiry_ref || lead.id}] إلى (${draft.status})`,
         'lead_updated'
       );
-      showToast('💾 تم تحديث ملف وحالة الحجز في قاعدة البيانات السحابية بنجاح!');
+      showToast(' تم تحديث ملف وحالة الحجز في قاعدة البيانات السحابية بنجاح!');
     } catch (err) {
       alert(err.message || 'حدث خطأ أثناء حفظ التعديلات');
     }
@@ -621,13 +621,13 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
       appendAuditLog(
         archiveFlag
           ? `حذف/أرشفة سجل العميل (${lead.customer_name}) [${lead.inquiry_ref || lead.id}] إلى الأرشيف الأمني`
-          : `♻️ استعادة سجل العميل (${lead.customer_name}) [${lead.inquiry_ref || lead.id}] إلى جدول الـ CRM`,
+          : ` استعادة سجل العميل (${lead.customer_name}) [${lead.inquiry_ref || lead.id}] إلى جدول الـ CRM`,
         archiveFlag ? 'lead_archived' : 'lead_restored'
       );
       showToast(
         archiveFlag
-          ? '📦 تم نقل الحجز إلى الأرشيف وحفظه في السجل الأمني'
-          : '♻️ تمت استعادة العميل إلى جدول الـ CRM بنجاح!'
+          ? ' تم نقل الحجز إلى الأرشيف وحفظه في السجل الأمني'
+          : ' تمت استعادة العميل إلى جدول الـ CRM بنجاح!'
       );
     } catch (err) {
       alert(err.message || 'تعذر تنفيذ الإجراء');
@@ -661,8 +661,8 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
       );
       showToast(
         archiveAfter
-          ? '📦 تم توثيق الرد وأرشفة الرسالة في قاعدة البيانات!'
-          : '✅ تم حفظ حالة الرد بنجاح!'
+          ? ' تم توثيق الرد وأرشفة الرسالة في قاعدة البيانات!'
+          : ' تم حفظ حالة الرد بنجاح!'
       );
     } catch (err) {
       alert(err.message || 'تعذر تحديث الرسالة');
@@ -684,7 +684,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
         exists ? `إلغاء حظر الرقم (${norm})` : `حظر الرقم (${norm}) من إرسال طلبات مزعجة`,
         'security'
       );
-      showToast(exists ? '✅ تم إلغاء حظر الرقم' : '🚫 تم حظر الرقم بنجاح');
+      showToast(exists ? ' تم إلغاء حظر الرقم' : ' تم حظر الرقم بنجاح');
       return next;
     });
   };
@@ -697,7 +697,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
       if (updated) {
         setVerifyResult({
           ok: true,
-          msg: `✅ تم التحقق بنجاح وتأكيد حضور العميل للمعرض: ${updated.customer_name} (كود الحجز: ${updated.inquiry_ref} — ${getCarLabelForLead(updated)})`,
+          msg: ` تم التحقق بنجاح وتأكيد حضور العميل للمعرض: ${updated.customer_name} (كود الحجز: ${updated.inquiry_ref} — ${getCarLabelForLead(updated)})`,
         });
         setVerifyCodeInput('');
         appendAuditLog(
@@ -709,7 +709,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
     } catch (err) {
       setVerifyResult({
         ok: false,
-        msg: `❌ ${err.response?.data?.message || 'كود الحجز أو رقم الهاتف غير موجود بقاعدة البيانات'}`,
+        msg: ` ${err.response?.data?.message || 'كود الحجز أو رقم الهاتف غير موجود بقاعدة البيانات'}`,
       });
     }
   };
@@ -775,7 +775,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
         `إضافة حجز عميل يدوي جديد (${newLeadForm.customer_name}) وتوليد كود الحجز`,
         'lead_created'
       );
-      showToast('✅ تمت إضافة الحجز وتوليد الكود المرجعي بنجاح!');
+      showToast(' تمت إضافة الحجز وتوليد الكود المرجعي بنجاح!');
       loadAllData();
     } catch (err) {
       alert(err.response?.data?.message || err.message || 'تعذر إضافة الحجز');
@@ -823,7 +823,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
     a.download = `Auto-Mohamed-Nabil-CRM-${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
-    showToast('📥 تم تصدير قاعدة بيانات العملاء إلى ملف Excel (CSV) بنجاح!');
+    showToast(' تم تصدير قاعدة بيانات العملاء إلى ملف Excel (CSV) بنجاح!');
   };
 
   // Fleet Inventory Actions
@@ -925,7 +925,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
         );
       }
       setCarModalOpen(false);
-      showToast('🚗 تم حفظ بيانات السيارة ونشرها في صالة العرض بنجاح!');
+      showToast(' تم حفظ بيانات السيارة ونشرها في صالة العرض بنجاح!');
       loadAllData();
     } catch (err) {
       alert(err.response?.data?.message || err.message || 'تعذر حفظ السيارة');
@@ -937,11 +937,11 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
     try {
       await deleteAdminCar(car.id);
       appendAuditLog(`حذف السيارة (${car.make} ${car.model}) من أسطول المعرض`, 'car');
-      showToast('🗑️ تم حذف السيارة من المعرض');
+      showToast(' تم حذف السيارة من المعرض');
       loadAllData();
     } catch {
       setCars((prev) => prev.filter((c) => c.id !== car.id));
-      showToast('🗑️ تم إخفاء السيارة من العرض');
+      showToast(' تم إخفاء السيارة من العرض');
     }
   };
 
@@ -957,24 +957,24 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
   };
 
   const tabTitles = {
-    overview: '📊 نظرة عامة وإحصائيات المعرض',
-    leads: '📅 إدارة حجوزات المعاينة والعملاء (CRM)',
-    messages: '💬 رسائل واستفسارات الموقع',
-    cars: '🚗 إدارة أسطول السيارات (Showroom CMS)',
-    pages: '🌐 إدارة صفحات الموقع ومحركات البحث (SEO)',
-    media: '🖼️ مكتبة صور السيارات والوسائط',
-    settings: '⚙️ إعدادات المعرض والربط البرمجي',
-    logs: '🛡️ فريق العمل والسجل الأمني (Audit Log)',
+    overview: ' نظرة عامة وإحصائيات المعرض',
+    leads: ' إدارة حجوزات المعاينة والعملاء (CRM)',
+    messages: ' رسائل واستفسارات الموقع',
+    cars: ' إدارة أسطول السيارات (Showroom CMS)',
+    pages: ' إدارة صفحات الموقع ومحركات البحث (SEO)',
+    media: ' مكتبة صور السيارات والوسائط',
+    settings: ' إعدادات المعرض والربط البرمجي',
+    logs: ' فريق العمل والسجل الأمني (Audit Log)',
   };
 
   return (
     <div className="drm-admin-root" dir="rtl">
       <style>{`
         .drm-admin-root {
-          --primary: #1b3b36;
-          --primary-dark: #122824;
-          --accent: #d4a373;
-          --orange: #FF4B16;
+          --primary: #9a7226;
+          --primary-dark: #7d5c1c;
+          --accent: #f3e2b8;
+          --orange: #9a7226;
           --bg: #f3f6f5;
           --card: #ffffff;
           --text: #1e293b;
@@ -1020,18 +1020,18 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           color: var(--accent);
           padding: 3px 10px;
           border-radius: 50px;
-          font-size: 11px;
+          font-size: 12.3px;
           font-weight: 700;
           width: fit-content;
         }
         .drm-brand h2 {
-          font-size: 17px;
+          font-size: 19.0px;
           font-weight: 800;
           color: #fff;
           margin: 0;
         }
         .drm-brand p {
-          font-size: 12px;
+          font-size: 13.4px;
           color: #cbd5e1;
           margin: 0;
         }
@@ -1050,7 +1050,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           border-radius: 10px;
           color: #e2e8f0;
           text-decoration: none;
-          font-size: 13.5px;
+          font-size: 15.1px;
           font-weight: 600;
           cursor: pointer;
           transition: 0.2s;
@@ -1073,7 +1073,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           background: rgba(0,0,0,0.25);
           padding: 2px 8px;
           border-radius: 20px;
-          font-size: 11px;
+          font-size: 12.3px;
         }
         .drm-sidebar-footer {
           padding: 16px 20px;
@@ -1085,7 +1085,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
         .drm-sidebar-footer a, .drm-sidebar-footer button {
           color: #cbd5e1;
           text-decoration: none;
-          font-size: 13px;
+          font-size: 14.6px;
           display: flex;
           align-items: center;
           gap: 8px;
@@ -1119,7 +1119,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           gap: 12px;
         }
         .drm-topbar h1 {
-          font-size: 19px;
+          font-size: 21.3px;
           font-weight: 800;
           color: var(--primary);
           margin: 0;
@@ -1137,7 +1137,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           padding: 9px 16px;
           border-radius: 9px;
           font-family: inherit;
-          font-size: 13px;
+          font-size: 14.6px;
           font-weight: 700;
           cursor: pointer;
           border: none;
@@ -1150,8 +1150,8 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
         .drm-btn-outline { background: #fff; color: var(--primary); border: 1.5px solid var(--border); }
         .drm-btn-outline:hover { border-color: var(--primary); background: #f8fafc; }
         .drm-btn-danger { background: #fee2e2; color: var(--danger); }
-        .drm-btn-sm { padding: 6px 11px; font-size: 12px; border-radius: 7px; }
-        .drm-btn-whatsapp { background: #25D366; color: #fff; padding: 5px 10px; border-radius: 6px; font-size: 11.5px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; border: none; cursor: pointer; }
+        .drm-btn-sm { padding: 6px 11px; font-size: 13.4px; border-radius: 7px; }
+        .drm-btn-whatsapp { background: #25D366; color: #fff; padding: 5px 10px; border-radius: 6px; font-size: 12.9px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; border: none; cursor: pointer; }
         .drm-content {
           padding: 28px;
           max-width: 1440px;
@@ -1171,9 +1171,9 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           border: 1px solid var(--border);
           box-shadow: 0 2px 10px rgba(0,0,0,0.02);
         }
-        .drm-kpi-card .label { font-size: 13px; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
-        .drm-kpi-card .value { font-size: 28px; font-weight: 800; color: var(--primary); }
-        .drm-kpi-card .sub { font-size: 11.5px; color: var(--success); margin-top: 6px; font-weight: 600; }
+        .drm-kpi-card .label { font-size: 14.6px; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
+        .drm-kpi-card .value { font-size: 31.4px; font-weight: 800; color: var(--primary); }
+        .drm-kpi-card .sub { font-size: 12.9px; color: var(--success); margin-top: 6px; font-weight: 600; }
         .drm-card {
           background: var(--card);
           border-radius: 14px;
@@ -1191,14 +1191,14 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           flex-wrap: wrap;
           gap: 12px;
         }
-        .drm-card-header h3 { font-size: 16px; font-weight: 800; color: var(--primary); margin: 0; }
+        .drm-card-header h3 { font-size: 17.9px; font-weight: 800; color: var(--primary); margin: 0; }
         .drm-card-body { padding: 22px; }
         .drm-table-responsive { overflow-x: auto; }
         .drm-table { width: 100%; border-collapse: collapse; text-align: right; }
         .drm-table th {
           background: #f8fafc;
           color: #475569;
-          font-size: 12px;
+          font-size: 13.4px;
           font-weight: 700;
           padding: 12px 14px;
           border-bottom: 1px solid var(--border);
@@ -1207,7 +1207,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
         .drm-table td {
           padding: 13px 14px;
           border-bottom: 1px solid var(--border);
-          font-size: 13px;
+          font-size: 14.6px;
           vertical-align: middle;
           color: #1e293b;
         }
@@ -1216,19 +1216,19 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           display: inline-block;
           padding: 4px 10px;
           border-radius: 50px;
-          font-size: 11.5px;
+          font-size: 12.9px;
           font-weight: 700;
         }
         .status-new { background: #dbeafe; color: #1d4ed8; }
         .status-contacted { background: #fef3c7; color: #b45309; }
-        .status-confirmed { background: #dcfce7; color: #15803d; }
+        .status-confirmed { background: #dcfce7; color: #7d5c1c; }
         .status-cancelled { background: #fee2e2; color: #b91c1c; }
         .drm-input, .drm-select, .drm-textarea {
           padding: 9px 12px;
           border: 1.5px solid var(--border);
           border-radius: 8px;
           font-family: inherit;
-          font-size: 13px;
+          font-size: 14.6px;
           color: var(--text);
           background: #fff;
           outline: none;
@@ -1242,7 +1242,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           gap: 18px;
         }
         .drm-form-group { margin-bottom: 14px; }
-        .drm-form-group label { display: block; font-size: 12.5px; font-weight: 700; color: #334155; margin-bottom: 6px; }
+        .drm-form-group label { display: block; font-size: 14.0px; font-weight: 700; color: #334155; margin-bottom: 6px; }
         .drm-form-group input, .drm-form-group select, .drm-form-group textarea { width: 100%; }
         .drm-media-grid {
           display: grid;
@@ -1265,7 +1265,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
         }
         .drm-media-item .meta {
           padding: 10px;
-          font-size: 11.5px;
+          font-size: 12.9px;
           color: var(--muted);
         }
         .drm-modal-backdrop {
@@ -1296,7 +1296,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           color: #fff;
           padding: 14px 22px;
           border-radius: 10px;
-          font-size: 13.5px;
+          font-size: 15.1px;
           font-weight: 700;
           box-shadow: 0 10px 30px rgba(0,0,0,0.25);
           z-index: 200;
@@ -1327,14 +1327,14 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
             className={`drm-nav-item ${activeTab === 'overview' ? 'active' : ''}`}
             onClick={() => { setActiveTab('overview'); setSidebarOpen(false); }}
           >
-            📊 نظرة عامة وإحصائيات
+             نظرة عامة وإحصائيات
           </button>
 
           <button
             className={`drm-nav-item ${activeTab === 'leads' ? 'active' : ''}`}
             onClick={() => { setActiveTab('leads'); setSidebarOpen(false); }}
           >
-            📅 الحجوزات والعملاء (CRM)
+             الحجوزات والعملاء (CRM)
             <span className="count">{activeCrmLeads.length}</span>
           </button>
 
@@ -1342,7 +1342,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
             className={`drm-nav-item ${activeTab === 'messages' ? 'active' : ''}`}
             onClick={() => { setActiveTab('messages'); setSidebarOpen(false); }}
           >
-            💬 رسائل واستفسارات الموقع
+             رسائل واستفسارات الموقع
             <span className="count">{activeMessages.length}</span>
           </button>
 
@@ -1350,7 +1350,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
             className={`drm-nav-item ${activeTab === 'cars' ? 'active' : ''}`}
             onClick={() => { setActiveTab('cars'); setSidebarOpen(false); }}
           >
-            🚗 إدارة أسطول السيارات
+             إدارة أسطول السيارات
             <span className="count">{cars.length}</span>
           </button>
 
@@ -1358,7 +1358,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
             className={`drm-nav-item ${activeTab === 'pages' ? 'active' : ''}`}
             onClick={() => { setActiveTab('pages'); setSidebarOpen(false); }}
           >
-            🌐 الصفحات والـ SEO
+             الصفحات والـ SEO
             <span className="count">{seoPages.length}</span>
           </button>
 
@@ -1366,7 +1366,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
             className={`drm-nav-item ${activeTab === 'media' ? 'active' : ''}`}
             onClick={() => { setActiveTab('media'); setSidebarOpen(false); }}
           >
-            🖼️ مكتبة صور السيارات
+             مكتبة صور السيارات
             <span className="count">{allMediaItems.length}</span>
           </button>
 
@@ -1374,21 +1374,21 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
             className={`drm-nav-item ${activeTab === 'settings' ? 'active' : ''}`}
             onClick={() => { setActiveTab('settings'); setSidebarOpen(false); }}
           >
-            ⚙️ إعدادات المعرض والربط
+             إعدادات المعرض والربط
           </button>
 
           <button
             className={`drm-nav-item ${activeTab === 'logs' ? 'active' : ''}`}
             onClick={() => { setActiveTab('logs'); setSidebarOpen(false); }}
           >
-            🛡️ فريق العمل والسجل الأمني
+             فريق العمل والسجل الأمني
             <span className="count">{auditLogs.length}</span>
           </button>
         </nav>
 
         <div className="drm-sidebar-footer">
-          <div style={{ fontSize: '12px', color: '#a7f3d0', marginBottom: '6px' }}>
-            👤 متصل كـ: <strong>{currentAdmin.full_name || currentAdmin.username}</strong>
+          <div style={{ fontSize: '13.4px', color: '#a7f3d0', marginBottom: '6px' }}>
+             متصل كـ: <strong>{currentAdmin.full_name || currentAdmin.username}</strong>
           </div>
           <a
             href="/"
@@ -1397,13 +1397,13 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
               handleGoToSite('/');
             }}
           >
-            🌐 فتح الموقع الرئيسي (معاينة حية)
+             فتح الموقع الرئيسي (معاينة حية)
           </a>
           <button
             onClick={onLogout}
             style={{ color: '#fca5a5', marginTop: '4px' }}
           >
-            🚪 تسجيل الخروج الآمن
+             تسجيل الخروج الآمن
           </button>
         </div>
       </aside>
@@ -1418,7 +1418,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
               style={{ display: window.innerWidth <= 992 ? 'inline-flex' : 'none' }}
               onClick={() => setSidebarOpen(!sidebarOpen)}
             >
-              ☰ القائمة
+              القائمة
             </button>
             <h1>{tabTitles[activeTab]}</h1>
           </div>
@@ -1431,15 +1431,15 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                 gap: '6px',
                 padding: '6px 12px',
                 borderRadius: '50px',
-                fontSize: '12px',
+                fontSize: '13.4px',
                 fontWeight: 700,
                 background: cloudConnected ? '#dcfce7' : '#fee2e2',
                 color: cloudConnected ? '#166534' : '#991b1b',
               }}
             >
               {cloudConnected
-                ? `☁️ متصل بالسحابة (Zero Data Loss)${lastSyncTime ? ` • ${lastSyncTime}` : ''}`
-                : '⚠️ جاري إعادة الاتصال بالسحابة...'}
+                ? ` متصل بالسحابة (Zero Data Loss)${lastSyncTime ? ` • ${lastSyncTime}` : ''}`
+                : ' جاري إعادة الاتصال بالسحابة...'}
             </span>
 
             <button
@@ -1506,14 +1506,14 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
 
                 <div className="drm-kpi-card">
                   <div className="label">تقييم الفحص المعتمد والثقة</div>
-                  <div className="value">100 نقطة ★</div>
+                  <div className="value">100 نقطة </div>
                   <div className="sub">مفعل في محركات البحث وبيانات Schema</div>
                 </div>
               </div>
 
               <div className="drm-card">
                 <div className="drm-card-header">
-                  <h3>🔥 أحدث حجوزات المعاينة وطلبات التمويل والاستبدال</h3>
+                  <h3> أحدث حجوزات المعاينة وطلبات التمويل والاستبدال</h3>
                   <button
                     className="drm-btn drm-btn-outline drm-btn-sm"
                     onClick={() => setActiveTab('leads')}
@@ -1544,10 +1544,10 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                 padding: '3px 8px',
                                 borderRadius: '6px',
                                 fontWeight: 700,
-                                color: '#1b3b36',
+                                color: '#9a7226',
                               }}
                             >
-                              🔑 {l.inquiry_ref || `#${String(l.id).slice(0, 6)}`}
+                               {l.inquiry_ref || `#${String(l.id).slice(0, 6)}`}
                             </code>
                           </td>
                           <td>
@@ -1562,7 +1562,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                 fontWeight: 600,
                               }}
                             >
-                              📞 {l.customer_phone}
+                               {l.customer_phone}
                             </a>
                           </td>
                           <td>
@@ -1582,7 +1582,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                 l.inquiry_ref
                               )}
                             >
-                              💬 واتساب
+                               واتساب
                             </a>
                           </td>
                         </tr>
@@ -1601,7 +1601,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
 
               <div className="drm-card">
                 <div className="drm-card-header">
-                  <h3>🚗 السيارات الأكثر طلباً ومشاهدة في صالة العرض</h3>
+                  <h3> السيارات الأكثر طلباً ومشاهدة في صالة العرض</h3>
                   <button
                     className="drm-btn drm-btn-outline drm-btn-sm"
                     onClick={() => setActiveTab('cars')}
@@ -1635,7 +1635,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                           </td>
                           <td>
                             <span className="status-badge status-confirmed">
-                              🛡️ {c.inspection_score || '98%'}
+                               {c.inspection_score || '98%'}
                             </span>
                           </td>
                           <td>
@@ -1664,7 +1664,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                               }}
                               className="drm-btn drm-btn-outline drm-btn-sm"
                             >
-                              👁 معاينة السيارة
+                               معاينة السيارة
                             </a>
                           </td>
                         </tr>
@@ -1685,7 +1685,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
               <div
                 className="drm-card"
                 style={{
-                  background: 'linear-gradient(135deg, #1b3b36, #122824)',
+                  background: 'linear-gradient(135deg, #9a7226, #7d5c1c)',
                   color: '#fff',
                   border: 'none',
                   marginBottom: '20px',
@@ -1703,10 +1703,10 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                   }}
                 >
                   <div>
-                    <h3 style={{ color: '#d4a373', fontSize: '16px', marginBottom: '4px' }}>
-                      🔑 بوابة التحقق السريع من كود حجز العميل (Reference Code Verification)
+                    <h3 style={{ color: '#f3e2b8', fontSize: '17.9px', marginBottom: '4px' }}>
+                       بوابة التحقق السريع من كود حجز العميل (Reference Code Verification)
                     </h3>
-                    <p style={{ fontSize: '12.5px', color: '#cbd5e1', margin: 0 }}>
+                    <p style={{ fontSize: '14.0px', color: '#cbd5e1', margin: 0 }}>
                       أدخل الكود المرجعي الذي حصل عليه العميل عند الحجز (مثال: INQ-2026-XXXXXX) أو رقم هاتفه لتأكيد حضوره لصالة العرض فوراً.
                     </p>
                   </div>
@@ -1729,7 +1729,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                       className="drm-btn drm-btn-accent"
                       onClick={handleVerifyBookingKey}
                     >
-                      تحقق وتأكيد حضور العميل ✅
+                      تحقق وتأكيد حضور العميل 
                     </button>
                   </div>
                 </div>
@@ -1740,7 +1740,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                       background: verifyResult.ok
                         ? 'rgba(22, 163, 74, 0.28)'
                         : 'rgba(220, 38, 38, 0.35)',
-                      fontSize: '13px',
+                      fontSize: '14.6px',
                       borderTop: '1px solid rgba(255,255,255,0.1)',
                       fontWeight: 600,
                     }}
@@ -1753,7 +1753,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
               {/* Main CRM Table Card */}
               <div className="drm-card">
                 <div className="drm-card-header">
-                  <h3>📅 سجل حجوزات المعاينة، طلبات التقسيط، واستبدال السيارات (CRM)</h3>
+                  <h3> سجل حجوزات المعاينة، طلبات التقسيط، واستبدال السيارات (CRM)</h3>
                   <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                     <input
                       type="text"
@@ -1774,7 +1774,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                       <option value="negotiating">معاينة مؤكدة (Confirmed)</option>
                       <option value="won">تم البيع والتعاقد (Closed Won)</option>
                       <option value="cancelled">ملغي (Cancelled)</option>
-                      <option value="archived">🗑️ السجلات المحذوفة / الأرشيف</option>
+                      <option value="archived"> السجلات المحذوفة / الأرشيف</option>
                     </select>
                     <select
                       value={leadPriorityFilter}
@@ -1782,8 +1782,8 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                       className="drm-select"
                     >
                       <option value="">جميع الأولويات</option>
-                      <option value="vip">⭐ عميل VIP / جاد جداً</option>
-                      <option value="urgent">🚨 عاجل (شراء فوري)</option>
+                      <option value="vip">عميل VIP / جاد جداً</option>
+                      <option value="urgent"> عاجل (شراء فوري)</option>
                       <option value="normal">عادي</option>
                     </select>
                     <select
@@ -1807,7 +1807,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                       className="drm-btn drm-btn-outline drm-btn-sm"
                       onClick={handleExportCsv}
                     >
-                      📥 تصدير لملف Excel (CSV)
+                       تصدير لملف Excel (CSV)
                     </button>
                   </div>
                 </div>
@@ -1855,44 +1855,44 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                     padding: '2px 6px',
                                     borderRadius: '6px',
                                     fontWeight: 700,
-                                    color: '#1b3b36',
+                                    color: '#9a7226',
                                   }}
                                 >
-                                  🔑 {l.inquiry_ref || 'INQ-2026'}
+                                   {l.inquiry_ref || 'INQ-2026'}
                                 </code>
                               </div>
                               {d.verified && (
                                 <div
                                   style={{
                                     marginTop: '3px',
-                                    fontSize: '11px',
+                                    fontSize: '12.3px',
                                     color: '#16a34a',
                                     fontWeight: 700,
                                   }}
                                 >
-                                  ✅ تم تأكيد الحضور للمعرض
+                                   تم تأكيد الحضور للمعرض
                                 </div>
                               )}
                               <span
                                 style={{
                                   display: 'block',
                                   marginTop: '3px',
-                                  fontSize: '11px',
+                                  fontSize: '12.3px',
                                   color: '#64748b',
                                 }}
                               >
-                                📅 {new Date(l.created_at).toLocaleDateString('ar-EG')}
+                                 {new Date(l.created_at).toLocaleDateString('ar-EG')}
                               </span>
                             </td>
 
                             {/* 2. Customer Name & Badges */}
                             <td>
-                              <strong style={{ fontSize: '14.5px', color: 'var(--primary)' }}>
+                              <strong style={{ fontSize: '16.2px', color: 'var(--primary)' }}>
                                 {l.customer_name}
                               </strong>
                               {l.customer_city && (
-                                <small style={{ display: 'block', color: '#64748b', fontSize: '11px' }}>
-                                  📍 {l.customer_city}
+                                <small style={{ display: 'block', color: '#64748b', fontSize: '12.3px' }}>
+                                   {l.customer_city}
                                 </small>
                               )}
                               <div style={{ marginTop: '4px', display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
@@ -1901,7 +1901,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                     className="status-badge"
                                     style={{ background: '#fef3c7', color: '#92400e' }}
                                   >
-                                    ⭐ VIP
+                                    VIP
                                   </span>
                                 )}
                                 {d.priority === 'urgent' && (
@@ -1909,14 +1909,14 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                     className="status-badge"
                                     style={{ background: '#fee2e2', color: '#991b1b' }}
                                   >
-                                    🚨 عاجل
+                                     عاجل
                                   </span>
                                 )}
                                 {isBlocked && (
-                                  <span className="status-badge status-cancelled">🚫 رقم محظور</span>
+                                  <span className="status-badge status-cancelled"> رقم محظور</span>
                                 )}
                                 {isArchived && (
-                                  <span className="status-badge status-cancelled">🗑️ مؤرشف</span>
+                                  <span className="status-badge status-cancelled"> مؤرشف</span>
                                 )}
                               </div>
                             </td>
@@ -1932,16 +1932,16 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                     fontWeight: 700,
                                   }}
                                 >
-                                  📞 {l.customer_phone}
+                                   {l.customer_phone}
                                 </a>
                               </div>
                               {l.customer_email && (
-                                <div style={{ fontSize: '11.5px', color: '#64748b' }}>
+                                <div style={{ fontSize: '12.9px', color: '#64748b' }}>
                                   <a
                                     href={`mailto:${l.customer_email}`}
                                     style={{ color: 'inherit', textDecoration: 'none' }}
                                   >
-                                    ✉️ {l.customer_email}
+                                     {l.customer_email}
                                   </a>
                                 </div>
                               )}
@@ -1950,34 +1950,34 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                             {/* 4. Car & Automotive Dossier */}
                             <td>
                               <div style={{ fontWeight: 700, color: 'var(--primary)' }}>
-                                🚗 {carTitle}
+                                 {carTitle}
                               </div>
                               <div
                                 style={{
                                   marginTop: '4px',
-                                  fontSize: '11.5px',
+                                  fontSize: '12.9px',
                                   color: '#334155',
                                 }}
                               >
-                                💳 نوع الطلب:{' '}
+                                 نوع الطلب:{' '}
                                 <strong>{formatInquiryTypeLabel(l.inquiry_type)}</strong>
                               </div>
                               {d.financeInfo && (
                                 <div
                                   style={{
                                     marginTop: '3px',
-                                    fontSize: '11px',
+                                    fontSize: '12.3px',
                                     color: '#b45309',
                                     fontWeight: 600,
                                   }}
                                 >
-                                  🔄 تمويل/استبدال: {d.financeInfo}
+                                   تمويل/استبدال: {d.financeInfo}
                                 </div>
                               )}
                             </td>
 
                             {/* 5. Message */}
-                            <td style={{ maxWidth: '230px', wordBreak: 'break-word', fontSize: '12.5px' }}>
+                            <td style={{ maxWidth: '230px', wordBreak: 'break-word', fontSize: '14.0px' }}>
                               {l.message || 'طلب معاينة وتواصل مباشر'}
                             </td>
 
@@ -1986,7 +1986,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                               <div style={{ display: 'flex', gap: '4px', marginBottom: '5px' }}>
                                 <select
                                   className="drm-select"
-                                  style={{ flex: 1, fontSize: '12px', padding: '6px 8px' }}
+                                  style={{ flex: 1, fontSize: '13.4px', padding: '6px 8px' }}
                                   value={d.status}
                                   onChange={(e) =>
                                     handleDraftChange(l.id, 'status', e.target.value)
@@ -1995,20 +1995,20 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                   <option value="new">جديد (New)</option>
                                   <option value="contacted">تم التواصل</option>
                                   <option value="negotiating">معاينة مؤكدة</option>
-                                  <option value="won">تم البيع والتعاقد ✅</option>
+                                  <option value="won">تم البيع والتعاقد </option>
                                   <option value="cancelled">ملغي</option>
                                 </select>
                                 <select
                                   className="drm-select"
-                                  style={{ width: '95px', fontSize: '12px', padding: '6px 8px' }}
+                                  style={{ width: '95px', fontSize: '13.4px', padding: '6px 8px' }}
                                   value={d.priority}
                                   onChange={(e) =>
                                     handleDraftChange(l.id, 'priority', e.target.value)
                                   }
                                 >
                                   <option value="normal">عادي</option>
-                                  <option value="vip">⭐ VIP</option>
-                                  <option value="urgent">🚨 عاجل</option>
+                                  <option value="vip">VIP</option>
+                                  <option value="urgent"> عاجل</option>
                                 </select>
                               </div>
                               <input
@@ -2022,7 +2022,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                 style={{
                                   width: '100%',
                                   marginBottom: '5px',
-                                  fontSize: '12px',
+                                  fontSize: '13.4px',
                                   padding: '6px 9px',
                                 }}
                               />
@@ -2034,7 +2034,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                   handleDraftChange(l.id, 'cleanNotes', e.target.value)
                                 }
                                 placeholder="ملاحظات مستشار المبيعات / الاستقبال..."
-                                style={{ width: '100%', fontSize: '12px', padding: '6px 9px' }}
+                                style={{ width: '100%', fontSize: '13.4px', padding: '6px 9px' }}
                               />
                             </td>
 
@@ -2053,7 +2053,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                     className="drm-btn drm-btn-outline drm-btn-sm"
                                     onClick={() => handleArchiveOrRestoreLead(l, false)}
                                   >
-                                    ♻️ استعادة للـ CRM
+                                     استعادة للـ CRM
                                   </button>
                                 ) : (
                                   <>
@@ -2061,7 +2061,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                       className="drm-btn drm-btn-primary drm-btn-sm"
                                       onClick={() => handleSaveLeadRow(l)}
                                     >
-                                      💾 حفظ
+                                       حفظ
                                     </button>
                                     {l.customer_phone && (
                                       <a
@@ -2075,7 +2075,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                           l.inquiry_ref
                                         )}
                                       >
-                                        💬 واتساب
+                                         واتساب
                                       </a>
                                     )}
                                     {normPh && (
@@ -2083,14 +2083,14 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                         className="drm-btn drm-btn-outline drm-btn-sm"
                                         onClick={() => handleToggleBlockPhone(normPh)}
                                       >
-                                        {isBlocked ? '✅ فك الحظر' : '🚫 حظر الرقم'}
+                                        {isBlocked ? ' فك الحظر' : ' حظر الرقم'}
                                       </button>
                                     )}
                                     <button
                                       className="drm-btn drm-btn-danger drm-btn-sm"
                                       onClick={() => handleArchiveOrRestoreLead(l, true)}
                                     >
-                                      🗑
+                                      حذف
                                     </button>
                                   </>
                                 )}
@@ -2120,8 +2120,8 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
             <div className="drm-card">
               <div className="drm-card-header">
                 <div>
-                  <h3>💬 صندوق رسائل واستفسارات زوار المعرض</h3>
-                  <p style={{ fontSize: '12.5px', color: '#64748b', marginTop: '4px' }}>
+                  <h3> صندوق رسائل واستفسارات زوار المعرض</h3>
+                  <p style={{ fontSize: '14.0px', color: '#64748b', marginTop: '4px' }}>
                     قسم مخصص للرد على رسائل واستفسارات العملاء مع إمكانية التواصل المباشر وتوثيق الرد وأرشفة الرسالة تلقائياً.
                   </p>
                 </div>
@@ -2142,7 +2142,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                     <option value="">صندوق الوارد النشط (Inbox)</option>
                     <option value="new">رسائل جديدة غير مقروءة (New)</option>
                     <option value="contacted">تم الرد عليها (Replied)</option>
-                    <option value="archived">📦 الرسائل المؤرشفة بعد الرد</option>
+                    <option value="archived"> الرسائل المؤرشفة بعد الرد</option>
                   </select>
                 </div>
               </div>
@@ -2177,7 +2177,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                               style={{
                                 display: 'block',
                                 marginTop: '4px',
-                                fontSize: '11.5px',
+                                fontSize: '12.9px',
                                 color: '#475569',
                                 fontWeight: 600,
                               }}
@@ -2188,16 +2188,16 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                               style={{
                                 display: 'block',
                                 marginTop: '3px',
-                                fontSize: '11px',
+                                fontSize: '12.3px',
                                 color: '#64748b',
                               }}
                             >
-                              📅 {new Date(l.created_at).toLocaleString('ar-EG')}
+                               {new Date(l.created_at).toLocaleString('ar-EG')}
                             </span>
                           </td>
 
                           <td>
-                            <strong style={{ fontSize: '14.5px', color: 'var(--primary)' }}>
+                            <strong style={{ fontSize: '16.2px', color: 'var(--primary)' }}>
                               {l.customer_name}
                             </strong>
                             <div style={{ marginTop: '6px' }}>
@@ -2206,14 +2206,14 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                   className="status-badge"
                                   style={{ background: '#dcfce7', color: '#166534' }}
                                 >
-                                  📦 مؤرشفة بعد الرد
+                                   مؤرشفة بعد الرد
                                 </span>
                               ) : l.status === 'contacted' || l.status === 'negotiating' ? (
                                 <span className="status-badge status-contacted">
-                                  ✅ تمت القراءة والرد
+                                   تمت القراءة والرد
                                 </span>
                               ) : (
-                                <span className="status-badge status-new">📩 رسالة جديدة</span>
+                                <span className="status-badge status-new"> رسالة جديدة</span>
                               )}
                             </div>
                           </td>
@@ -2227,7 +2227,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                   dir="ltr"
                                   style={{ justifyContent: 'center' }}
                                 >
-                                  📞 اتصال: {l.customer_phone}
+                                   اتصال: {l.customer_phone}
                                 </a>
                               )}
                               {l.customer_phone && (
@@ -2238,7 +2238,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                   href={waHref}
                                   style={{ justifyContent: 'center' }}
                                 >
-                                  💬 رد عبر واتساب
+                                   رد عبر واتساب
                                 </a>
                               )}
                             </div>
@@ -2251,7 +2251,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                 border: '1px solid #e2e8f0',
                                 borderRadius: '10px',
                                 padding: '10px 12px',
-                                fontSize: '13px',
+                                fontSize: '14.6px',
                                 lineHeight: 1.65,
                                 color: '#1e293b',
                               }}
@@ -2267,15 +2267,15 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                               <select
                                 className="drm-select"
-                                style={{ width: '100%', fontSize: '12px' }}
+                                style={{ width: '100%', fontSize: '13.4px' }}
                                 value={d.repliedVia}
                                 onChange={(e) =>
                                   handleDraftChange(l.id, 'repliedVia', e.target.value)
                                 }
                               >
-                                <option value="whatsapp">💬 تم الرد عبر واتساب</option>
-                                <option value="phone">📞 تم الرد هاتفياً</option>
-                                <option value="email">✉️ تم الرد عبر البريد الإلكتروني</option>
+                                <option value="whatsapp"> تم الرد عبر واتساب</option>
+                                <option value="phone"> تم الرد هاتفياً</option>
+                                <option value="email"> تم الرد عبر البريد الإلكتروني</option>
                               </select>
                               <input
                                 type="text"
@@ -2285,7 +2285,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                   handleDraftChange(l.id, 'cleanNotes', e.target.value)
                                 }
                                 placeholder="ملاحظة الرد (مثال: تم إرسال تفاصيل القسط)..."
-                                style={{ width: '100%', fontSize: '12px' }}
+                                style={{ width: '100%', fontSize: '13.4px' }}
                               />
                               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                                 {isArchived ? (
@@ -2293,22 +2293,22 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                     className="drm-btn drm-btn-outline drm-btn-sm"
                                     onClick={() => handleArchiveOrRestoreLead(l, false)}
                                   >
-                                    ♻️ استعادة لصندوق الوارد
+                                     استعادة لصندوق الوارد
                                   </button>
                                 ) : (
                                   <>
                                     <button
                                       className="drm-btn drm-btn-primary drm-btn-sm"
-                                      style={{ flex: 1, justifyContent: 'center', background: '#15803d' }}
+                                      style={{ flex: 1, justifyContent: 'center', background: '#7d5c1c' }}
                                       onClick={() => handleReplyAndArchiveMessage(l, true)}
                                     >
-                                      ✅ تم الرد وأرشفة الرسالة
+                                       تم الرد وأرشفة الرسالة
                                     </button>
                                     <button
                                       className="drm-btn drm-btn-outline drm-btn-sm"
                                       onClick={() => handleReplyAndArchiveMessage(l, false)}
                                     >
-                                      💾 حفظ فقط
+                                       حفظ فقط
                                     </button>
                                   </>
                                 )}
@@ -2338,8 +2338,8 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
             <div className="drm-card">
               <div className="drm-card-header">
                 <div>
-                  <h3>🚗 إدارة أسطول السيارات المعروضة (Showroom CMS)</h3>
-                  <p style={{ fontSize: '12.5px', color: '#64748b', marginTop: '4px' }}>
+                  <h3> إدارة أسطول السيارات المعروضة (Showroom CMS)</h3>
+                  <p style={{ fontSize: '14.0px', color: '#64748b', marginTop: '4px' }}>
                     إضافة وتعديل السيارات، الأسعار، تقارير الفحص 100 نقطة، وحالة التوفر بالمعرض مع تحديث فوري على الموقع.
                   </p>
                 </div>
@@ -2404,10 +2404,10 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                             />
                           </td>
                           <td>
-                            <strong style={{ fontSize: '14px', color: 'var(--primary)' }}>
+                            <strong style={{ fontSize: '15.7px', color: 'var(--primary)' }}>
                               {car.variant || `${car.make} ${car.model}`}
                             </strong>
-                            <div style={{ fontSize: '11.5px', color: '#64748b', marginTop: '2px' }}>
+                            <div style={{ fontSize: '12.9px', color: '#64748b', marginTop: '2px' }}>
                               موديل {car.year} • {car.body_type || 'سيدان فاخرة'} • {car.color || 'ميتاليك'}
                             </div>
                           </td>
@@ -2417,7 +2417,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                 background: '#f8fafc',
                                 padding: '3px 7px',
                                 borderRadius: '6px',
-                                fontSize: '11.5px',
+                                fontSize: '12.9px',
                                 color: '#334155',
                               }}
                             >
@@ -2425,7 +2425,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                             </code>
                           </td>
                           <td>
-                            <strong style={{ color: '#0f172a', fontSize: '14px' }}>
+                            <strong style={{ color: '#0f172a', fontSize: '15.7px' }}>
                               {Number(car.price).toLocaleString('ar-EG')} ج.م
                             </strong>
                           </td>
@@ -2438,7 +2438,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                           </td>
                           <td>
                             <span className="status-badge status-confirmed">
-                              🛡️ فحص {car.inspection_score || '98%'}
+                               فحص {car.inspection_score || '98%'}
                             </span>
                           </td>
                           <td>
@@ -2463,7 +2463,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                   className="status-badge"
                                   style={{ background: '#fef3c7', color: '#92400e' }}
                                 >
-                                  ⭐ مميزة
+                                  مميزة
                                 </span>
                               )}
                             </div>
@@ -2474,7 +2474,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                 className="drm-btn drm-btn-primary drm-btn-sm"
                                 onClick={() => openEditCarModal(car)}
                               >
-                                ✏️ تعديل
+                                 تعديل
                               </button>
                               <a
                                 href={carPath}
@@ -2484,13 +2484,13 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                 }}
                                 className="drm-btn drm-btn-outline drm-btn-sm"
                               >
-                                👁 معاينة
+                                 معاينة
                               </a>
                               <button
                                 className="drm-btn drm-btn-danger drm-btn-sm"
                                 onClick={() => handleDeleteCar(car)}
                               >
-                                🗑
+                                حذف
                               </button>
                             </div>
                           </td>
@@ -2509,7 +2509,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           {activeTab === 'pages' && (
             <div className="drm-card">
               <div className="drm-card-header">
-                <h3>🌐 إدارة صفحات الموقع وعناوين SEO الحية (بدون أي # في الروابط)</h3>
+                <h3> إدارة صفحات الموقع وعناوين SEO الحية (بدون أي # في الروابط)</h3>
                 <input
                   type="text"
                   placeholder="ابحث بالرابط أو العنوان..."
@@ -2553,7 +2553,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                 padding: '3px 8px',
                                 borderRadius: '6px',
                                 fontWeight: 700,
-                                color: '#1b3b36',
+                                color: '#9a7226',
                               }}
                             >
                               {p.path}
@@ -2624,10 +2624,10 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                     `تحديث إعدادات SEO للصفحة (${p.path})`,
                                     'seo'
                                   );
-                                  showToast('✅ تم تحديث بيانات الـ SEO للصفحة وتطبيقها حياً!');
+                                  showToast(' تم تحديث بيانات الـ SEO للصفحة وتطبيقها حياً!');
                                 }}
                               >
-                                💾 حفظ
+                                 حفظ
                               </button>
                               <a
                                 href={p.path}
@@ -2637,7 +2637,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                 }}
                                 className="drm-btn drm-btn-outline drm-btn-sm"
                               >
-                                👁
+                                معاينة
                               </a>
                             </div>
                           </td>
@@ -2655,7 +2655,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           {activeTab === 'media' && (
             <div className="drm-card">
               <div className="drm-card-header">
-                <h3>🖼️ مكتبة صور السيارات والوسائط</h3>
+                <h3> مكتبة صور السيارات والوسائط</h3>
                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
                   <input
                     type="text"
@@ -2692,10 +2692,10 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                       }
                       setNewMediaUrl('');
                       setNewMediaTitle('');
-                      showToast('⬆️ تمت إضافة الصورة إلى مكتبة وسائط المعرض!');
+                      showToast(' تمت إضافة الصورة إلى مكتبة وسائط المعرض!');
                     }}
                   >
-                    ⬆️ إضافة للمكتبة
+                     إضافة للمكتبة
                   </button>
                 </div>
               </div>
@@ -2729,10 +2729,10 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                           style={{ width: '100%', marginTop: '6px', justifyContent: 'center' }}
                           onClick={() => {
                             navigator.clipboard.writeText(m.url);
-                            showToast('📋 تم نسخ رابط الصورة بنجاح!');
+                            showToast(' تم نسخ رابط الصورة بنجاح!');
                           }}
                         >
-                          📋 نسخ الرابط
+                           نسخ الرابط
                         </button>
                       </div>
                     </div>
@@ -2748,7 +2748,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           {activeTab === 'settings' && (
             <div className="drm-card">
               <div className="drm-card-header">
-                <h3>⚙️ إعدادات المعرض، بيانات التواصل، وشريط العروض الترويجية</h3>
+                <h3> إعدادات المعرض، بيانات التواصل، وشريط العروض الترويجية</h3>
                 <button
                   className="drm-btn drm-btn-primary"
                   onClick={() => {
@@ -2761,10 +2761,10 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                       // ignore
                     }
                     appendAuditLog('تحديث إعدادات المعرض وشريط الإعلانات العلوي', 'settings');
-                    showToast('✅ تم حفظ إعدادات المعرض وتطبيقها حياً على الموقع!');
+                    showToast(' تم حفظ إعدادات المعرض وتطبيقها حياً على الموقع!');
                   }}
                 >
-                  💾 حفظ كافة الإعدادات وتطبيقها حياً
+                   حفظ كافة الإعدادات وتطبيقها حياً
                 </button>
               </div>
               <div className="drm-card-body">
@@ -2861,7 +2861,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                 >
                   <div className="drm-form-group" style={{ marginBottom: '12px' }}>
                     <label>
-                      📢 نص شريط الإعلانات والعروض العلوية (Announcement Bar - اتركه فارغاً لإخفائه)
+                       نص شريط الإعلانات والعروض العلوية (Announcement Bar - اتركه فارغاً لإخفائه)
                     </label>
                     <input
                       type="text"
@@ -2875,7 +2875,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                   </div>
                   <div className="drm-form-grid" style={{ marginBottom: '10px' }}>
                     <div className="drm-form-group" style={{ marginBottom: 0 }}>
-                      <label>🕒 تاريخ ووقت بدء ظهور العرض (اختياري)</label>
+                      <label> تاريخ ووقت بدء ظهور العرض (اختياري)</label>
                       <input
                         type="datetime-local"
                         className="drm-input"
@@ -2900,14 +2900,14 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: '12px', color: 'var(--muted)', fontWeight: 600 }}>
-                      ⚡ ضبط مدة سريعة من الآن:
+                    <span style={{ fontSize: '13.4px', color: 'var(--muted)', fontWeight: 600 }}>
+                       ضبط مدة سريعة من الآن:
                     </span>
                     {[
-                      { label: '⏱️ يوم واحد (24 ساعة)', hours: 24 },
-                      { label: '⏱️ 3 أيام', hours: 72 },
-                      { label: '⏱️ أسبوع (7 أيام)', hours: 168 },
-                      { label: '⏱️ شهر (30 يوم)', hours: 720 },
+                      { label: '⏱ يوم واحد (24 ساعة)', hours: 24 },
+                      { label: '⏱ 3 أيام', hours: 72 },
+                      { label: '⏱ أسبوع (7 أيام)', hours: 168 },
+                      { label: '⏱ شهر (30 يوم)', hours: 720 },
                     ].map((preset) => (
                       <button
                         key={preset.hours}
@@ -2921,7 +2921,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                             announcement_start: now.toISOString().slice(0, 16),
                             announcement_end: end.toISOString().slice(0, 16),
                           });
-                          showToast('⏱️ تم ضبط مؤقت العرض — اضغط حفظ الإعدادات للتطبيق');
+                          showToast('⏱ تم ضبط مؤقت العرض — اضغط حفظ الإعدادات للتطبيق');
                         }}
                       >
                         {preset.label}
@@ -2942,8 +2942,8 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
               <div className="drm-card" style={{ marginBottom: '24px' }}>
                 <div className="drm-card-header">
                   <div>
-                    <h3>👥 إدارة حسابات وصلاحيات فريق عمل المعرض (RBAC)</h3>
-                    <p style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '4px' }}>
+                    <h3> إدارة حسابات وصلاحيات فريق عمل المعرض (RBAC)</h3>
+                    <p style={{ fontSize: '13.4px', color: 'var(--muted)', marginTop: '4px' }}>
                       نظام الصلاحيات المتقدم: الإدارة العليا، مدير المبيعات، ومستشاري المبيعات والاستقبال.
                     </p>
                   </div>
@@ -2985,7 +2985,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                           <td>
                             {u.role_key === 'developer' ? (
                               <small style={{ color: '#64748b' }}>
-                                💻 حساب المطور الأساسي (محمي)
+                                 حساب المطور الأساسي (محمي)
                               </small>
                             ) : (
                               <button
@@ -2997,7 +2997,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                   showToast('تم حذف حساب الموظف');
                                 }}
                               >
-                                🗑 حذف
+                                 حذف
                               </button>
                             )}
                           </td>
@@ -3016,9 +3016,9 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                 <div className="drm-card-header" style={{ background: '#fef2f2' }}>
                   <div>
                     <h3 style={{ color: '#991b1b' }}>
-                      🗄️ أرشيف السجلات المحذوفة (سلة المحذوفات الأمنية - للاسترجاع)
+                       أرشيف السجلات المحذوفة (سلة المحذوفات الأمنية - للاسترجاع)
                     </h3>
-                    <p style={{ fontSize: '12px', color: '#7f1d1d', marginTop: '4px' }}>
+                    <p style={{ fontSize: '13.4px', color: '#7f1d1d', marginTop: '4px' }}>
                       جميع الحجوزات التي تم حذفها من الـ CRM تُحفظ هنا تلقائياً لمنع ضياع أي بيانات، ويمكن استعادتها بضغطة زر.
                     </p>
                   </div>
@@ -3040,7 +3040,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                         <tr key={l.id} style={{ background: '#fffafa' }}>
                           <td>
                             <strong>#{String(l.id).slice(0, 6)}</strong>{' '}
-                            <code style={{ fontSize: '11px' }}>[{l.inquiry_ref}]</code>
+                            <code style={{ fontSize: '12.3px' }}>[{l.inquiry_ref}]</code>
                           </td>
                           <td>
                             <strong>{l.customer_name}</strong>
@@ -3053,7 +3053,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                               className="drm-btn drm-btn-primary drm-btn-sm"
                               onClick={() => handleArchiveOrRestoreLead(l, false)}
                             >
-                              ♻️ استعادة للـ CRM
+                               استعادة للـ CRM
                             </button>
                           </td>
                         </tr>
@@ -3074,8 +3074,8 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
               <div className="drm-card">
                 <div className="drm-card-header">
                   <div>
-                    <h3>🛡️ سجل التدقيق الأمني والعمليات (Security & Activity Audit Log)</h3>
-                    <p style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '4px' }}>
+                    <h3> سجل التدقيق الأمني والعمليات (Security & Activity Audit Log)</h3>
+                    <p style={{ fontSize: '13.4px', color: 'var(--muted)', marginTop: '4px' }}>
                       سجل غير قابل للمسح يوثق عمليات الدخول، إضافة وتعديل السيارات، وتحديث ملفات العملاء.
                     </p>
                   </div>
@@ -3094,10 +3094,10 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                       className="drm-select"
                     >
                       <option value="">كل العمليات ({auditLogs.length})</option>
-                      <option value="lead_created">➕ إضافة حجز جديد</option>
-                      <option value="lead_updated">✏️ تحديث ملف عميل</option>
-                      <option value="lead_archived">🗑️ حذف / أرشفة سجل</option>
-                      <option value="car">🚗 تعديل أسطول السيارات</option>
+                      <option value="lead_created"> إضافة حجز جديد</option>
+                      <option value="lead_updated"> تحديث ملف عميل</option>
+                      <option value="lead_archived"> حذف / أرشفة سجل</option>
+                      <option value="car"> تعديل أسطول السيارات</option>
                     </select>
                   </div>
                 </div>
@@ -3154,7 +3154,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
             <h3 style={{ marginBottom: '16px', color: 'var(--primary)', fontWeight: 800 }}>
               {editingCar
                 ? `تعديل بيانات السيارة: ${editingCar.make} ${editingCar.model}`
-                : '🚗 إضافة سيارة جديدة لأسطول المعرض'}
+                : ' إضافة سيارة جديدة لأسطول المعرض'}
             </h3>
             <form onSubmit={handleSaveCar}>
               <div className="drm-form-grid">
@@ -3285,7 +3285,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                   إلغاء
                 </button>
                 <button type="submit" className="drm-btn drm-btn-primary">
-                  💾 حفظ ونشر السيارة
+                   حفظ ونشر السيارة
                 </button>
               </div>
             </form>
@@ -3300,7 +3300,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
         <div className="drm-modal-backdrop" onClick={() => setLeadModalOpen(false)}>
           <div className="drm-modal" onClick={(e) => e.stopPropagation()}>
             <h3 style={{ marginBottom: '16px', color: 'var(--primary)', fontWeight: 800 }}>
-              📅 تسجيل حجز معاينة أو طلب عميل جديد (CRM)
+               تسجيل حجز معاينة أو طلب عميل جديد (CRM)
             </h3>
             <form onSubmit={handleCreateManualLead}>
               <div className="drm-form-grid">
@@ -3372,8 +3372,8 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                     }
                   >
                     <option value="normal">عادي (Normal)</option>
-                    <option value="vip">⭐ عميل VIP / جاد جداً</option>
-                    <option value="urgent">🚨 عاجل (شراء فوري)</option>
+                    <option value="vip">عميل VIP / جاد جداً</option>
+                    <option value="urgent"> عاجل (شراء فوري)</option>
                   </select>
                 </div>
                 <div className="drm-form-group">
@@ -3434,7 +3434,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                   إلغاء
                 </button>
                 <button type="submit" className="drm-btn drm-btn-primary">
-                  💾 حفظ الحجز وتوليد الكود
+                   حفظ الحجز وتوليد الكود
                 </button>
               </div>
             </form>
@@ -3449,7 +3449,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
         <div className="drm-modal-backdrop" onClick={() => setUserModalOpen(false)}>
           <div className="drm-modal" onClick={(e) => e.stopPropagation()}>
             <h3 style={{ marginBottom: '16px', color: 'var(--primary)', fontWeight: 800 }}>
-              👤 إضافة حساب موظف جديد لفريق المعرض
+               إضافة حساب موظف جديد لفريق المعرض
             </h3>
             <div className="drm-form-grid">
               <div className="drm-form-group">
@@ -3485,13 +3485,13 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                   }
                 >
                   <option value="مستشار مبيعات واستقبال (CRM)">
-                    📞 مستشار مبيعات واستقبال (CRM)
+                     مستشار مبيعات واستقبال (CRM)
                   </option>
                   <option value="مدير أسطول السيارات والمحتوى">
-                    🚗 مدير أسطول السيارات والمحتوى
+                     مدير أسطول السيارات والمحتوى
                   </option>
                   <option value="مدير المعرض (Full Admin)">
-                    🛡️ مدير المعرض (Full Admin)
+                     مدير المعرض (Full Admin)
                   </option>
                 </select>
               </div>
@@ -3535,10 +3535,10 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                   ]);
                   setUserModalOpen(false);
                   appendAuditLog(`إضافة حساب موظف جديد (${newUserForm.username})`, 'security');
-                  showToast('✅ تم إنشاء حساب الموظف بنجاح!');
+                  showToast(' تم إنشاء حساب الموظف بنجاح!');
                 }}
               >
-                💾 إنشاء الحساب
+                 إنشاء الحساب
               </button>
             </div>
           </div>

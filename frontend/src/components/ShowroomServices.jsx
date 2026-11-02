@@ -38,7 +38,7 @@ export default function ShowroomServices() {
   ];
 
   return (
-    <section id="services" className="py-24 bg-[#0A0C0B] border-t border-white/5 relative">
+    <section id="services" className="py-24 bg-[#faf8f3] border-t border-black/10 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -47,11 +47,11 @@ export default function ShowroomServices() {
             <span className="gx-kicker gx-kicker-orange mb-3">
               خدمات المعرض الفاخرة • The Showroom Services
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F1EEE6] tracking-tight mt-2">
-              خدمات متكاملة تليق <span className="text-[#C9B37E]">بأصحاب الذوق الرفيع.</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1f2937] tracking-tight mt-2">
+              خدمات متكاملة تليق <span className="text-[#9a7226]">بأصحاب الذوق الرفيع.</span>
             </h2>
           </div>
-          <p className="text-sm text-[#B7B9B0] max-w-md leading-relaxed">
+          <p className="text-sm text-[#4b5563] max-w-md leading-relaxed">
             من فحص السيارة وحتى استلام المفتاح ونقل الملكية، نضمن لك تجربة شراء راقية تتسم بأعلى درجات الراحة والمصداقية.
           </p>
         </div>
@@ -63,31 +63,31 @@ export default function ShowroomServices() {
             return (
               <div
                 key={idx}
-                className="luxury-card rounded-2xl p-8 border border-white/8 hover:border-[#FF4B16]/40 transition-all duration-300 relative group"
+                className="luxury-card rounded-2xl p-8 border border-black/10 hover:border-[#9a7226]/40 transition-all duration-300 relative group"
               >
                 <div className="flex items-start justify-between mb-6">
-                  <div className="w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#FF4B16] group-hover:scale-110 group-hover:bg-[#FF4B16]/10 transition-all">
+                  <div className="w-14 h-14 rounded-xl bg-black/5 border border-black/10 flex items-center justify-center text-[#9a7226] group-hover:scale-110 group-hover:bg-[#9a7226]/10 transition-all">
                     <Icon className="w-7 h-7" />
                   </div>
-                  <span className="font-mono text-3xl font-black text-white/10 group-hover:text-[#FF4B16]/30 transition-colors">
+                  <span className="font-mono text-3xl font-black text-[#1f2937] group-hover:text-[#9a7226]/30 transition-colors">
                     {srv.number}
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-[#F1EEE6] mb-1 group-hover:text-[#FF4B16] transition-colors">
+                <h3 className="text-xl font-bold text-[#1f2937] mb-1 group-hover:text-[#9a7226] transition-colors">
                   {srv.title}
                 </h3>
-                <p className="text-xs font-medium text-[#C9B37E] mb-3">
+                <p className="text-xs font-medium text-[#9a7226] mb-3">
                   {srv.subtitle}
                 </p>
-                <p className="text-xs text-[#9EA199] leading-relaxed mb-6">
+                <p className="text-xs text-[#6b7280] leading-relaxed mb-6">
                   {srv.desc}
                 </p>
 
-                <div className="space-y-2 pt-4 border-t border-white/5">
+                <div className="space-y-2 pt-4 border-t border-black/10">
                   {srv.points.map((pt, pIdx) => (
-                    <div key={pIdx} className="flex items-center gap-2 text-xs text-[#B7B9B0]">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                    <div key={pIdx} className="flex items-center gap-2 text-xs text-[#4b5563]">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#9a7226] flex-shrink-0" />
                       <span>{pt}</span>
                     </div>
                   ))}

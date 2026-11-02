@@ -10,7 +10,7 @@ export default function WhyChooseUs() {
   ];
 
   return (
-    <section id="about" className="py-24 bg-gradient-to-b from-[#0A0C0B] via-[#0E1110] to-[#0A0C0B] border-t border-white/5 relative overflow-hidden">
+    <section id="about" className="py-24 bg-gradient-to-b from-[#faf8f3] via-[#f4f0e6] to-[#faf8f3] border-t border-black/10 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main Content Grid */}
@@ -21,14 +21,14 @@ export default function WhyChooseUs() {
             <span className="gx-kicker gx-kicker-orange mb-3">
               منذ 2008 • الريادة والمصداقية
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F1EEE6] tracking-tight mt-2 mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1f2937] tracking-tight mt-2 mb-6">
               سوق أوتو محمد نبيل.<br />
-              <span className="text-[#C9B37E]">حيث تلتقي الفخامة بالثقة.</span>
+              <span className="text-[#9a7226]">حيث تلتقي الفخامة بالثقة.</span>
             </h2>
 
-            <div className="space-y-4 text-sm text-[#B7B9B0] leading-relaxed font-light">
+            <div className="space-y-4 text-sm text-[#4b5563] leading-relaxed font-light">
               <p>
-                على مدار أكثر من ثمانية عشر عاماً، بنى معرض <strong className="text-[#F1EEE6]">أوتو محمد نبيل</strong> اسماً راسخاً في سوق السيارات المصري كوجهة أولى للباحثين عن السيارات الفاخرة وكسر الزيرو المضمونة بالكامل.
+                على مدار أكثر من ثمانية عشر عاماً، بنى معرض <strong className="text-[#1f2937]">أوتو محمد نبيل</strong> اسماً راسخاً في سوق السيارات المصري كوجهة أولى للباحثين عن السيارات الفاخرة وكسر الزيرو المضمونة بالكامل.
               </p>
               <p>
                 نحن لا نبيع مجرد سيارات، بل نختار كل قطعة بعناية استثنائية ونخضعها لفحص ميكانيكي وكهربائي وهيكلي معتمد، لنمنح عملاءنا راحة البال التامة وتجربة قيادة تليق بتطلعاتهم.
@@ -36,21 +36,21 @@ export default function WhyChooseUs() {
             </div>
 
             {/* Checkpoints */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-8 pt-6 border-t border-white/10 text-xs">
-              <div className="flex items-center gap-2 text-[#F1EEE6]">
-                <CheckCircle2 className="w-4 h-4 text-[#FF4B16] flex-shrink-0" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-8 pt-6 border-t border-black/10 text-xs">
+              <div className="flex items-center gap-2 text-[#1f2937]">
+                <CheckCircle2 className="w-4 h-4 text-[#9a7226] flex-shrink-0" />
                 <span>تقارير فحص فنية معتمدة وموثقة</span>
               </div>
-              <div className="flex items-center gap-2 text-[#F1EEE6]">
-                <CheckCircle2 className="w-4 h-4 text-[#FF4B16] flex-shrink-0" />
+              <div className="flex items-center gap-2 text-[#1f2937]">
+                <CheckCircle2 className="w-4 h-4 text-[#9a7226] flex-shrink-0" />
                 <span>استبدال فوري بأعلى تقييم سوقي</span>
               </div>
-              <div className="flex items-center gap-2 text-[#F1EEE6]">
-                <CheckCircle2 className="w-4 h-4 text-[#FF4B16] flex-shrink-0" />
+              <div className="flex items-center gap-2 text-[#1f2937]">
+                <CheckCircle2 className="w-4 h-4 text-[#9a7226] flex-shrink-0" />
                 <span>تعاقد مباشر مع أكبر البنوك المصرية</span>
               </div>
-              <div className="flex items-center gap-2 text-[#F1EEE6]">
-                <CheckCircle2 className="w-4 h-4 text-[#FF4B16] flex-shrink-0" />
+              <div className="flex items-center gap-2 text-[#1f2937]">
+                <CheckCircle2 className="w-4 h-4 text-[#9a7226] flex-shrink-0" />
                 <span>ضمان سلامة الهيكل والمحرك والفتيس</span>
               </div>
             </div>
@@ -61,15 +61,15 @@ export default function WhyChooseUs() {
             {stats.map((s, idx) => (
               <div
                 key={idx}
-                className="luxury-card rounded-2xl p-6 sm:p-8 border border-white/8 text-center flex flex-col justify-center items-center hover:border-[#FF4B16]/30 transition-colors"
+                className="luxury-card rounded-2xl p-6 sm:p-8 border border-black/10 text-center flex flex-col justify-center items-center hover:border-[#9a7226]/30 transition-colors"
               >
-                <span className="font-mono text-3xl sm:text-4xl font-black text-[#FF4B16] mb-1">
+                <span className="font-mono text-3xl sm:text-4xl font-black text-[#9a7226] mb-1">
                   {s.value}
                 </span>
-                <h4 className="text-sm font-bold text-[#F1EEE6] mb-1">
+                <h4 className="text-sm font-bold text-[#1f2937] mb-1">
                   {s.label}
                 </h4>
-                <p className="text-[11px] text-[#9EA199] leading-relaxed">
+                <p className="text-[0.6875rem] text-[#6b7280] leading-relaxed">
                   {s.desc}
                 </p>
               </div>

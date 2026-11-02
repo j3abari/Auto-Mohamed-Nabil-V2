@@ -13,7 +13,7 @@ export default function InspectionShowcase({ onOpenInquiry }) {
   ];
 
   return (
-    <section id="inspection" className="py-24 bg-[#0A0C0B] border-t border-white/5 relative">
+    <section id="inspection" className="py-24 bg-[#faf8f3] border-t border-black/10 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
@@ -21,10 +21,10 @@ export default function InspectionShowcase({ onOpenInquiry }) {
           <span className="gx-kicker gx-kicker-orange mb-3">
             معايير الجودة والضمان • Inspection Standards
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F1EEE6] tracking-tight mt-2">
-            فحص فني معتمد <span className="text-emerald-400">100 نقطة</span> لكل سيارة.
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1f2937] tracking-tight mt-2">
+            فحص فني معتمد <span className="text-[#9a7226]">100 نقطة</span> لكل سيارة.
           </h2>
-          <p className="text-sm text-[#B7B9B0] mt-3 leading-relaxed font-light">
+          <p className="text-sm text-[#4b5563] mt-3 leading-relaxed font-light">
             في سوق أوتو محمد نبيل، لا تدخل صالة العرض أي سيارة إلا بعد اجتياز فحص فني صارم يشمل كافة التفاصيل الدقيقة. نضمن لك سيارة بحالة الزيرو وفابريكا بالكامل.
           </p>
         </div>
@@ -34,15 +34,15 @@ export default function InspectionShowcase({ onOpenInquiry }) {
           {points.map((pt, i) => (
             <div
               key={i}
-              className="luxury-card p-6 rounded-2xl border border-white/8 hover:border-emerald-500/30 transition-all duration-300"
+              className="luxury-card p-6 rounded-2xl border border-black/10 hover:border-[#9a7226]/30 transition-all duration-300"
             >
               <div className="flex items-start gap-3.5">
-                <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center shrink-0 text-emerald-400 mt-0.5">
+                <div className="w-9 h-9 rounded-xl bg-[#9a7226]/10 border border-[#9a7226]/25 flex items-center justify-center shrink-0 text-[#9a7226] mt-0.5">
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-[#F1EEE6] mb-1.5">{pt.title}</h4>
-                  <p className="text-xs text-[#9EA199] leading-relaxed">{pt.desc}</p>
+                  <h4 className="text-sm font-bold text-[#1f2937] mb-1.5">{pt.title}</h4>
+                  <p className="text-xs text-[#6b7280] leading-relaxed">{pt.desc}</p>
                 </div>
               </div>
             </div>
@@ -50,14 +50,14 @@ export default function InspectionShowcase({ onOpenInquiry }) {
         </div>
 
         {/* Certificate / Verification Banner */}
-        <div className="luxury-card p-6 sm:p-8 rounded-3xl border border-[#FF4B16]/30 flex flex-wrap items-center justify-between gap-6 bg-gradient-to-r from-[#141715] via-[#161917] to-[#121413]">
+        <div className="luxury-card p-6 sm:p-8 rounded-3xl border border-[#9a7226]/30 flex flex-wrap items-center justify-between gap-6 bg-gradient-to-r from-[#ffffff] via-[#ffffff] to-[#ffffff]">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-[#FF4B16]/15 border border-[#FF4B16]/30 flex items-center justify-center text-[#FF4B16] shrink-0">
+            <div className="w-14 h-14 rounded-2xl bg-[#9a7226]/15 border border-[#9a7226]/30 flex items-center justify-center text-[#9a7226] shrink-0">
               <FileCheck className="w-7 h-7" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-[#F1EEE6]">تريد فحص سيارتك في أي مركز فني معتمد من اختيارك؟</h3>
-              <p className="text-xs sm:text-sm text-[#B7B9B0] mt-1">
+              <h3 className="text-lg font-bold text-[#1f2937]">تريد فحص سيارتك في أي مركز فني معتمد من اختيارك؟</h3>
+              <p className="text-xs sm:text-sm text-[#4b5563] mt-1">
                 نرحب بجميع الفنيين والمراكز المعتمدة التي تختارها للكشف الكامل على السيارة قبل إتمام التعاقد لراحتك التامة.
               </p>
             </div>
@@ -70,7 +70,7 @@ export default function InspectionShowcase({ onOpenInquiry }) {
               window.history.pushState({}, '', '/viewing');
               window.dispatchEvent(new PopStateEvent('popstate'));
             }}
-            className="px-6 py-3 rounded-xl bg-[#FF4B16] hover:bg-[#E03E0F] text-white font-bold text-xs sm:text-sm shadow-md shadow-[#FF4B16]/25 transition-all whitespace-nowrap"
+            className="px-6 py-3 rounded-xl bg-[#9a7226] hover:bg-[#7d5c1c] text-white font-bold text-xs sm:text-sm shadow-md shadow-[#9a7226]/25 transition-all whitespace-nowrap"
           >
             تحديد موعد فحص ومعاينة
           </a>

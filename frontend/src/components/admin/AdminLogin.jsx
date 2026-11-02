@@ -41,7 +41,7 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
       dir="rtl"
       style={{
         fontFamily: "'Alexandria', 'Cairo', sans-serif",
-        background: 'linear-gradient(135deg, #0d1714 0%, #1b3b36 55%, #12211e 100%)',
+        background: 'linear-gradient(135deg, #7d5c1c 0%, #9a7226 55%, #9a7226 100%)',
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
@@ -65,11 +65,11 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
           style={{
             display: 'inline-block',
             background: '#fdf8f3',
-            color: '#b58350',
+            color: '#9a7226',
             border: '1px solid #f0e1d0',
             padding: '4px 14px',
             borderRadius: '50px',
-            fontSize: '12px',
+            fontSize: '13.4px',
             fontWeight: 700,
             marginBottom: '14px',
           }}
@@ -88,7 +88,7 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
               margin: '0 auto 14px',
               display: 'block',
               objectFit: 'cover',
-              border: '2px solid #d4a373',
+              border: '2px solid #f3e2b8',
               background: '#0A0C0B',
               padding: '2px',
             }}
@@ -97,8 +97,8 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
 
         <h1
           style={{
-            color: '#1b3b36',
-            fontSize: '21px',
+            color: '#9a7226',
+            fontSize: '23.5px',
             fontWeight: 800,
             marginBottom: '6px',
           }}
@@ -108,7 +108,7 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
         <p
           style={{
             color: '#64748b',
-            fontSize: '13px',
+            fontSize: '14.6px',
             marginBottom: '26px',
             lineHeight: 1.6,
           }}
@@ -123,12 +123,12 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
               color: '#b91c1c',
               padding: '12px',
               borderRadius: '10px',
-              fontSize: '13px',
+              fontSize: '14.6px',
               marginBottom: '18px',
               fontWeight: 600,
             }}
           >
-            ⚠️ {error}
+             {error}
           </div>
         )}
 
@@ -137,7 +137,7 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
             <label
               style={{
                 display: 'block',
-                fontSize: '13px',
+                fontSize: '14.6px',
                 fontWeight: 600,
                 color: '#334155',
                 marginBottom: '6px',
@@ -158,7 +158,7 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
                 border: '1.5px solid #e2e8f0',
                 borderRadius: '10px',
                 fontFamily: 'inherit',
-                fontSize: '14px',
+                fontSize: '15.7px',
                 color: '#0f172a',
                 background: '#ffffff',
                 outline: 'none',
@@ -171,7 +171,7 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
             <label
               style={{
                 display: 'block',
-                fontSize: '13px',
+                fontSize: '14.6px',
                 fontWeight: 600,
                 color: '#334155',
                 marginBottom: '6px',
@@ -192,7 +192,7 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
                 border: '1.5px solid #e2e8f0',
                 borderRadius: '10px',
                 fontFamily: 'inherit',
-                fontSize: '14px',
+                fontSize: '15.7px',
                 color: '#0f172a',
                 background: '#ffffff',
                 outline: 'none',
@@ -206,13 +206,13 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
             disabled={loading}
             style={{
               width: '100%',
-              background: '#1b3b36',
+              background: '#9a7226',
               color: '#ffffff',
               border: 'none',
               padding: '13px',
               borderRadius: '10px',
               fontFamily: 'inherit',
-              fontSize: '15px',
+              fontSize: '16.8px',
               fontWeight: 700,
               cursor: loading ? 'wait' : 'pointer',
               transition: '0.2s',
@@ -220,7 +220,7 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
               opacity: loading ? 0.75 : 1,
             }}
           >
-            {loading ? 'جاري التحقق من الصلاحيات...' : 'دخول آمن للوحة التحكم 🔒'}
+            {loading ? 'جاري التحقق من الصلاحيات...' : 'دخول آمن للوحة التحكم '}
           </button>
         </form>
 
@@ -231,13 +231,13 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
             border: '1px dashed #cbd5e1',
             padding: '12px',
             borderRadius: '10px',
-            fontSize: '12px',
+            fontSize: '13.4px',
             color: '#475569',
             textAlign: 'right',
             lineHeight: 1.6,
           }}
         >
-          🛡️ <strong>حماية قصوى (Brute-Force Protection):</strong> يتم حظر عنوان الـ IP تلقائياً لمدة 15 دقيقة بعد محاولات الدخول الخاطئة، مع تشفير الجلسات بنظام JWT و RBAC.
+           <strong>حماية قصوى (Brute-Force Protection):</strong> يتم حظر عنوان الـ IP تلقائياً لمدة 15 دقيقة بعد محاولات الدخول الخاطئة، مع تشفير الجلسات بنظام JWT و RBAC.
         </div>
 
         <a
@@ -248,7 +248,7 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
             marginTop: '18px',
             color: '#64748b',
             textDecoration: 'none',
-            fontSize: '13px',
+            fontSize: '14.6px',
             fontWeight: 600,
           }}
         >

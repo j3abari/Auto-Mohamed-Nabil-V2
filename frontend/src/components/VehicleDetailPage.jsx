@@ -34,10 +34,10 @@ export default function VehicleDetailPage({
   if (!car) {
     return (
       <div className="py-28 text-center max-w-3xl mx-auto px-4">
-        <h2 className="text-2xl font-bold text-[#F1EEE6] mb-3">
+        <h2 className="text-2xl font-bold text-[#1f2937] mb-3">
           لم يتم العثور على السيارة المطلوبة
         </h2>
-        <p className="text-sm text-[#B7B9B0] mb-6">
+        <p className="text-sm text-[#4b5563] mb-6">
           قد تكون السيارة قد تم بيعها أو نقلها من صالة العرض. يمكنك تصفح الأسطول المتاح حالياً.
         </p>
         <a
@@ -46,7 +46,7 @@ export default function VehicleDetailPage({
             e.preventDefault();
             onNavigate('/inventory');
           }}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#FF4B16] text-white font-bold text-sm"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#9a7226] text-white font-bold text-sm"
         >
           <span>العودة إلى أسطول السيارات</span>
         </a>
@@ -94,10 +94,10 @@ export default function VehicleDetailPage({
   ];
 
   return (
-    <div className="bg-[#0A0C0B] min-h-screen pb-24">
+    <div className="bg-[#faf8f3] min-h-screen pb-24">
       {/* Breadcrumb Bar (Sharaf Reference Style) */}
-      <div className="bg-[#0E1110] border-b border-white/8 py-3.5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between flex-wrap gap-3 text-xs text-[#B7B9B0]">
+      <div className="bg-[#f4f0e6] border-b border-black/10 py-3.5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between flex-wrap gap-3 text-xs text-[#4b5563]">
           <div className="flex items-center gap-2">
             <a
               href="/"
@@ -105,23 +105,23 @@ export default function VehicleDetailPage({
                 e.preventDefault();
                 onNavigate('/');
               }}
-              className="hover:text-[#FF4B16] transition-colors"
+              className="hover:text-[#9a7226] transition-colors"
             >
               الرئيسية
             </a>
-            <span className="text-white/25">/</span>
+            <span className="text-[#1f2937]">/</span>
             <a
               href="/inventory"
               onClick={(e) => {
                 e.preventDefault();
                 onNavigate('/inventory');
               }}
-              className="hover:text-[#FF4B16] transition-colors"
+              className="hover:text-[#9a7226] transition-colors"
             >
               أسطول المعرض
             </a>
-            <span className="text-white/25">/</span>
-            <span className="text-[#F1EEE6] font-bold">
+            <span className="text-[#1f2937]">/</span>
+            <span className="text-[#1f2937] font-bold">
               {car.variant || `${car.make} ${car.model}`} ({car.year})
             </span>
           </div>
@@ -132,7 +132,7 @@ export default function VehicleDetailPage({
               e.preventDefault();
               onNavigate('/inventory');
             }}
-            className="inline-flex items-center gap-1.5 text-[#C9B37E] hover:text-[#FF4B16] font-semibold transition-colors"
+            className="inline-flex items-center gap-1.5 text-[#9a7226] hover:text-[#9a7226] font-semibold transition-colors"
           >
             <ArrowRight className="w-3.5 h-3.5" />
             <span>العودة لكل السيارات</span>
@@ -146,22 +146,22 @@ export default function VehicleDetailPage({
           {/* Right / Main Column: Gallery + Dossier (7 cols) */}
           <div className="lg:col-span-7 space-y-8">
             {/* Main Stage Photo */}
-            <div className="luxury-card rounded-2xl overflow-hidden border border-white/10">
-              <div className="relative h-72 sm:h-[420px] bg-[#0E1110]">
+            <div className="luxury-card rounded-2xl overflow-hidden border border-black/10">
+              <div className="relative h-72 sm:h-[420px] bg-[#f4f0e6]">
                 <img
                   src={currentImage}
                   alt={car.variant || `${car.make} ${car.model}`}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0C0B]/80 via-transparent to-black/25" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#faf8f3]/80 via-transparent to-black/25" />
 
                 <div className="absolute top-4 right-4 flex flex-wrap gap-2">
                   <span className="badge-orange text-xs font-bold px-3 py-1.5 rounded-xl backdrop-blur-md flex items-center gap-1.5 shadow-lg">
-                    <Sparkles className="w-3.5 h-3.5 text-[#FF4B16]" />
+                    <Sparkles className="w-3.5 h-3.5 text-[#9a7226]" />
                     <span>فابريكا بالكامل • كسر زيرو</span>
                   </span>
                   <span className="badge-gold text-xs font-bold px-3 py-1.5 rounded-xl backdrop-blur-md flex items-center gap-1.5 shadow-lg">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#C9B37E]" />
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#9a7226]" />
                     <span>فحص معتمد {car.inspection_score || '98%'}</span>
                   </span>
                 </div>
@@ -169,7 +169,7 @@ export default function VehicleDetailPage({
 
               {/* Thumbnails Strip */}
               {images.length > 1 && (
-                <div className="p-4 bg-[#121513] border-t border-white/8 flex gap-3 overflow-x-auto">
+                <div className="p-4 bg-[#121513] border-t border-black/10 flex gap-3 overflow-x-auto">
                   {images.map((img, i) => (
                     <button
                       key={i}
@@ -177,8 +177,8 @@ export default function VehicleDetailPage({
                       onClick={() => setActiveImageIdx(i)}
                       className={`relative w-24 h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${
                         activeImageIdx === i
-                          ? 'border-[#FF4B16] scale-105 shadow-md shadow-[#FF4B16]/30'
-                          : 'border-white/10 opacity-65 hover:opacity-100'
+                          ? 'border-[#9a7226] scale-105 shadow-md shadow-[#9a7226]/30'
+                          : 'border-black/10 opacity-65 hover:opacity-100'
                       }`}
                     >
                       <img
@@ -193,33 +193,33 @@ export default function VehicleDetailPage({
             </div>
 
             {/* Vehicle Description & Features Dossier */}
-            <div className="luxury-card rounded-2xl p-6 sm:p-8 border border-white/10 space-y-6">
+            <div className="luxury-card rounded-2xl p-6 sm:p-8 border border-black/10 space-y-6">
               <div>
                 <span className="gx-kicker gx-kicker-orange mb-2">
                   ملف السيارة والتجهيزات • Vehicle Dossier
                 </span>
-                <h2 className="text-xl sm:text-2xl font-bold text-[#F1EEE6] mt-1">
+                <h2 className="text-xl sm:text-2xl font-bold text-[#1f2937] mt-1">
                   نظرة تفصيلية على {car.variant || `${car.make} ${car.model}`}
                 </h2>
-                <p className="text-sm text-[#B7B9B0] leading-relaxed mt-3">
+                <p className="text-sm text-[#4b5563] leading-relaxed mt-3">
                   {car.description ||
                     'سيارة بحالة نادرة كسر زيرو فابريكا بالكامل من الإكصدام للإكصدام، خضعت لفحص فني شامل 100 نقطة في صالة عرض أوتو محمد نبيل وجاهزة للتسليم الفوري.'}
                 </p>
               </div>
 
               {car.features && car.features.length > 0 && (
-                <div className="pt-6 border-t border-white/8">
-                  <h3 className="text-base font-bold text-[#F1EEE6] mb-4 flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-[#FF4B16]" />
+                <div className="pt-6 border-t border-black/10">
+                  <h3 className="text-base font-bold text-[#1f2937] mb-4 flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-[#9a7226]" />
                     <span>أبرز التجهيزات والمواصفات الفاخرة</span>
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {car.features.map((feat, idx) => (
                       <div
                         key={idx}
-                        className="flex items-start gap-2.5 bg-[#0E1110] border border-white/6 p-3.5 rounded-xl text-xs text-[#F1EEE6]"
+                        className="flex items-start gap-2.5 bg-[#f4f0e6] border border-black/10 p-3.5 rounded-xl text-xs text-[#1f2937]"
                       >
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-4 h-4 text-[#9a7226] shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </div>
                     ))}
@@ -229,22 +229,22 @@ export default function VehicleDetailPage({
             </div>
 
             {/* 100-Point Certified Inspection Report Card */}
-            <div className="luxury-card rounded-2xl p-6 sm:p-8 border border-emerald-500/25 space-y-5">
-              <div className="flex items-center justify-between flex-wrap gap-4 border-b border-white/8 pb-4">
+            <div className="luxury-card rounded-2xl p-6 sm:p-8 border border-[#9a7226]/25 space-y-5">
+              <div className="flex items-center justify-between flex-wrap gap-4 border-b border-black/10 pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                  <div className="w-12 h-12 rounded-xl bg-[#9a7226]/15 border border-[#9a7226]/30 flex items-center justify-center text-[#9a7226]">
                     <FileCheck className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-[#F1EEE6]">
+                    <h3 className="text-lg font-bold text-[#1f2937]">
                       شهادة الفحص الفني المعتمد (100 نقطة)
                     </h3>
-                    <p className="text-xs text-[#9EA199]">
+                    <p className="text-xs text-[#6b7280]">
                       تقرير فحص موثق من مركز فحص معرض أوتو محمد نبيل
                     </p>
                   </div>
                 </div>
-                <div className="bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 px-4 py-1.5 rounded-xl text-sm font-black">
+                <div className="bg-[#9a7226]/15 border border-[#9a7226]/30 text-[#9a7226] px-4 py-1.5 rounded-xl text-sm font-black">
                   نتيجة الفحص: {car.inspection_score || '98%'}
                 </div>
               </div>
@@ -253,10 +253,10 @@ export default function VehicleDetailPage({
                 {inspectionPoints.map((pt, i) => (
                   <div
                     key={i}
-                    className="p-3.5 rounded-xl bg-[#0E1110] border border-white/6 flex items-center justify-between text-xs"
+                    className="p-3.5 rounded-xl bg-[#f4f0e6] border border-black/10 flex items-center justify-between text-xs"
                   >
-                    <span className="text-[#B7B9B0]">{pt.label}:</span>
-                    <span className="font-bold text-emerald-400">{pt.value}</span>
+                    <span className="text-[#4b5563]">{pt.label}:</span>
+                    <span className="font-bold text-[#9a7226]">{pt.value}</span>
                   </div>
                 ))}
               </div>
@@ -265,37 +265,37 @@ export default function VehicleDetailPage({
 
           {/* Left / Sticky Summary Column (5 cols) */}
           <div className="lg:col-span-5 lg:sticky lg:top-24 space-y-6">
-            <div className="luxury-card rounded-2xl p-6 sm:p-8 border border-white/12 shadow-2xl space-y-6">
+            <div className="luxury-card rounded-2xl p-6 sm:p-8 border border-black/10 shadow-2xl space-y-6">
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#FF4B16]">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#9a7226]">
                     {car.make} • {car.body_type || 'سيدان فاخرة'}
                   </span>
-                  <span className="px-2.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[11px] font-bold">
+                  <span className="px-2.5 py-0.5 rounded-md bg-[#9a7226]/15 text-[#9a7226] border border-[#9a7226]/30 text-[0.6875rem] font-bold">
                     متاحة للتسليم الفوري
                   </span>
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-black text-[#F1EEE6]">
+                <h1 className="text-2xl sm:text-3xl font-black text-[#1f2937]">
                   {car.variant || `${car.make} ${car.model}`}
                 </h1>
-                <p className="text-xs text-[#9EA199] mt-1">
+                <p className="text-xs text-[#6b7280] mt-1">
                   موديل {car.year} • اللون: {car.color || 'مميز'}
                 </p>
               </div>
 
               {/* Price & Instalment Box */}
-              <div className="p-5 rounded-2xl bg-[#0E1110] border border-white/10 space-y-3">
+              <div className="p-5 rounded-2xl bg-[#f4f0e6] border border-black/10 space-y-3">
                 <div className="flex items-baseline justify-between">
-                  <span className="text-xs text-[#9EA199]">السعر النقدي (كاش):</span>
-                  <span className="text-2xl sm:text-3xl font-black text-[#F1EEE6]">
+                  <span className="text-xs text-[#6b7280]">السعر النقدي (كاش):</span>
+                  <span className="text-2xl sm:text-3xl font-black text-[#1f2937]">
                     {formatPrice(car.price)}
                   </span>
                 </div>
-                <div className="pt-3 border-t border-white/8 flex items-center justify-between text-xs">
-                  <span className="text-[#C9B37E] font-semibold">
+                <div className="pt-3 border-t border-black/10 flex items-center justify-between text-xs">
+                  <span className="text-[#9a7226] font-semibold">
                     القسط الشهري التقديري (بمقدم 30%):
                   </span>
-                  <span className="font-bold text-[#C9B37E] bg-[#C9B37E]/10 px-2.5 py-1 rounded-lg border border-[#C9B37E]/25">
+                  <span className="font-bold text-[#9a7226] bg-[#9a7226]/10 px-2.5 py-1 rounded-lg border border-[#9a7226]/25">
                     {calcEstimatedInstalment(car.price)} ج.م / شهرياً
                   </span>
                 </div>
@@ -303,39 +303,39 @@ export default function VehicleDetailPage({
 
               {/* 4 Key Specs Grid */}
               <div className="grid grid-cols-2 gap-3 text-xs">
-                <div className="p-3.5 rounded-xl bg-[#0E1110] border border-white/6 flex items-center gap-3">
-                  <Calendar className="w-4 h-4 text-[#FF4B16] shrink-0" />
+                <div className="p-3.5 rounded-xl bg-[#f4f0e6] border border-black/10 flex items-center gap-3">
+                  <Calendar className="w-4 h-4 text-[#9a7226] shrink-0" />
                   <div>
-                    <span className="text-[10px] text-[#9EA199] block">سنة الصنع</span>
-                    <strong className="text-[#F1EEE6]">{car.year}</strong>
+                    <span className="text-[0.6250rem] text-[#6b7280] block">سنة الصنع</span>
+                    <strong className="text-[#1f2937]">{car.year}</strong>
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-[#0E1110] border border-white/6 flex items-center gap-3">
-                  <Gauge className="w-4 h-4 text-[#FF4B16] shrink-0" />
+                <div className="p-3.5 rounded-xl bg-[#f4f0e6] border border-black/10 flex items-center gap-3">
+                  <Gauge className="w-4 h-4 text-[#9a7226] shrink-0" />
                   <div>
-                    <span className="text-[10px] text-[#9EA199] block">المسافة المقطوعة</span>
-                    <strong className="text-[#F1EEE6]">
+                    <span className="text-[0.6250rem] text-[#6b7280] block">المسافة المقطوعة</span>
+                    <strong className="text-[#1f2937]">
                       {car.mileage ? `${car.mileage.toLocaleString('ar-EG')} كم` : 'كسر زيرو'}
                     </strong>
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-[#0E1110] border border-white/6 flex items-center gap-3">
-                  <Cog className="w-4 h-4 text-[#C9B37E] shrink-0" />
+                <div className="p-3.5 rounded-xl bg-[#f4f0e6] border border-black/10 flex items-center gap-3">
+                  <Cog className="w-4 h-4 text-[#9a7226] shrink-0" />
                   <div>
-                    <span className="text-[10px] text-[#9EA199] block">ناقل الحركة</span>
-                    <strong className="text-[#F1EEE6]">
+                    <span className="text-[0.6250rem] text-[#6b7280] block">ناقل الحركة</span>
+                    <strong className="text-[#1f2937]">
                       {car.transmission === 'automatic' ? 'أوتوماتيك' : 'يدوي'}
                     </strong>
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-[#0E1110] border border-white/6 flex items-center gap-3">
-                  <Fuel className="w-4 h-4 text-[#C9B37E] shrink-0" />
+                <div className="p-3.5 rounded-xl bg-[#f4f0e6] border border-black/10 flex items-center gap-3">
+                  <Fuel className="w-4 h-4 text-[#9a7226] shrink-0" />
                   <div>
-                    <span className="text-[10px] text-[#9EA199] block">المحرك والقوة</span>
-                    <strong className="text-[#F1EEE6]">
+                    <span className="text-[0.6250rem] text-[#6b7280] block">المحرك والقوة</span>
+                    <strong className="text-[#1f2937]">
                       {car.engine_cc ? `${car.engine_cc}cc` : 'تيربو'}{' '}
                       {car.horsepower ? `• ${car.horsepower} حصان` : ''}
                     </strong>
@@ -354,7 +354,7 @@ export default function VehicleDetailPage({
                       title: `حجز معاينة خاصة: ${car.make} ${car.model} (${car.year})`,
                     })
                   }
-                  className="w-full py-3.5 px-5 rounded-xl bg-[#FF4B16] hover:bg-[#E03E0F] text-white font-bold text-sm shadow-xl shadow-[#FF4B16]/25 transition-all flex items-center justify-center gap-2"
+                  className="w-full py-3.5 px-5 rounded-xl bg-[#9a7226] hover:bg-[#7d5c1c] text-white font-bold text-sm shadow-xl shadow-[#9a7226]/25 transition-all flex items-center justify-center gap-2"
                 >
                   <CalendarCheck className="w-4 h-4" />
                   <span>حجز موعد معاينة وتجربة قيادة VIP</span>
@@ -364,7 +364,7 @@ export default function VehicleDetailPage({
                   href={waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg transition-all flex items-center justify-center gap-2"
+                  className="w-full py-3.5 px-5 rounded-xl bg-[#9a7226] hover:bg-[#9a7226] text-white font-bold text-sm shadow-lg transition-all flex items-center justify-center gap-2"
                 >
                   <MessageCircle className="w-4 h-4" />
                   <span>تواصل مباشر عبر واتساب حول السيارة</span>
@@ -377,25 +377,25 @@ export default function VehicleDetailPage({
                       e.preventDefault();
                       onNavigate('/finance');
                     }}
-                    className="py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-[#F1EEE6] flex items-center justify-center gap-1.5 transition-colors"
+                    className="py-2.5 px-3 rounded-xl bg-black/5 hover:bg-black/5 border border-black/10 text-xs font-semibold text-[#1f2937] flex items-center justify-center gap-1.5 transition-colors"
                   >
-                    <Calculator className="w-3.5 h-3.5 text-[#C9B37E]" />
+                    <Calculator className="w-3.5 h-3.5 text-[#9a7226]" />
                     <span>حاسبة التقسيط</span>
                   </a>
 
                   <a
                     href={`tel:${SHOWROOM_CONTACT.phone}`}
-                    className="py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-[#F1EEE6] flex items-center justify-center gap-1.5 transition-colors"
+                    className="py-2.5 px-3 rounded-xl bg-black/5 hover:bg-black/5 border border-black/10 text-xs font-semibold text-[#1f2937] flex items-center justify-center gap-1.5 transition-colors"
                   >
-                    <Phone className="w-3.5 h-3.5 text-[#FF4B16]" />
+                    <Phone className="w-3.5 h-3.5 text-[#9a7226]" />
                     <span dir="ltr">{SHOWROOM_CONTACT.phoneFormatted}</span>
                   </a>
                 </div>
               </div>
 
               {/* Showroom Location Note */}
-              <div className="pt-4 border-t border-white/8 text-[11.5px] text-[#9EA199] flex items-start gap-2">
-                <MapPin className="w-4 h-4 text-[#FF4B16] shrink-0 mt-0.5" />
+              <div className="pt-4 border-t border-black/10 text-[0.7188rem] text-[#6b7280] flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-[#9a7226] shrink-0 mt-0.5" />
                 <span>
                   السيارة متواجدة حالياً في صالة العرض: {SHOWROOM_CONTACT.address}. متاح الكشف في أي مركز معتمد.
                 </span>
@@ -406,13 +406,13 @@ export default function VehicleDetailPage({
 
         {/* Related Vehicles */}
         {relatedCars.length > 0 && (
-          <div className="mt-20 pt-12 border-t border-white/8">
+          <div className="mt-20 pt-12 border-t border-black/10">
             <div className="flex items-center justify-between mb-8">
               <div>
                 <span className="gx-kicker gx-kicker-orange mb-2">
                   سيارات مشابهة بالمعرض
                 </span>
-                <h3 className="text-2xl font-bold text-[#F1EEE6]">
+                <h3 className="text-2xl font-bold text-[#1f2937]">
                   قد يعجبك أيضاً من أسطولنا
                 </h3>
               </div>
@@ -422,7 +422,7 @@ export default function VehicleDetailPage({
                   e.preventDefault();
                   onNavigate('/inventory');
                 }}
-                className="text-xs font-bold text-[#FF4B16] hover:underline"
+                className="text-xs font-bold text-[#9a7226] hover:underline"
               >
                 عرض كل الأسطول ←
               </a>

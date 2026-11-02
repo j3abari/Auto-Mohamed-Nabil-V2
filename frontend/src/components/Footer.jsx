@@ -16,14 +16,14 @@ export default function Footer({ onNavigate }) {
   };
 
   return (
-    <footer id="contact" className="bg-[#070908] border-t border-white/8 text-[#B7B9B0] pt-16 pb-12">
+    <footer id="contact" className="bg-[#efe9db] border-t border-black/10 text-[#4b5563] pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-white/5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-black/10">
           {/* Brand Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full overflow-hidden border border-[#FF4B16]/40 p-0.5 bg-black">
+              <div className="w-12 h-12 rounded-full overflow-hidden border border-[#9a7226]/40 p-0.5 bg-black">
                 <img
                   src="/favicon.png"
                   alt="أوتو محمد نبيل"
@@ -31,21 +31,21 @@ export default function Footer({ onNavigate }) {
                 />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-[#F1EEE6]">أوتو محمد نبيل</h3>
-                <p className="text-xs text-[#C9B37E]">LUXURY & CERTIFIED AUTOMOTIVE</p>
+                <h3 className="text-lg font-bold text-[#1f2937]">أوتو محمد نبيل</h3>
+                <p className="text-xs text-[#9a7226]">LUXURY & CERTIFIED AUTOMOTIVE</p>
               </div>
             </div>
 
-            <p className="text-xs leading-relaxed text-[#9EA199]">
+            <p className="text-xs leading-relaxed text-[#6b7280]">
               المعرض الرائد في تجارة واستبدال السيارات الفاخرة والألمانية في مصر منذ عام 2007. نلتزم بأعلى معايير الشفافية، وفحص شامل معتمد 100 نقطة فنية، وأفضل برامج التقسيط البنكي.
             </p>
 
             <div className="flex items-center gap-2 pt-2">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#FF4B16]/10 text-[#FF4B16] text-[11px] font-semibold border border-[#FF4B16]/25">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#9a7226]/10 text-[#9a7226] text-[0.6875rem] font-semibold border border-[#9a7226]/25">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 معتمد ومضمون 100%
               </span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#C9B37E]/10 text-[#C9B37E] text-[11px] font-semibold border border-[#C9B37E]/25">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#9a7226]/10 text-[#9a7226] text-[0.6875rem] font-semibold border border-[#9a7226]/25">
                 خبرة 18+ عاماً
               </span>
             </div>
@@ -53,8 +53,8 @@ export default function Footer({ onNavigate }) {
 
           {/* Quick Links (Clean Paths, Zero #) */}
           <div>
-            <h4 className="text-xs uppercase tracking-widest text-[#C9B37E] font-bold mb-4 flex items-center gap-2">
-              <span className="w-2 h-0.5 bg-[#C9B37E]" />
+            <h4 className="text-xs uppercase tracking-widest text-[#9a7226] font-bold mb-4 flex items-center gap-2">
+              <span className="w-2 h-0.5 bg-[#9a7226]" />
               روابط المعرض
             </h4>
             <ul className="space-y-2.5 text-xs">
@@ -62,54 +62,54 @@ export default function Footer({ onNavigate }) {
                 <a
                   href="/inventory"
                   onClick={(e) => handleLinkClick(e, '/inventory')}
-                  className="hover:text-[#FF4B16] transition-colors flex items-center gap-1.5"
+                  className="hover:text-[#9a7226] transition-colors flex items-center gap-1.5"
                 >
-                  <span className="text-[#FF4B16]">•</span> أسطول السيارات المتاحة
+                  <span className="text-[#9a7226]">•</span> أسطول السيارات المتاحة
                 </a>
               </li>
               <li>
                 <a
                   href="/viewing"
                   onClick={(e) => handleLinkClick(e, '/viewing')}
-                  className="hover:text-[#FF4B16] transition-colors flex items-center gap-1.5"
+                  className="hover:text-[#9a7226] transition-colors flex items-center gap-1.5"
                 >
-                  <span className="text-[#FF4B16]">•</span> حجز معاينة VIP خاصة
+                  <span className="text-[#9a7226]">•</span> حجز معاينة VIP خاصة
                 </a>
               </li>
               <li>
                 <a
                   href="/services"
                   onClick={(e) => handleLinkClick(e, '/services')}
-                  className="hover:text-[#FF4B16] transition-colors flex items-center gap-1.5"
+                  className="hover:text-[#9a7226] transition-colors flex items-center gap-1.5"
                 >
-                  <span className="text-[#FF4B16]">•</span> خدمات المعرض الفاخرة
+                  <span className="text-[#9a7226]">•</span> خدمات المعرض الفاخرة
                 </a>
               </li>
               <li>
                 <a
                   href="/finance"
                   onClick={(e) => handleLinkClick(e, '/finance')}
-                  className="hover:text-[#FF4B16] transition-colors flex items-center gap-1.5"
+                  className="hover:text-[#9a7226] transition-colors flex items-center gap-1.5"
                 >
-                  <span className="text-[#FF4B16]">•</span> حاسبة التقسيط والتمويل
+                  <span className="text-[#9a7226]">•</span> حاسبة التقسيط والتمويل
                 </a>
               </li>
               <li>
                 <a
                   href="/inspection"
                   onClick={(e) => handleLinkClick(e, '/inspection')}
-                  className="hover:text-[#FF4B16] transition-colors flex items-center gap-1.5"
+                  className="hover:text-[#9a7226] transition-colors flex items-center gap-1.5"
                 >
-                  <span className="text-[#FF4B16]">•</span> معايير الفحص المعتمد
+                  <span className="text-[#9a7226]">•</span> معايير الفحص المعتمد
                 </a>
               </li>
               <li>
                 <a
                   href="/about"
                   onClick={(e) => handleLinkClick(e, '/about')}
-                  className="hover:text-[#FF4B16] transition-colors flex items-center gap-1.5"
+                  className="hover:text-[#9a7226] transition-colors flex items-center gap-1.5"
                 >
-                  <span className="text-[#FF4B16]">•</span> قصة أوتو محمد نبيل
+                  <span className="text-[#9a7226]">•</span> قصة أوتو محمد نبيل
                 </a>
               </li>
             </ul>
@@ -117,29 +117,29 @@ export default function Footer({ onNavigate }) {
 
           {/* Services & Guarantees */}
           <div>
-            <h4 className="text-xs uppercase tracking-widest text-[#C9B37E] font-bold mb-4 flex items-center gap-2">
-              <span className="w-2 h-0.5 bg-[#C9B37E]" />
+            <h4 className="text-xs uppercase tracking-widest text-[#9a7226] font-bold mb-4 flex items-center gap-2">
+              <span className="w-2 h-0.5 bg-[#9a7226]" />
               الضمان والخدمات
             </h4>
-            <ul className="space-y-2.5 text-xs text-[#9EA199]">
+            <ul className="space-y-2.5 text-xs text-[#6b7280]">
               <li className="flex items-start gap-2">
-                <span className="text-[#FF4B16] font-bold">✓</span>
+                <span className="text-[#9a7226] font-bold">•</span>
                 <span>فحص فني شامل 100 نقطة معتمد مع كل سيارة</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-[#FF4B16] font-bold">✓</span>
+                <span className="text-[#9a7226] font-bold">•</span>
                 <span>فابريكا بالكامل وخالية من أي حوادث سابقة</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-[#FF4B16] font-bold">✓</span>
+                <span className="text-[#9a7226] font-bold">•</span>
                 <span>تقسيط بنكي مباشر بأقل فائدة وأسهل إجراءات</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-[#FF4B16] font-bold">✓</span>
+                <span className="text-[#9a7226] font-bold">•</span>
                 <span>استبدال فوري لسيارتك بأعلى سعر سوقي عادل</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-[#FF4B16] font-bold">✓</span>
+                <span className="text-[#9a7226] font-bold">•</span>
                 <span>تسليم فوري في نفس اليوم مع إنهاء التراخيص</span>
               </li>
             </ul>
@@ -147,22 +147,22 @@ export default function Footer({ onNavigate }) {
 
           {/* Contact & Showroom Visit */}
           <div>
-            <h4 className="text-xs uppercase tracking-widest text-[#C9B37E] font-bold mb-4 flex items-center gap-2">
-              <span className="w-2 h-0.5 bg-[#C9B37E]" />
+            <h4 className="text-xs uppercase tracking-widest text-[#9a7226] font-bold mb-4 flex items-center gap-2">
+              <span className="w-2 h-0.5 bg-[#9a7226]" />
               تواصل وزيارة المعرض
             </h4>
             <ul className="space-y-3 text-xs">
               <li className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-[#FF4B16] flex-shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-[#9a7226] flex-shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-[#F1EEE6] font-medium block">
+                  <span className="text-[#1f2937] font-medium block">
                     {SHOWROOM_CONTACT.address}
                   </span>
                   <a
                     href={SHOWROOM_CONTACT.mapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#FF4B16] hover:underline inline-flex items-center gap-1 mt-0.5 text-[11px]"
+                    className="text-[#9a7226] hover:underline inline-flex items-center gap-1 mt-0.5 text-[0.6875rem]"
                   >
                     <span>فتح الموقع على خرائط Google</span>
                     <ExternalLink className="w-3 h-3" />
@@ -171,13 +171,13 @@ export default function Footer({ onNavigate }) {
               </li>
 
               <li className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-[#FF4B16] flex-shrink-0" />
+                <Phone className="w-4 h-4 text-[#9a7226] flex-shrink-0" />
                 <div>
-                  <span className="text-[10px] text-[#9EA199] block">الاتصال المباشر:</span>
+                  <span className="text-[0.6250rem] text-[#6b7280] block">الاتصال المباشر:</span>
                   <a
                     href={`tel:${SHOWROOM_CONTACT.phone}`}
                     dir="ltr"
-                    className="text-[#F1EEE6] font-bold hover:text-[#FF4B16]"
+                    className="text-[#1f2937] font-bold hover:text-[#9a7226]"
                   >
                     {SHOWROOM_CONTACT.phoneFormatted}
                   </a>
@@ -185,9 +185,9 @@ export default function Footer({ onNavigate }) {
               </li>
 
               <li className="flex items-center gap-2.5">
-                <MessageCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                <MessageCircle className="w-4 h-4 text-[#9a7226] flex-shrink-0" />
                 <div>
-                  <span className="text-[10px] text-[#9EA199] block">
+                  <span className="text-[0.6250rem] text-[#6b7280] block">
                     خدمة العملاء عبر واتساب:
                   </span>
                   <a
@@ -195,7 +195,7 @@ export default function Footer({ onNavigate }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     dir="ltr"
-                    className="text-[#F1EEE6] font-bold hover:text-emerald-400"
+                    className="text-[#1f2937] font-bold hover:text-[#9a7226]"
                   >
                     +20 11 0710 8185
                   </a>
@@ -203,10 +203,10 @@ export default function Footer({ onNavigate }) {
               </li>
 
               <li className="flex items-start gap-2.5">
-                <Clock className="w-4 h-4 text-[#C9B37E] flex-shrink-0 mt-0.5" />
+                <Clock className="w-4 h-4 text-[#9a7226] flex-shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-[10px] text-[#9EA199] block">أوقات العمل اليومية:</span>
-                  <span className="text-[#F1EEE6] font-medium">
+                  <span className="text-[0.6250rem] text-[#6b7280] block">أوقات العمل اليومية:</span>
+                  <span className="text-[#1f2937] font-medium">
                     {SHOWROOM_CONTACT.workingHours}
                   </span>
                 </div>
@@ -216,7 +216,7 @@ export default function Footer({ onNavigate }) {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#9EA199]">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#6b7280]">
           <p>© {currentYear} سوق أوتو محمد نبيل للسيارات. جميع الحقوق محفوظة.</p>
 
           <div className="flex items-center gap-6">
@@ -224,28 +224,28 @@ export default function Footer({ onNavigate }) {
               href={`https://wa.me/${SHOWROOM_CONTACT.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-[#FF4B16] transition-colors"
+              className="hover:text-[#9a7226] transition-colors"
             >
               واتساب
             </a>
             <a
               href="/inventory"
               onClick={(e) => handleLinkClick(e, '/inventory')}
-              className="hover:text-[#FF4B16] transition-colors"
+              className="hover:text-[#9a7226] transition-colors"
             >
               أسطول السيارات
             </a>
             <a
               href="/viewing"
               onClick={(e) => handleLinkClick(e, '/viewing')}
-              className="hover:text-[#FF4B16] transition-colors"
+              className="hover:text-[#9a7226] transition-colors"
             >
               حجز معاينة
             </a>
             <a
               href="/contact"
               onClick={(e) => handleLinkClick(e, '/contact')}
-              className="hover:text-[#FF4B16] transition-colors"
+              className="hover:text-[#9a7226] transition-colors"
             >
               تواصل معنا
             </a>
