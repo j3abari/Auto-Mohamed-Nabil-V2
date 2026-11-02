@@ -75,7 +75,7 @@ export default function Navbar({ currentPath = '/', onNavigate }) {
           </a>
 
           {/* Desktop Navigation Links (Clean URLs, Zero #) */}
-          <nav className="hidden lg:flex items-center gap-6 text-[0.8438rem] font-medium text-[#4b5563]">
+          <nav className="hidden xl:flex items-center gap-5 text-[0.8rem] whitespace-nowrap font-medium text-[#4b5563]">
             {navItems.map((item) => {
               const isActive =
                 item.path === '/'
@@ -191,4 +191,5 @@ export default function Navbar({ currentPath = '/', onNavigate }) {
     </header>
   );
 }
+
 
