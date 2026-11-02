@@ -1,0 +1,14 @@
+{
+  "name": "auto-mohamed-nabil-v2",
+  "version": "1.0.0",
+  "description": "Auto Mohamed Nabil V2 - Fullstack Node Showroom - Performax 1",
+  "private": true,
+  "scripts": {
+    "start": "node backend/server.js",
+    "build": "npm --prefix backend install",
+    "build:full": "npm --prefix frontend install && npm --prefix frontend run build && npm --prefix backend install"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
