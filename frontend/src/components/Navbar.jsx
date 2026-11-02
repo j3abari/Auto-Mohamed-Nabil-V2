@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Phone, MessageCircle, Menu, X } from 'lucide-react';
 import { SHOWROOM_CONTACT } from '../services/api';
 
@@ -191,3 +191,4 @@ export default function Navbar({ currentPath = '/', onNavigate }) {
     </header>
   );
 }
+
