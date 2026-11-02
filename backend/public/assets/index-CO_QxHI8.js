@@ -79,18 +79,18 @@ Content-Type: `+String(n.type||`application/octet-stream`).replace(/[\r\n]/g,``)
           color: var(--accent);
           padding: 3px 10px;
           border-radius: 50px;
-          font-size: 12.3px;
+          font-size: 11px;
           font-weight: 700;
           width: fit-content;
         }
         .drm-brand h2 {
-          font-size: 19.0px;
+          font-size: 15.5px;
           font-weight: 800;
           color: #fff;
           margin: 0;
         }
         .drm-brand p {
-          font-size: 13.4px;
+          font-size: 12px;
           color: #cbd5e1;
           margin: 0;
         }
@@ -105,11 +105,11 @@ Content-Type: `+String(n.type||`application/octet-stream`).replace(/[\r\n]/g,``)
           display: flex;
           align-items: center;
           gap: 12px;
-          padding: 12px 16px;
+          padding: 10px 14px;
           border-radius: 10px;
           color: #e2e8f0;
           text-decoration: none;
-          font-size: 15.1px;
+          font-size: 13px;
           font-weight: 600;
           cursor: pointer;
           transition: 0.2s;
@@ -136,9 +136,9 @@ Content-Type: `+String(n.type||`application/octet-stream`).replace(/[\r\n]/g,``)
         .drm-nav-item span.count {
           margin-right: auto;
           background: rgba(0,0,0,0.25);
-          padding: 2px 8px;
+          padding: 2px 7px;
           border-radius: 20px;
-          font-size: 12.3px;
+          font-size: 11px;
         }
         .drm-sidebar-footer {
           padding: 16px 20px;
@@ -150,7 +150,7 @@ Content-Type: `+String(n.type||`application/octet-stream`).replace(/[\r\n]/g,``)
         .drm-sidebar-footer a, .drm-sidebar-footer button {
           color: #cbd5e1;
           text-decoration: none;
-          font-size: 14.6px;
+          font-size: 12px;
           display: flex;
           align-items: center;
           gap: 8px;
@@ -184,7 +184,7 @@ Content-Type: `+String(n.type||`application/octet-stream`).replace(/[\r\n]/g,``)
           gap: 12px;
         }
         .drm-topbar h1 {
-          font-size: 21.3px;
+          font-size: 17px;
           font-weight: 800;
           color: var(--primary);
           margin: 0;
@@ -198,11 +198,11 @@ Content-Type: `+String(n.type||`application/octet-stream`).replace(/[\r\n]/g,``)
         .drm-btn {
           display: inline-flex;
           align-items: center;
-          gap: 8px;
-          padding: 9px 16px;
-          border-radius: 9px;
+          gap: 7px;
+          padding: 7px 14px;
+          border-radius: 8px;
           font-family: inherit;
-          font-size: 14.6px;
+          font-size: 12.5px;
           font-weight: 700;
           cursor: pointer;
           border: none;
@@ -215,8 +215,8 @@ Content-Type: `+String(n.type||`application/octet-stream`).replace(/[\r\n]/g,``)
         .drm-btn-outline { background: #fff; color: var(--primary); border: 1.5px solid var(--border); }
         .drm-btn-outline:hover { border-color: var(--primary); background: #f8fafc; }
         .drm-btn-danger { background: #fee2e2; color: var(--danger); }
-        .drm-btn-sm { padding: 6px 11px; font-size: 13.4px; border-radius: 7px; }
-        .drm-btn-whatsapp { background: #374151; color: #fff; padding: 5px 10px; border-radius: 6px; font-size: 12.9px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; border: none; cursor: pointer; }
+        .drm-btn-sm { padding: 5px 10px; font-size: 11.5px; border-radius: 6px; }
+        .drm-btn-whatsapp { background: #374151; color: #fff; padding: 4px 9px; border-radius: 6px; font-size: 11.5px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; border: none; cursor: pointer; }
         .drm-content {
           padding: 28px;
           max-width: 1440px;
@@ -236,9 +236,9 @@ Content-Type: `+String(n.type||`application/octet-stream`).replace(/[\r\n]/g,``)
           border: 1px solid var(--border);
           box-shadow: 0 2px 10px rgba(0,0,0,0.02);
         }
-        .drm-kpi-card .label { font-size: 14.6px; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
-        .drm-kpi-card .value { font-size: 31.4px; font-weight: 800; color: var(--primary); }
-        .drm-kpi-card .sub { font-size: 12.9px; color: var(--success); margin-top: 6px; font-weight: 600; }
+        .drm-kpi-card .label { font-size: 12.5px; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+        .drm-kpi-card .value { font-size: 26px; font-weight: 800; color: var(--primary); }
+        .drm-kpi-card .sub { font-size: 11px; color: var(--success); margin-top: 6px; font-weight: 600; }
         .drm-card {
           background: var(--card);
           border-radius: 14px;
@@ -256,32 +256,32 @@ Content-Type: `+String(n.type||`application/octet-stream`).replace(/[\r\n]/g,``)
           flex-wrap: wrap;
           gap: 12px;
         }
-        .drm-card-header h3 { font-size: 17.9px; font-weight: 800; color: var(--primary); margin: 0; }
+        .drm-card-header h3 { font-size: 14.5px; font-weight: 800; color: var(--primary); margin: 0; }
         .drm-card-body { padding: 22px; }
         .drm-table-responsive { overflow-x: auto; }
         .drm-table { width: 100%; border-collapse: collapse; text-align: right; }
         .drm-table th {
           background: #f8fafc;
           color: #475569;
-          font-size: 13.4px;
+          font-size: 11.5px;
           font-weight: 700;
-          padding: 12px 14px;
+          padding: 10px 12px;
           border-bottom: 1px solid var(--border);
           white-space: nowrap;
         }
         .drm-table td {
-          padding: 13px 14px;
+          padding: 11px 12px;
           border-bottom: 1px solid var(--border);
-          font-size: 14.6px;
+          font-size: 12.5px;
           vertical-align: middle;
           color: #1e293b;
         }
         .drm-table tr:hover td { background: #fcfdfd; }
         .status-badge {
           display: inline-block;
-          padding: 4px 10px;
+          padding: 3px 9px;
           border-radius: 50px;
-          font-size: 12.9px;
+          font-size: 11px;
           font-weight: 700;
         }
         .status-new { background: #e5e7eb; color: #374151; }
@@ -289,11 +289,11 @@ Content-Type: `+String(n.type||`application/octet-stream`).replace(/[\r\n]/g,``)
         .status-confirmed { background: #e6eaf0; color: #141a22; }
         .status-cancelled { background: #fee2e2; color: #b91c1c; }
         .drm-input, .drm-select, .drm-textarea {
-          padding: 9px 12px;
+          padding: 8px 11px;
           border: 1.5px solid var(--border);
           border-radius: 8px;
           font-family: inherit;
-          font-size: 14.6px;
+          font-size: 12.5px;
           color: var(--text);
           background: #fff;
           outline: none;
@@ -307,7 +307,7 @@ Content-Type: `+String(n.type||`application/octet-stream`).replace(/[\r\n]/g,``)
           gap: 18px;
         }
         .drm-form-group { margin-bottom: 14px; }
-        .drm-form-group label { display: block; font-size: 14.0px; font-weight: 700; color: #334155; margin-bottom: 6px; }
+        .drm-form-group label { display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 5px; }
         .drm-form-group input, .drm-form-group select, .drm-form-group textarea { width: 100%; }
         .drm-media-grid {
           display: grid;
@@ -329,8 +329,8 @@ Content-Type: `+String(n.type||`application/octet-stream`).replace(/[\r\n]/g,``)
           background: #f1f5f9;
         }
         .drm-media-item .meta {
-          padding: 10px;
-          font-size: 12.9px;
+          padding: 8px 10px;
+          font-size: 11px;
           color: var(--muted);
         }
         .drm-modal-backdrop {
@@ -359,9 +359,9 @@ Content-Type: `+String(n.type||`application/octet-stream`).replace(/[\r\n]/g,``)
           left: 24px;
           background: var(--primary);
           color: #fff;
-          padding: 14px 22px;
+          padding: 12px 20px;
           border-radius: 10px;
-          font-size: 15.1px;
+          font-size: 13px;
           font-weight: 700;
           box-shadow: 0 10px 30px rgba(0,0,0,0.25);
           z-index: 200;
