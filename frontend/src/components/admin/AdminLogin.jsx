@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { loginAdmin } from '../../services/adminApi';
 
 export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, onClose }) {
@@ -237,7 +237,7 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
             lineHeight: 1.6,
           }}
         >
-           <strong>حماية قصوى (Brute-Force Protection):</strong> يتم حظر عنوان الـ IP تلقائياً لمدة 15 دقيقة بعد محاولات الدخول الخاطئة، مع تشفير الجلسات بنظام JWT و RBAC.
+           <strong>دخول محمي.</strong> هذه اللوحة مخصصة للمصرح لهم فقط.
         </div>
 
         <a
@@ -258,3 +258,4 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
     </div>
   );
 }
+
