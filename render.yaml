@@ -1,11 +1,10 @@
 services:
   - type: web
     name: Auto-Mohamed-Nabil-V2
-    runtime: node
+    runtime: docker
     plan: free
-    rootDir: backend
-    buildCommand: npm install
-    startCommand: npm start
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV
