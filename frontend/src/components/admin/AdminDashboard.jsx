@@ -1061,19 +1061,14 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           text-align: right;
           font-family: inherit;
         }
-        .drm-nav-item:hover, .drm-nav-item.active {
-          background: rgba(255,255,255,0.10);
-          color: #fff;
-        }
-        .drm-nav-item.active {
-          background: rgba(255,255,255,0.08);
-          color: #ffffff;
-          border-right: 3px solid #e8935f;
-          font-weight: 700;
-        }
-        .drm-nav-item:hover:not(.active) {
+        .drm-nav-item:hover {
           background: rgba(255,255,255,0.07);
           color: #e2e8f0;
+        }
+        .drm-nav-item.active {
+          background: rgba(255,255,255,0.13);
+          color: #ffffff;
+          font-weight: 700;
         }
         .drm-nav-item span.count {
           margin-right: auto;
