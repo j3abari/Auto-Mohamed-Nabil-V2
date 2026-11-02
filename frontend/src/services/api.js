@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Live Render backend API (or local if configured)
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://auto-mohamed-nabil-v2.onrender.com/api';
+// Relative API base path works seamlessly on any domain/port
+const API_BASE_URL = '/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,

@@ -24,81 +24,84 @@ app.set('trust proxy', 1);
 
 // ── Security Headers (Helmet) ──────────────────────────────────────────────
 app.use(helmet({
-    crossOriginEmbedderPolicy: false,  // allow embedding from our frontend
-    contentSecurityPolicy: {
-        directives: {
-            defaultSrc:  ["'self'"],
-            scriptSrc:   ["'self'"],
-            styleSrc:    ["'self'", "'unsafe-inline'"],
-            imgSrc:      ["'self'", 'data:', 'https:', 'blob:'],
-            connectSrc:  ["'self'"],
-            fontSrc:     ["'self'", 'https://fonts.gstatic.com'],
-            objectSrc:   ["'none'"],
-            upgradeInsecureRequests: []
-        }
-    }
+    crossOriginEmbedderPolicy: false,
+    contentSecurityPolicy: false,       // Allows external Google Fonts and Unsplash images
+    crossOriginResourcePolicy: false,   // Prevents blocking of static module scripts
 }));
 
-// ── CORS — strict whitelist ────────────────────────────────────────────────
-const allowedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:5173',
-    'http://localhost:4173',
-    process.env.CLIENT_URL
-].filter(Boolean);
-
-app.use(cors({
-    origin(origin, callback) {
-        // Allow requests with no origin (curl, Render health checks, mobile)
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.includes(origin) || process.env.NODE_ENV === 'development') {
-            return callback(null, true);
-        }
-        return callback(new Error(`CORS: origin ${origin} not allowed`));
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-// ── Global rate limiter (prevents DDoS) ────────────────────────────────────
-const globalLimiter = rateLimit({
-    windowMs:    15 * 60 * 1000,   // 15 minutes
-    max:         300,               // 300 req per IP per 15 min
-    standardHeaders: true,
-    legacyHeaders:   false,
-    message: { success: false, message: 'طلبات كثيرة جداً، يرجى الانتظار' }
-});
-app.use(globalLimiter);
-
-// Stricter limiter for auth endpoints
-const authLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max:      20,
-    message: { success: false, message: 'محاولات تسجيل دخول كثيرة جداً' }
-});
-
-// ── Body Parsers ───────────────────────────────────────────────────────────
-// Must come before routes; 10kb limit prevents large payload attacks
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
-
-// ── HTTP Request Logger ────────────────────────────────────────────────────
-app.use(morgan('combined', {
-    stream: { write: msg => logger.info(msg.trim()) }
-}));
-
-// ── Static Frontend (if built) ─────────────────────────────────────────────
+// ── Static Frontend Assets (MUST BE SERVED BEFORE CORS TO PREVENT 500s) ───
 const publicDistPath = fs.existsSync(path.join(__dirname, 'public'))
     ? path.join(__dirname, 'public')
     : path.join(__dirname, '../frontend/dist');
 const hasFrontendDist = fs.existsSync(publicDistPath);
 
 if (hasFrontendDist) {
-    app.use(express.static(publicDistPath));
+    app.use(express.static(publicDistPath, {
+        maxAge: '1h',
+        etag: true
+    }));
 }
 
-// ── Root / Health ──────────────────────────────────────────────────────────
+// ── CORS — Allow local, production domain, and any render subdomain ───────
+const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://localhost:4173',
+    process.env.CLIENT_URL,
+    'https://auto-mohamed-nabil-v2.onrender.com',
+    'https://auto-mohamed-nabil-v2.onrender.co'
+].filter(Boolean);
+
+app.use(cors({
+    origin(origin, callback) {
+        // Allow requests with no origin (curl, mobile apps, local server-to-server)
+        if (!origin) return callback(null, true);
+
+        // Check exact match, render subdomains, or development mode
+        const isAllowed = allowedOrigins.includes(origin) ||
+            origin.endsWith('.onrender.com') ||
+            origin.endsWith('.onrender.co') ||
+            process.env.NODE_ENV === 'development';
+
+        if (isAllowed) {
+            return callback(null, true);
+        }
+
+        // Return false instead of throwing Error so static files are not broken with 500
+        return callback(null, false);
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// ── Global rate limiter (prevents DDoS on API) ─────────────────────────────
+const globalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 500,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, message: 'طلبات كثيرة جداً، يرجى الانتظار' }
+});
+app.use('/api/', globalLimiter);
+
+// Stricter limiter for auth endpoints
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 20,
+    message: { success: false, message: 'محاولات تسجيل دخول كثيرة جداً' }
+});
+
+// ── Body Parsers ───────────────────────────────────────────────────────────
+app.use(express.json({ limit: '20kb' }));
+app.use(express.urlencoded({ extended: true, limit: '20kb' }));
+
+// ── HTTP Request Logger ────────────────────────────────────────────────────
+app.use(morgan('combined', {
+    stream: { write: msg => logger.info(msg.trim()) }
+}));
+
+// ── Health check (Render.com keep-alive) ──────────────────────────────────
 app.get('/health', (req, res) => {
     res.json({
         status: 'ok',
@@ -107,23 +110,21 @@ app.get('/health', (req, res) => {
     });
 });
 
-if (!hasFrontendDist) {
-    app.get('/', (req, res) => {
-        res.json({ service: 'Auto Mohamed Nabil V2 API', status: 'running', version: '1.0.2' });
-    });
-}
-
 // ── API Routes ─────────────────────────────────────────────────────────────
 app.use('/api/auth',       authLimiter, authRoutes);
 app.use('/api/cars',       carsRoutes);
 app.use('/api/inquiries',  inquiryRoutes);
 app.use('/api/analytics',  analyticsRoutes);
 
-// ── SPA Catch-all (serves index.html for React Router if frontend exists) ──
+// ── SPA Fallback (serve index.html for all non-API paths) ───────────────────
 if (hasFrontendDist) {
     app.get('*', (req, res, next) => {
         if (req.path.startsWith('/api/')) return next();
         res.sendFile(path.join(publicDistPath, 'index.html'));
+    });
+} else {
+    app.get('/', (req, res) => {
+        res.json({ service: 'Auto Mohamed Nabil V2 API', status: 'running', version: '1.0.3' });
     });
 }
 
