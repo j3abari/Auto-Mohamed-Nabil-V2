@@ -8,10 +8,18 @@ import WhyChooseUs from './components/WhyChooseUs';
 import Footer from './components/Footer';
 import CarDetailModal from './components/CarDetailModal';
 import InquiryModal from './components/InquiryModal';
+import AdminLogin from './components/admin/AdminLogin';
+import AdminDashboard from './components/admin/AdminDashboard';
 import { fetchCars, SHOWROOM_CONTACT } from './services/api';
-import { MessageCircle, Phone, ArrowUp } from 'lucide-react';
+import { getCurrentAdmin, logoutAdmin } from './services/adminApi';
+import { MessageCircle, Phone, ArrowUp, Lock } from 'lucide-react';
 
 export default function App() {
+  const [isAdminView, setIsAdminView] = useState(
+    window.location.pathname.startsWith('/admin') || window.location.hash === '#admin'
+  );
+  const [adminUser, setAdminUser] = useState(getCurrentAdmin());
+
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCar, setSelectedCar] = useState(null);
@@ -67,10 +75,43 @@ export default function App() {
     }
   };
 
+  const handleLogout = async () => {
+    await logoutAdmin();
+    setAdminUser(null);
+  };
+
+  // If Admin View is active
+  if (isAdminView) {
+    if (adminUser) {
+      return (
+        <AdminDashboard
+          adminUser={adminUser}
+          onLogout={handleLogout}
+          onSwitchToSite={() => {
+            window.location.hash = '';
+            setIsAdminView(false);
+          }}
+        />
+      );
+    }
+    return (
+      <AdminLogin
+        onLoginSuccess={(user) => setAdminUser(user)}
+        onBackToSite={() => {
+          window.location.hash = '';
+          setIsAdminView(false);
+        }}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-dark-950 text-gray-100 flex flex-col relative selection:bg-brand-orange selection:text-white">
       {/* Navbar */}
-      <Navbar onOpenInquiry={(ctx) => setInquiryContext(ctx)} />
+      <Navbar
+        onOpenInquiry={(ctx) => setInquiryContext(ctx)}
+        onOpenAdmin={() => setIsAdminView(true)}
+      />
 
       {/* Main Content */}
       <main className="flex-1">
@@ -107,9 +148,9 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <Footer />
+      <Footer onOpenAdmin={() => setIsAdminView(true)} />
 
-      {/* Floating Action WhatsApp & Phone Button */}
+      {/* Floating Action Buttons */}
       <div className="fixed bottom-6 left-6 z-40 flex flex-col gap-3">
         {showScrollTop && (
           <button

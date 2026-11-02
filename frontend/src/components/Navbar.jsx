@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Phone, MessageCircle, MapPin, Clock, ShieldCheck, Menu, X, Car } from 'lucide-react';
 import { SHOWROOM_CONTACT } from '../services/api';
 
-export default function Navbar({ onOpenInquiry }) {
+export default function Navbar({ onOpenInquiry, onOpenAdmin }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -95,6 +95,14 @@ export default function Navbar({ onOpenInquiry }) {
               <MessageCircle className="w-4 h-4 fill-current" />
               <span>تواصل فوري</span>
             </a>
+
+            <button
+              onClick={onOpenAdmin}
+              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors border border-white/5"
+              title="بوابة إدارة المعرض والـ CRM"
+            >
+              <ShieldCheck className="w-4 h-4 text-brand-orange" />
+            </button>
           </div>
 
           {/* Mobile hamburger */}

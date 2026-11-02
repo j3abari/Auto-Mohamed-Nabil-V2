@@ -2,7 +2,7 @@ import React from 'react';
 import { MapPin, Phone, MessageCircle, Clock, ShieldCheck, Car, Heart, ExternalLink } from 'lucide-react';
 import { SHOWROOM_CONTACT } from '../services/api';
 
-export default function Footer() {
+export default function Footer({ onOpenAdmin }) {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -40,6 +40,15 @@ export default function Footer() {
               <li><a href="#calculator" className="hover:text-brand-orange transition-colors">حاسبة التقسيط والأقساط</a></li>
               <li><a href="#inspection" className="hover:text-brand-orange transition-colors">معايير الفحص المعتمد</a></li>
               <li><a href="#why-us" className="hover:text-brand-orange transition-colors">لماذا أوتو محمد نبيل</a></li>
+              <li>
+                <button
+                  onClick={onOpenAdmin}
+                  className="text-brand-orange hover:underline font-bold flex items-center gap-1 mt-1"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>بوابة إدارة المعرض والـ CRM</span>
+                </button>
+              </li>
             </ul>
           </div>
 
