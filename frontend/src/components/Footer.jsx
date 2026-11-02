@@ -12,9 +12,11 @@ export default function Footer() {
           {/* Brand info */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-brand-orange flex items-center justify-center text-white shadow-brand">
-                <Car className="w-6 h-6" />
-              </div>
+              <img
+                src="/images/logo.jpg"
+                alt="سوق أوتو محمد نبيل"
+                className="w-12 h-12 rounded-full object-cover border-2 border-brand-orange shadow-brand shrink-0"
+              />
               <div>
                 <div className="text-lg font-black text-white">سوق أوتو محمد نبيل</div>
                 <div className="text-[10px] text-gray-500 font-bold">M. NABIL MOTORS • SINCE 2007</div>

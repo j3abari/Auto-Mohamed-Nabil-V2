@@ -54,9 +54,11 @@ export default function Navbar({ onOpenInquiry }) {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo / Brand Name */}
           <a href="#" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-orange to-brand-dark flex items-center justify-center text-white shadow-brand shadow-brand-orange/30 group-hover:scale-105 transition-transform duration-300">
-              <Car className="w-6 h-6 stroke-[2.2]" />
-            </div>
+            <img
+              src="/images/logo.jpg"
+              alt="سوق أوتو محمد نبيل"
+              className="w-11 h-11 rounded-full object-cover border-2 border-brand-orange shadow-brand group-hover:scale-105 transition-transform duration-300 shrink-0"
+            />
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
                 <span className="text-xl font-extrabold text-white tracking-tight">سوق أوتو</span>
