@@ -86,6 +86,11 @@ app.use(morgan('combined', {
     stream: { write: msg => logger.info(msg.trim()) }
 }));
 
+// ── Root ───────────────────────────────────────────────────────────────────
+app.get('/', (req, res) => {
+    res.json({ service: 'Auto Mohamed Nabil V2 API', status: 'running', version: '1.0.1' });
+});
+
 // ── Health check (Render.com keep-alive) ──────────────────────────────────
 app.get('/health', (req, res) => {
     res.json({
