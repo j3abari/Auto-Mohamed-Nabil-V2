@@ -2,119 +2,218 @@ import React from 'react';
 import { MapPin, Phone, MessageCircle, Clock, ShieldCheck, Car, Heart, ExternalLink } from 'lucide-react';
 import { SHOWROOM_CONTACT } from '../services/api';
 
-export default function Footer({ onOpenAdmin }) {
+export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer id="contact" className="bg-dark-950 border-t border-white/10 pt-16 pb-8 text-gray-400 text-xs">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {/* Brand info */}
+    <footer className="bg-[#070908] border-t border-white/8 text-[#B7B9B0] pt-16 pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Main Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-white/5">
+          
+          {/* Brand Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <img
-                src="/images/logo.jpg"
-                alt="سوق أوتو محمد نبيل"
-                className="w-12 h-12 rounded-full object-cover border-2 border-brand-orange shadow-brand shrink-0"
-              />
+              <div className="w-12 h-12 rounded-full overflow-hidden border border-[#FF4B16]/40 p-0.5 bg-black">
+                <img
+                  src="/images/logo.jpg"
+                  alt="أوتو محمد نبيل"
+                  className="w-full h-full object-cover rounded-full"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = '/favicon.png';
+                  }}
+                />
+              </div>
               <div>
-                <div className="text-lg font-black text-white">سوق أوتو محمد نبيل</div>
-                <div className="text-[10px] text-gray-500 font-bold">M. NABIL MOTORS • SINCE 2007</div>
+                <h3 className="text-lg font-bold text-[#F1EEE6]">أوتو محمد نبيل</h3>
+                <p className="text-xs text-[#C9B37E]">SHARAF & PERFORMANCE AUTOMOTIVE</p>
               </div>
             </div>
-            <p className="text-gray-400 leading-relaxed text-xs">
-              المعرض الأول لتجارة جميع أنواع السيارات المستعملة والكسر زيرو بميت غمر والدقهلية. فحص فني معتمد، تقسيط مباشر وبنكي، وأفضل أسعار السوق.
+
+            <p className="text-xs leading-relaxed text-[#9EA199]">
+              المعرض الرائد في تجارة واستبدال السيارات الفاخرة والألمانية في مصر. نلتزم بأعلى معايير الشفافية، وفحص شامل معتمد 100 نقطة فنية، وأفضل برامج التقسيط البنكي.
             </p>
-            <div className="flex items-center gap-2 text-emerald-400 font-semibold text-xs">
-              <ShieldCheck className="w-4 h-4 shrink-0" />
-              <span>فحص فابريكة معتمد لكل سيارة</span>
+
+            <div className="flex items-center gap-2 pt-2">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#FF4B16]/10 text-[#FF4B16] text-[11px] font-semibold border border-[#FF4B16]/25">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                معتمد ومضمون 100%
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#C9B37E]/10 text-[#C9B37E] text-[11px] font-semibold border border-[#C9B37E]/25">
+                خبرة 18+ عاماً
+              </span>
             </div>
           </div>
 
           {/* Quick Links */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-extrabold text-white">روابط سريعة</h4>
-            <ul className="space-y-2 text-xs">
-              <li><a href="#hero" className="hover:text-brand-orange transition-colors">الصفحة الرئيسية</a></li>
-              <li><a href="#inventory" className="hover:text-brand-orange transition-colors">أسطول السيارات المتاحة</a></li>
-              <li><a href="#calculator" className="hover:text-brand-orange transition-colors">حاسبة التقسيط والأقساط</a></li>
-              <li><a href="#inspection" className="hover:text-brand-orange transition-colors">معايير الفحص المعتمد</a></li>
-              <li><a href="#why-us" className="hover:text-brand-orange transition-colors">لماذا أوتو محمد نبيل</a></li>
+          <div>
+            <h4 className="text-xs uppercase tracking-widest text-[#C9B37E] font-bold mb-4 flex items-center gap-2">
+              <span className="w-2 h-0.5 bg-[#C9B37E]" />
+              روابط المعرض
+            </h4>
+            <ul className="space-y-2.5 text-xs">
               <li>
-                <button
-                  onClick={onOpenAdmin}
-                  className="text-brand-orange hover:underline font-bold flex items-center gap-1 mt-1"
-                >
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>بوابة إدارة المعرض والـ CRM</span>
-                </button>
+                <a href="#inventory" className="hover:text-[#FF4B16] transition-colors flex items-center gap-1.5">
+                  <span className="text-[#FF4B16]">•</span> أسطول السيارات المتاحة
+                </a>
+              </li>
+              <li>
+                <a href="#viewing" className="hover:text-[#FF4B16] transition-colors flex items-center gap-1.5">
+                  <span className="text-[#FF4B16]">•</span> حجز معاينة VIP خاصة
+                </a>
+              </li>
+              <li>
+                <a href="#services" className="hover:text-[#FF4B16] transition-colors flex items-center gap-1.5">
+                  <span className="text-[#FF4B16]">•</span> خدمات المعرض الفاخرة
+                </a>
+              </li>
+              <li>
+                <a href="#calculator" className="hover:text-[#FF4B16] transition-colors flex items-center gap-1.5">
+                  <span className="text-[#FF4B16]">•</span> حاسبة التقسيط والتمويل
+                </a>
+              </li>
+              <li>
+                <a href="#inspection" className="hover:text-[#FF4B16] transition-colors flex items-center gap-1.5">
+                  <span className="text-[#FF4B16]">•</span> معايير الفحص المعتمد
+                </a>
+              </li>
+              <li>
+                <a href="#about" className="hover:text-[#FF4B16] transition-colors flex items-center gap-1.5">
+                  <span className="text-[#FF4B16]">•</span> قصة أوتو محمد نبيل
+                </a>
               </li>
             </ul>
           </div>
 
-          {/* Contact Details */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-extrabold text-white">بيانات الاتصال المباشر</h4>
-            <div className="space-y-2.5">
-              <a
-                href={SHOWROOM_CONTACT.phoneHref}
-                className="flex items-center gap-2 text-white hover:text-brand-orange transition-colors font-bold"
-                dir="ltr"
-              >
-                <Phone className="w-4 h-4 text-brand-orange" />
-                <span>{SHOWROOM_CONTACT.phoneDisplay}</span>
-              </a>
-
-              <a
-                href={SHOWROOM_CONTACT.whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300 font-bold transition-colors"
-                dir="ltr"
-              >
-                <MessageCircle className="w-4 h-4 fill-current" />
-                <span>{SHOWROOM_CONTACT.whatsappDisplay} (واتساب)</span>
-              </a>
-
-              <div className="flex items-start gap-2 text-gray-300">
-                <MapPin className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
-                <span>{SHOWROOM_CONTACT.address}</span>
-              </div>
-
-              <div className="flex items-center gap-2 text-gray-400">
-                <Clock className="w-4 h-4 text-gray-500 shrink-0" />
-                <span>{SHOWROOM_CONTACT.workingHours}</span>
-              </div>
-            </div>
+          {/* Services & Guarantees */}
+          <div>
+            <h4 className="text-xs uppercase tracking-widest text-[#C9B37E] font-bold mb-4 flex items-center gap-2">
+              <span className="w-2 h-0.5 bg-[#C9B37E]" />
+              الضمان والخدمات
+            </h4>
+            <ul className="space-y-2.5 text-xs text-[#9EA199]">
+              <li className="flex items-start gap-2">
+                <span className="text-[#FF4B16] font-bold">✓</span>
+                <span>فحص فني شامل 100 نقطة معتمد مع كل سيارة</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-[#FF4B16] font-bold">✓</span>
+                <span>فابريكا بالكامل وخالية من أي حوادث سابقة</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-[#FF4B16] font-bold">✓</span>
+                <span>تقسيط بنكي مباشر بأقل فائدة وأسهل إجراءات</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-[#FF4B16] font-bold">✓</span>
+                <span>استبدال فوري لسيارتك بأعلى سعر سوقي عادل</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-[#FF4B16] font-bold">✓</span>
+                <span>تسليم فوري في نفس اليوم مع إنهاء التراخيص</span>
+              </li>
+            </ul>
           </div>
 
-          {/* Map & Directions */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-extrabold text-white">زيارة مقر المعرض</h4>
-            <p className="text-xs text-gray-400 leading-relaxed">
-              يسعدنا استقبالكم يومياً في معرضنا بميت غمر لمعاينة السيارات وتجربتها على أرض الواقع.
-            </p>
-            <a
-              href="https://maps.google.com/?q=30.7183,31.2617"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs border border-white/10 transition-all"
-            >
-              <MapPin className="w-4 h-4 text-brand-orange" />
-              <span>الاتجاهات على خرائط Google</span>
-              <ExternalLink className="w-3 h-3 text-gray-400" />
-            </a>
+          {/* Contact & Showroom Visit */}
+          <div>
+            <h4 className="text-xs uppercase tracking-widest text-[#C9B37E] font-bold mb-4 flex items-center gap-2">
+              <span className="w-2 h-0.5 bg-[#C9B37E]" />
+              تواصل وزيارة المعرض
+            </h4>
+            <ul className="space-y-3 text-xs">
+              <li className="flex items-start gap-2.5">
+                <MapPin className="w-4 h-4 text-[#FF4B16] flex-shrink-0 mt-0.5" />
+                <div>
+                  <span className="text-[#F1EEE6] font-medium block">{SHOWROOM_CONTACT.address}</span>
+                  <a
+                    href={SHOWROOM_CONTACT.mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#FF4B16] hover:underline inline-flex items-center gap-1 mt-0.5 text-[11px]"
+                  >
+                    <span>فتح الموقع على خرائط Google</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </li>
+
+              <li className="flex items-center gap-2.5">
+                <Phone className="w-4 h-4 text-[#FF4B16] flex-shrink-0" />
+                <div>
+                  <span className="text-[10px] text-[#9EA199] block">الاتصال المباشر:</span>
+                  <a href={`tel:${SHOWROOM_CONTACT.phone}`} dir="ltr" className="text-[#F1EEE6] font-bold hover:text-[#FF4B16]">
+                    {SHOWROOM_CONTACT.phoneFormatted}
+                  </a>
+                </div>
+              </li>
+
+              <li className="flex items-center gap-2.5">
+                <MessageCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                <div>
+                  <span className="text-[10px] text-[#9EA199] block">خدمة العملاء عبر واتساب:</span>
+                  <a
+                    href={`https://wa.me/${SHOWROOM_CONTACT.whatsapp}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    dir="ltr"
+                    className="text-[#F1EEE6] font-bold hover:text-emerald-400"
+                  >
+                    +20 11 0710 8185
+                  </a>
+                </div>
+              </li>
+
+              <li className="flex items-start gap-2.5">
+                <Clock className="w-4 h-4 text-[#C9B37E] flex-shrink-0 mt-0.5" />
+                <div>
+                  <span className="text-[10px] text-[#9EA199] block">أوقات العمل اليومية:</span>
+                  <span className="text-[#F1EEE6] font-medium">{SHOWROOM_CONTACT.workingHours}</span>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
-          <div>
-            جميع الحقوق محفوظة © {currentYear} سوق أوتو محمد نبيل للسيارات
-          </div>
-          <div className="flex items-center gap-1">
-            <span>مدعوم ومطور بواسطة</span>
-            <span className="text-white font-bold">Performax 1</span>
+        {/* Bottom Bar */}
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#9EA199]">
+          <p>© {currentYear} سوق أوتو محمد نبيل للسيارات. جميع الحقوق محفوظة.</p>
+
+          <div className="flex items-center gap-6">
+            <a
+              href={`https://wa.me/${SHOWROOM_CONTACT.whatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#FF4B16] transition-colors"
+            >
+              واتساب
+            </a>
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#FF4B16] transition-colors"
+            >
+              فيسبوك
+            </a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#FF4B16] transition-colors"
+            >
+              إنستغرام
+            </a>
+            <a
+              href="https://tiktok.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#FF4B16] transition-colors"
+            >
+              تيك توك
+            </a>
           </div>
         </div>
       </div>

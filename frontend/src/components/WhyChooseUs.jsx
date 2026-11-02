@@ -1,83 +1,83 @@
 import React from 'react';
-import { Award, ShieldCheck, Repeat, Clock, Users, ThumbsUp, Sparkles, MapPin } from 'lucide-react';
-import { SHOWROOM_CONTACT } from '../services/api';
+import { ShieldCheck, Award, Users, CheckCircle2, Star, Sparkles, Building2 } from 'lucide-react';
 
-export default function WhyChooseUs({ onOpenInquiry }) {
+export default function WhyChooseUs() {
   const stats = [
-    { number: '+18', label: 'عاماً من الخبرة والريادة', sub: 'تأسس عام 2007' },
-    { number: '+1,800', label: 'سيارة تم تسليمها بنجاح', sub: 'للعملاء في أنحاء مصر' },
-    { number: '100%', label: 'ضمان الفحص والشفافية', sub: 'فابريكة بالكامل معتمدة' },
-    { number: '24', label: 'ساعة إنهاء إجراءات التقسيط', sub: 'بأسرع موافقة بنكية' },
+    { value: '18+', label: 'عاماً من الخبرة', desc: 'ريادة موثوقة في سوق السيارات الفاخرة بمصر منذ 2008' },
+    { value: '100%', label: 'فابريكا معتمدة', desc: 'كل سيارة مفحوصة بدقة 100 نقطة ومطابقة للمواصفات' },
+    { value: '3,800+', label: 'عميل سعيد', desc: 'علاقات ثقة ممتدة مع عملائنا في القاهرة والمحافظات' },
+    { value: '24 ساعة', label: 'تسليم فوري', desc: 'إنهاء فوري لإجراءات الترخيص والتمويل والاستبدال' }
   ];
 
   return (
-    <section id="why-us" className="py-16 md:py-24 bg-dark-900 border-t border-white/5 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-orange/10 border border-brand-orange/20 text-brand-orange text-xs font-bold mb-3">
-            <Award className="w-4 h-4" />
-            <span>ثقة وبناء سمعة امتدت لسنوات</span>
-          </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-white">
-            لماذا يختار العملاء سوق أوتو محمد نبيل؟
-          </h2>
-          <p className="text-sm text-gray-400 mt-3 leading-relaxed">
-            منذ انطلاقنا عام 2007 في ميت غمر، وضعنا مبدأ الأمانة والشفافية معياراً أساسياً لكل صفقة، لنكون الوجهة الأولى لكل باحث عن سيارة مميزة ومضمونة.
-          </p>
-        </div>
+    <section id="about" className="py-24 bg-gradient-to-b from-[#0A0C0B] via-[#0E1110] to-[#0A0C0B] border-t border-white/5 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          
+          {/* Story Text */}
+          <div>
+            <span className="gx-kicker gx-kicker-orange mb-3">
+              منذ 2008 • الريادة والمصداقية
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F1EEE6] tracking-tight mt-2 mb-6">
+              سوق أوتو محمد نبيل.<br />
+              <span className="text-[#C9B37E]">حيث تلتقي الفخامة بالثقة.</span>
+            </h2>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
-          {stats.map((s, idx) => (
-            <div key={idx} className="glass-panel p-6 rounded-2xl text-center border border-white/5">
-              <div className="text-3xl sm:text-5xl font-black text-brand-orange mb-2 font-mono">
-                {s.number}
-              </div>
-              <div className="text-sm font-bold text-white mb-1">{s.label}</div>
-              <div className="text-xs text-gray-500">{s.sub}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* 3 Core Pillars */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-white/5 hover:border-brand-orange/30 transition-all flex flex-col justify-between">
-            <div>
-              <div className="w-12 h-12 rounded-2xl bg-brand-orange/15 border border-brand-orange/30 flex items-center justify-center text-brand-orange mb-5">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-bold text-white mb-2">انتقاء صارم لكل سيارة</h3>
-              <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
-                لا نقبل عرض أي سيارة تعرضت لحوادث جسيمة أو بها تلاعب بعداد الكيلومترات. سياراتنا جميعها بحالة كسر الزيرو مع سجل صيانة منتظم.
+            <div className="space-y-4 text-sm text-[#B7B9B0] leading-relaxed font-light">
+              <p>
+                على مدار أكثر من ثمانية عشر عاماً، بنى معرض <strong className="text-[#F1EEE6]">أوتو محمد نبيل</strong> اسماً راسخاً في سوق السيارات المصري كوجهة أولى للباحثين عن السيارات الفاخرة وكسر الزيرو المضمونة بالكامل.
+              </p>
+              <p>
+                نحن لا نبيع مجرد سيارات، بل نختار كل قطعة بعناية استثنائية ونخضعها لفحص ميكانيكي وكهربائي وهيكلي معتمد، لنمنح عملاءنا راحة البال التامة وتجربة قيادة تليق بتطلعاتهم.
               </p>
             </div>
-          </div>
 
-          <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-white/5 hover:border-brand-orange/30 transition-all flex flex-col justify-between">
-            <div>
-              <div className="w-12 h-12 rounded-2xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-5">
-                <Repeat className="w-6 h-6" />
+            {/* Checkpoints */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-8 pt-6 border-t border-white/10 text-xs">
+              <div className="flex items-center gap-2 text-[#F1EEE6]">
+                <CheckCircle2 className="w-4 h-4 text-[#FF4B16] flex-shrink-0" />
+                <span>تقارير فحص فنية معتمدة وموثقة</span>
               </div>
-              <h3 className="text-lg font-bold text-white mb-2">استبدال سيارتك القديمة بأعلى تثمين</h3>
-              <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
-                وفر وقتك وجهدك في بيع سيارتك القديمة. نقوم بتثمين سيارتك بقيمة عادلة وفق أسعار السوق الحالية، وتستلم سيارتك الجديدة في نفس اليوم.
-              </p>
+              <div className="flex items-center gap-2 text-[#F1EEE6]">
+                <CheckCircle2 className="w-4 h-4 text-[#FF4B16] flex-shrink-0" />
+                <span>استبدال فوري بأعلى تقييم سوقي</span>
+              </div>
+              <div className="flex items-center gap-2 text-[#F1EEE6]">
+                <CheckCircle2 className="w-4 h-4 text-[#FF4B16] flex-shrink-0" />
+                <span>تعاقد مباشر مع أكبر البنوك المصرية</span>
+              </div>
+              <div className="flex items-center gap-2 text-[#F1EEE6]">
+                <CheckCircle2 className="w-4 h-4 text-[#FF4B16] flex-shrink-0" />
+                <span>ضمان سلامة الهيكل والمحرك والفتيس</span>
+              </div>
             </div>
           </div>
 
-          <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-white/5 hover:border-brand-orange/30 transition-all flex flex-col justify-between">
-            <div>
-              <div className="w-12 h-12 rounded-2xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-5">
-                <Clock className="w-6 h-6" />
+          {/* Stats Box */}
+          <div className="grid grid-cols-2 gap-4 sm:gap-6">
+            {stats.map((s, idx) => (
+              <div
+                key={idx}
+                className="luxury-card rounded-2xl p-6 sm:p-8 border border-white/8 text-center flex flex-col justify-center items-center hover:border-[#FF4B16]/30 transition-colors"
+              >
+                <span className="font-mono text-3xl sm:text-4xl font-black text-[#FF4B16] mb-1">
+                  {s.value}
+                </span>
+                <h4 className="text-sm font-bold text-[#F1EEE6] mb-1">
+                  {s.label}
+                </h4>
+                <p className="text-[11px] text-[#9EA199] leading-relaxed">
+                  {s.desc}
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-white mb-2">إجراءات ترخيص وتسجيل فورية</h3>
-              <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
-                فريقنا القانوني والإداري يتولى كافة أوراق نقل الملكية وشهادات البيانات والمخالفات، لتستلم رخصتك وسيارتك جاهزة تماماً بدون أي عناء.
-              </p>
-            </div>
+            ))}
           </div>
+
         </div>
+
       </div>
     </section>
   );

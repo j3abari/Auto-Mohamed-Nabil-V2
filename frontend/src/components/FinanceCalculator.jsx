@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calculator, Percent, Calendar, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Calculator, Percent, Calendar, CheckCircle2, ArrowRight, Banknote } from 'lucide-react';
 
 export default function FinanceCalculator({ onOpenInquiry }) {
   const [carPrice, setCarPrice] = useState(2500000);
@@ -19,51 +19,54 @@ export default function FinanceCalculator({ onOpenInquiry }) {
   const formatEGP = (val) => new Intl.NumberFormat('ar-EG').format(val) + ' ج.م';
 
   return (
-    <section id="calculator" className="py-16 md:py-24 relative overflow-hidden bg-dark-900 border-y border-white/5">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-orange/10 border border-brand-orange/20 text-brand-orange text-xs font-bold mb-3">
-            <Calculator className="w-3.5 h-3.5" />
-            <span>حاسبة التمويل والتقسيط الذكية</span>
-          </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-white">
-            احسب قسط سيارتك الجديد بكل شفافية
+    <section id="calculator" className="py-24 bg-[#0E1110] border-t border-b border-white/5 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Header */}
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <span className="gx-kicker gx-kicker-orange mb-3">
+            حاسبة التمويل والأقساط • Instalment Calculator
+          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F1EEE6] tracking-tight mt-2">
+            احسب قسط سيارتك <span className="text-[#FF4B16]">بكل شفافية.</span>
           </h2>
-          <p className="text-sm text-gray-400 mt-2">
-            باقات تقسيط مصرفية ومباشرة مرنة بمقدم يبدأ من 20% وفترات سداد ميسرة تصل إلى 5 سنوات
+          <p className="text-sm text-[#B7B9B0] mt-2 font-light">
+            باقات تقسيط بنكية مباشرة مع كبرى البنوك المصرية بمقدم يبدأ من 20% وفترات سداد ميسرة تصل إلى 5 سنوات.
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl">
+        <div className="max-w-4xl mx-auto bg-[#141715] border border-white/10 p-6 sm:p-10 rounded-3xl shadow-2xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            
             {/* Inputs Column */}
             <div className="space-y-6">
+              
               {/* Car Price */}
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <label className="text-xs font-bold text-gray-300">سعر السيارة المقدر</label>
-                  <span className="text-sm font-black text-brand-orange">{formatEGP(carPrice)}</span>
+                  <label className="text-xs font-bold text-[#F1EEE6]">سعر السيارة المقدر</label>
+                  <span className="text-sm font-black text-[#FF4B16]">{formatEGP(carPrice)}</span>
                 </div>
                 <input
                   type="range"
                   min="1000000"
-                  max="4000000"
+                  max="4500000"
                   step="50000"
                   value={carPrice}
                   onChange={(e) => setCarPrice(Number(e.target.value))}
-                  className="w-full accent-brand-orange cursor-pointer"
+                  className="w-full accent-[#FF4B16] cursor-pointer"
                 />
-                <div className="flex justify-between text-[10px] text-gray-500 mt-1">
+                <div className="flex justify-between text-[10px] text-[#9EA199] mt-1 font-mono">
                   <span>1,000,000 ج.م</span>
-                  <span>4,000,000 ج.م</span>
+                  <span>4,500,000 ج.م</span>
                 </div>
               </div>
 
               {/* Down Payment % */}
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <label className="text-xs font-bold text-gray-300">نسبة الدفعة المقدمة</label>
-                  <span className="text-sm font-black text-brand-orange">{downPaymentPercent}% ({formatEGP(downPaymentAmount)})</span>
+                  <label className="text-xs font-bold text-[#F1EEE6]">نسبة الدفعة المقدمة</label>
+                  <span className="text-sm font-black text-[#FF4B16]">{downPaymentPercent}% ({formatEGP(downPaymentAmount)})</span>
                 </div>
                 <div className="grid grid-cols-4 gap-2 mb-2">
                   {[20, 30, 40, 50].map((pct) => (
@@ -73,8 +76,8 @@ export default function FinanceCalculator({ onOpenInquiry }) {
                       onClick={() => setDownPaymentPercent(pct)}
                       className={`py-2 text-xs font-bold rounded-xl border transition-all ${
                         downPaymentPercent === pct
-                          ? 'bg-brand-orange text-white border-brand-orange shadow-brand'
-                          : 'bg-dark-950 text-gray-400 border-white/10 hover:text-white'
+                          ? 'bg-[#FF4B16] text-white border-[#FF4B16] shadow-md shadow-[#FF4B16]/20'
+                          : 'bg-[#0E1110] text-[#B7B9B0] border-white/10 hover:text-white'
                       }`}
                     >
                       {pct}%
@@ -86,8 +89,8 @@ export default function FinanceCalculator({ onOpenInquiry }) {
               {/* Tenure Years */}
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <label className="text-xs font-bold text-gray-300">مدة التقسيط</label>
-                  <span className="text-sm font-black text-brand-orange">{years} سنوات ({totalMonths} شهر)</span>
+                  <label className="text-xs font-bold text-[#F1EEE6]">مدة التقسيط</label>
+                  <span className="text-sm font-black text-[#FF4B16]">{years} سنوات ({totalMonths} شهر)</span>
                 </div>
                 <div className="grid grid-cols-5 gap-2">
                   {[1, 2, 3, 4, 5].map((yr) => (
@@ -97,57 +100,57 @@ export default function FinanceCalculator({ onOpenInquiry }) {
                       onClick={() => setYears(yr)}
                       className={`py-2 text-xs font-bold rounded-xl border transition-all ${
                         years === yr
-                          ? 'bg-brand-orange text-white border-brand-orange shadow-brand'
-                          : 'bg-dark-950 text-gray-400 border-white/10 hover:text-white'
+                          ? 'bg-[#FF4B16] text-white border-[#FF4B16] shadow-md shadow-[#FF4B16]/20'
+                          : 'bg-[#0E1110] text-[#B7B9B0] border-white/10 hover:text-white'
                       }`}
                     >
-                      {yr} {yr === 1 ? 'سنة' : yr === 2 ? 'سنتان' : 'سنوات'}
+                      {yr} {yr === 1 ? 'سنة' : yr === 2 ? 'سنتين' : 'سنوات'}
                     </button>
                   ))}
                 </div>
               </div>
+
             </div>
 
-            {/* Result Column */}
-            <div className="bg-dark-950 p-6 rounded-2xl border border-brand-orange/30 flex flex-col justify-between">
+            {/* Output Calculation Box */}
+            <div className="bg-[#0A0C0B] border border-white/10 p-6 sm:p-8 rounded-2xl flex flex-col justify-between">
               <div>
-                <span className="text-xs text-gray-400 font-semibold block mb-1">القسط الشهري التقريبي:</span>
-                <div className="text-3xl sm:text-4xl font-black text-white mb-2">
+                <span className="text-[11px] font-bold text-[#C9B37E] uppercase tracking-wider block mb-1">
+                  القسط الشهري التقديري
+                </span>
+                <div className="text-3xl sm:text-4xl font-black text-[#F1EEE6] mb-6">
                   {formatEGP(monthlyInstallment)}
-                  <span className="text-xs font-normal text-gray-400 mr-2">/ شهرياً</span>
+                  <span className="text-xs font-normal text-[#9EA199] block mt-1">شهرياً على مدار {years} سنوات</span>
                 </div>
 
-                <div className="space-y-2 py-4 border-t border-b border-white/10 my-4 text-xs text-gray-300">
+                <div className="space-y-3 py-4 border-y border-white/10 text-xs">
                   <div className="flex justify-between">
-                    <span className="text-gray-400">الدفعة المقدمة:</span>
-                    <span className="font-bold text-white">{formatEGP(downPaymentAmount)}</span>
+                    <span className="text-[#9EA199]">المقدم المطلوب:</span>
+                    <span className="font-bold text-[#F1EEE6]">{formatEGP(downPaymentAmount)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">المبلغ الممول:</span>
-                    <span className="font-bold text-white">{formatEGP(financedAmount)}</span>
+                    <span className="text-[#9EA199]">قيمة التمويل المتبقية:</span>
+                    <span className="font-bold text-[#F1EEE6]">{formatEGP(financedAmount)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">إجمالي مدة التمويل:</span>
-                    <span className="font-bold text-white">{totalMonths} شهر</span>
+                    <span className="text-[#9EA199]">شروط التقسيط:</span>
+                    <span className="font-bold text-emerald-400">بصورة البطاقة فقط</span>
                   </div>
-                </div>
-
-                <div className="flex items-center gap-2 text-xs text-emerald-400 mb-6">
-                  <CheckCircle2 className="w-4 h-4 shrink-0" />
-                  <span>موافقة ائتمانية سريعة بأقل المستندات وبدون تعقيد</span>
                 </div>
               </div>
 
-              <button
-                onClick={() => onOpenInquiry({ type: 'finance', title: 'طلب تمويل وتقسيط سيارة' })}
-                className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-brand-orange to-brand-hover text-white font-extrabold text-xs sm:text-sm shadow-brand hover:brightness-110 transition-all flex items-center justify-center gap-2"
+              <a
+                href="#viewing"
+                className="mt-6 w-full py-3.5 px-4 rounded-xl bg-[#FF4B16] hover:bg-[#E03E0F] text-white font-bold text-xs sm:text-sm text-center shadow-lg shadow-[#FF4B16]/20 transition-all flex items-center justify-center gap-2"
               >
-                <span>طلب دراسة تمويل وتقسيط</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+                <span>طلب تمويل أو استبدال للسيارة</span>
+                <ArrowRight className="w-4 h-4 rotate-180" />
+              </a>
             </div>
+
           </div>
         </div>
+
       </div>
     </section>
   );
