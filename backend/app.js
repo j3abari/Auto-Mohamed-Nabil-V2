@@ -14,6 +14,7 @@ const carsRoutes      = require('./src/routes/cars.routes');
 const inquiryRoutes   = require('./src/routes/inquiries.routes');
 const analyticsRoutes = require('./src/routes/analytics.routes');
 const auditRoutes     = require('./src/routes/audit.routes');
+const settingsRoutes  = require('./src/routes/settings.routes');
 
 // Error handlers
 const { notFound, errorHandler } = require('./src/middlewares/error.middleware');
@@ -43,7 +44,7 @@ if (hasFrontendDist) {
     }));
 }
 
-// ── CORS — Allow local, production domain, and any render subdomain ───────
+// ── CORS — Allow local network, production domain, and any render subdomain ─
 const allowedOrigins = [
     'http://localhost:3000',
     'http://localhost:5173',
@@ -53,15 +54,36 @@ const allowedOrigins = [
     'https://auto-mohamed-nabil-v2.onrender.co'
 ].filter(Boolean);
 
+const isLocalOrPrivateOrigin = (origin) => {
+    try {
+        const url = new URL(origin);
+        const host = url.hostname;
+        return (
+            host === 'localhost' ||
+            host === '127.0.0.1' ||
+            host.startsWith('192.168.') ||
+            host.startsWith('10.') ||
+            (host.startsWith('172.') && parseInt(host.split('.')[1], 10) >= 16 && parseInt(host.split('.')[1], 10) <= 31) ||
+            host.endsWith('.local') ||
+            host.includes('ngrok') ||
+            host.includes('loca.lt') ||
+            host.includes('trycloudflare.com')
+        );
+    } catch {
+        return false;
+    }
+};
+
 app.use(cors({
     origin(origin, callback) {
         // Allow requests with no origin (curl, mobile apps, local server-to-server)
         if (!origin) return callback(null, true);
 
-        // Check exact match, render subdomains, or development mode
+        // Check exact match, render subdomains, local WiFi IPs, or development mode
         const isAllowed = allowedOrigins.includes(origin) ||
             origin.endsWith('.onrender.com') ||
             origin.endsWith('.onrender.co') ||
+            isLocalOrPrivateOrigin(origin) ||
             process.env.NODE_ENV === 'development';
 
         if (isAllowed) {
@@ -117,6 +139,7 @@ app.use('/api/cars',       carsRoutes);
 app.use('/api/inquiries',  inquiryRoutes);
 app.use('/api/analytics',  analyticsRoutes);
 app.use('/api/audit-logs', auditRoutes);
+app.use('/api/settings',   settingsRoutes);
 
 // ── SPA Fallback (serve index.html for all non-API paths) ───────────────────
 if (hasFrontendDist) {

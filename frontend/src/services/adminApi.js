@@ -17,6 +17,24 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Response interceptor to catch 401 Unauthorized / Token Expiry
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Clear expired credentials
+      localStorage.removeItem('mnabil_admin_token');
+      localStorage.removeItem('mnabil_admin_user');
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('mnabil_auth_expired', {
+          detail: { message: error.response?.data?.message || 'انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجدداً' }
+        }));
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Admin Auth
 export async function loginAdmin(username, password) {
   const res = await api.post('/auth/login', { username, password });
@@ -147,4 +165,24 @@ export async function postAuditLog(action, entity_type = 'admin_action') {
   } catch {
     // fail silently — log is best-effort
   }
+}
+
+// Showroom Settings & Integration (Announcement, Webhook, Google Sheets, Maintenance)
+export async function fetchShowroomSettings() {
+  try {
+    const res = await api.get('/settings');
+    return res.data?.data || null;
+  } catch {
+    return null;
+  }
+}
+
+export async function updateShowroomSettings(settingsPayload) {
+  const res = await api.put('/settings', settingsPayload);
+  return res.data?.data;
+}
+
+export async function syncAllToGoogleSheets(url) {
+  const res = await api.post('/settings/sheets/sync-all', { url });
+  return res.data;
 }

@@ -10,9 +10,11 @@ import WhyChooseUs from './components/WhyChooseUs';
 import Footer from './components/Footer';
 import VehicleDetailPage from './components/VehicleDetailPage';
 import InquiryModal from './components/InquiryModal';
+import AnnouncementBar from './components/AnnouncementBar';
+import MaintenancePage from './components/MaintenancePage';
 import AdminLogin from './components/admin/AdminLogin';
 import AdminDashboard from './components/admin/AdminDashboard';
-import { fetchCars, SHOWROOM_CONTACT, FALLBACK_CARS } from './services/api';
+import { fetchCars, fetchPublicSettings, SHOWROOM_CONTACT, FALLBACK_CARS } from './services/api';
 import { getCurrentAdmin, logoutAdmin } from './services/adminApi';
 import { MessageCircle, ArrowUp } from 'lucide-react';
 
@@ -50,6 +52,14 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [inquiryContext, setInquiryContext] = useState(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [settings, setSettings] = useState(() => {
+    try {
+      const saved = localStorage.getItem('mnabil_showroom_settings');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
 
   // Filter state for hero search
   const [heroFilters, setHeroFilters] = useState({
@@ -92,7 +102,7 @@ export default function App() {
     }
   }, []);
 
-  // Listen to popstate, legacy hashchange, and secret staff shortcut (Ctrl+Shift+A)
+  // Listen to popstate, legacy hashchange, secret staff shortcut (Ctrl+Shift+A), and auth expiry
   useEffect(() => {
     const handleRouteSync = () => {
       const clean = normalizeLocationToCleanPath();
@@ -106,17 +116,36 @@ export default function App() {
       }
     };
 
+    const handleAuthExpired = () => {
+      setAdminUser(null);
+      navigate('/');
+    };
+
     window.addEventListener('popstate', handleRouteSync);
     window.addEventListener('hashchange', handleRouteSync);
     window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('mnabil_auth_expired', handleAuthExpired);
     return () => {
       window.removeEventListener('popstate', handleRouteSync);
       window.removeEventListener('hashchange', handleRouteSync);
       window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('mnabil_auth_expired', handleAuthExpired);
     };
   }, [navigate]);
 
-  // Fetch cars on mount
+  // Inject custom head code (Meta Pixel, Google Analytics, etc.)
+  useEffect(() => {
+    if (settings?.custom_head_code && typeof document !== 'undefined') {
+      const existing = document.getElementById('mnabil-custom-head-code');
+      if (existing) existing.remove();
+      const div = document.createElement('div');
+      div.id = 'mnabil-custom-head-code';
+      div.innerHTML = settings.custom_head_code;
+      document.head.appendChild(div);
+    }
+  }, [settings?.custom_head_code]);
+
+  // Fetch cars & public showroom settings on mount
   useEffect(() => {
     async function loadInventory() {
       setLoading(true);
@@ -131,7 +160,23 @@ export default function App() {
         setLoading(false);
       }
     }
+
+    async function loadSettings() {
+      try {
+        const data = await fetchPublicSettings();
+        if (data) {
+          setSettings(data);
+          try {
+            localStorage.setItem('mnabil_showroom_settings', JSON.stringify(data));
+          } catch {}
+        }
+      } catch (err) {
+        console.warn('Failed to fetch settings:', err);
+      }
+    }
+
     loadInventory();
+    loadSettings();
 
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 400);
@@ -201,8 +246,21 @@ export default function App() {
   const handleLogoutAdmin = () => {
     logoutAdmin();
     setAdminUser(null);
-    navigate('/login');
+    navigate('/');
   };
+
+  // ----------------------------------------------------
+  // 0. MAINTENANCE PREVIEW ROUTE (/maintenance-preview)
+  // ----------------------------------------------------
+  if (currentPath === '/maintenance-preview') {
+    return (
+      <MaintenancePage
+        isPreview={true}
+        onBackToAdmin={() => navigate('/admin')}
+        onNavigate={navigate}
+      />
+    );
+  }
 
   // ----------------------------------------------------
   // 1. ADMIN PORTAL & CRM (Clean URLs: /admin, /login, /crm)
@@ -239,6 +297,13 @@ export default function App() {
         onSwitchToSite={() => navigate('/')}
       />
     );
+  }
+
+  // ----------------------------------------------------
+  // 1.5 MAINTENANCE MODE (Active for non-admin visitors)
+  // ----------------------------------------------------
+  if (settings?.maintenance_mode && !adminUser) {
+    return <MaintenancePage onNavigate={navigate} />;
   }
 
   // ----------------------------------------------------
@@ -299,6 +364,9 @@ export default function App() {
       className="min-h-screen bg-[#faf8f3] text-[#1f2937] font-sans selection:bg-[#c2602b] selection:text-white"
       dir="rtl"
     >
+      {/* Announcement Bar with Countdown (Exact Dr Mahmoud Feature) */}
+      <AnnouncementBar settings={settings} />
+
       {/* Luxury Sticky Navbar (Clean Paths, Zero #) */}
       <Navbar
         currentPath={currentPath}
@@ -358,6 +426,47 @@ export default function App() {
           <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-[#faf8f3]" />
         </a>
       </div>
+
+      {/* Floating Admin Maintenance Mode Alert Badge (Exact Dr Mahmoud Behavior) */}
+      {settings?.maintenance_mode && adminUser && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: '24px',
+            right: '24px',
+            background: '#991b1b',
+            color: '#ffffff',
+            padding: '12px 18px',
+            borderRadius: '14px',
+            boxShadow: '0 12px 35px rgba(0,0,0,0.45)',
+            zIndex: 999999,
+            fontFamily: "'Alexandria', sans-serif",
+            fontSize: '13px',
+            fontWeight: 700,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            border: '2px solid #fca5a5',
+          }}
+        >
+          <span>⚠️ وضع الصيانة مفعل للزوار حالياً! (الموقع يفتح للإدارة فقط)</span>
+          <button
+            onClick={() => navigate('/maintenance-preview')}
+            style={{
+              background: '#ffffff',
+              color: '#991b1b',
+              border: 'none',
+              padding: '6px 12px',
+              borderRadius: '8px',
+              fontSize: '12px',
+              fontWeight: 700,
+              cursor: 'pointer',
+            }}
+          >
+            معاينة كما يراه الزوار ↗
+          </button>
+        </div>
+      )}
     </div>
   );
 }

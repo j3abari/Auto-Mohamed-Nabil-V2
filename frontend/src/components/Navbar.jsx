@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Phone, MessageCircle, Menu, X } from 'lucide-react';
 import { SHOWROOM_CONTACT } from '../services/api';
 
@@ -171,7 +171,7 @@ export default function Navbar({ currentPath = '/', onNavigate }) {
           <div className="pt-3 border-t border-black/[0.07] flex flex-col gap-2.5">
             <a
               href={`tel:${SHOWROOM_CONTACT.phone}`}
-              className="flex items-center justify-center gap-2 py-2.5 rounded-lg bg-black/5 text-white font-medium text-xs"
+              className="flex items-center justify-center gap-2 py-2.5 rounded-lg bg-black/5 hover:bg-black/10 text-[#1f2937] font-semibold text-xs transition-colors"
             >
               <Phone className="w-3.5 h-3.5 text-[#c2602b]" />
               <span dir="ltr">{SHOWROOM_CONTACT.phoneFormatted}</span>
@@ -180,7 +180,7 @@ export default function Navbar({ currentPath = '/', onNavigate }) {
               href={`https://wa.me/${SHOWROOM_CONTACT.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#c2602b] text-white font-bold text-xs"
+              className="flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#c2602b] hover:bg-[#a24d1f] text-white font-bold text-xs shadow-md shadow-[#c2602b]/25 transition-all"
             >
               <MessageCircle className="w-4 h-4" />
               <span>محادثة واتساب مباشرة</span>

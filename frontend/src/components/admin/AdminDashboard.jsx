@@ -16,6 +16,9 @@ import {
   fetchStaffUsers,
   createStaffUser as createStaffUserApi,
   toggleStaffUserStatus,
+  fetchShowroomSettings,
+  updateShowroomSettings,
+  syncAllToGoogleSheets,
 } from '../../services/adminApi';
 import { SHOWROOM_CONTACT, FALLBACK_CARS } from '../../services/api';
 
@@ -256,6 +259,8 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
   const [newMediaUrl, setNewMediaUrl] = useState('');
   const [newMediaTitle, setNewMediaTitle] = useState('');
 
+  const [isSyncingSheets, setIsSyncingSheets] = useState(false);
+
   // Showroom Settings State
   const [settings, setSettings] = useState(() => {
     try {
@@ -323,17 +328,33 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
   const loadAllData = async () => {
     setLoading(true);
     try {
-      const [overviewRes, inqRes, carsRes, logsRes, staffRes] = await Promise.allSettled([
+      const [overviewRes, inqRes, carsRes, logsRes, staffRes, settingsRes] = await Promise.allSettled([
         fetchAnalyticsOverview(),
         fetchAdminInquiries({ limit: 100 }),
         fetchAdminCars({ limit: 100 }),
         fetchAuditLogs(200),
         fetchStaffUsers(),
+        fetchShowroomSettings(),
       ]);
+
+      // Check for 401 Unauthorized (session expired)
+      const authErr = [overviewRes, inqRes, carsRes, logsRes, staffRes].find(
+        (r) => r.status === 'rejected' && r.reason?.response?.status === 401
+      );
+      if (authErr) {
+        setCloudConnected(false);
+        showToast('انتهت صلاحية الجلسة، جاري تحويلك للموقع...');
+        setTimeout(() => {
+          if (onLogout) onLogout();
+        }, 1200);
+        return;
+      }
 
       if (overviewRes.status === 'fulfilled' && overviewRes.value) {
         setOverviewStats(overviewRes.value);
         setCloudConnected(true);
+      } else {
+        setCloudConnected(false);
       }
 
       if (inqRes.status === 'fulfilled' && inqRes.value?.data) {
@@ -387,6 +408,11 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           email: u.email,
           last_login: u.last_login,
         })));
+      }
+
+      // Load settings from backend
+      if (settingsRes && settingsRes.status === 'fulfilled' && settingsRes.value) {
+        setSettings((prev) => ({ ...prev, ...settingsRes.value }));
       }
 
       setLastSyncTime(new Date().toLocaleTimeString('ar-EG'));
@@ -1000,9 +1026,11 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           top: 0;
           align-self: flex-start;
           height: 100vh;
+          height: 100dvh;
           overflow-y: auto;
           box-shadow: -4px 0 20px rgba(0,0,0,0.08);
           z-index: 50;
+          transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .drm-brand {
           padding: 24px 20px;
@@ -1102,6 +1130,88 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           flex-direction: column;
           min-width: 0;
         }
+        .drm-topbar-quick-exit {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .drm-btn-quick-site {
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          background: #f1f5f9;
+          color: #1e293b;
+          border: 1px solid #cbd5e1;
+          padding: 6px 12px;
+          border-radius: 8px;
+          font-family: inherit;
+          font-size: 12.5px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.2s;
+          white-space: nowrap;
+        }
+        .drm-btn-quick-site:hover {
+          background: #e2e8f0;
+          color: var(--orange);
+        }
+        .drm-btn-quick-logout {
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          background: #fef2f2;
+          color: #dc2626;
+          border: 1px solid #fecaca;
+          padding: 6px 12px;
+          border-radius: 8px;
+          font-family: inherit;
+          font-size: 12.5px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.2s;
+          white-space: nowrap;
+        }
+        .drm-btn-quick-logout:hover {
+          background: #fee2e2;
+          color: #b91c1c;
+        }
+        .drm-sidebar-quick-bar {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 8px;
+          margin-top: 12px;
+        }
+        .drm-sidebar-quick-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          padding: 8px 10px;
+          border-radius: 8px;
+          font-family: inherit;
+          font-size: 12px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.2s;
+          border: none;
+        }
+        .drm-sidebar-quick-btn.site-btn {
+          background: rgba(255, 255, 255, 0.12);
+          color: #ffffff;
+        }
+        .drm-sidebar-quick-btn.site-btn:hover {
+          background: rgba(255, 255, 255, 0.22);
+        }
+        .drm-sidebar-quick-btn.logout-btn {
+          background: rgba(239, 68, 68, 0.22);
+          color: #fca5a5;
+          border: 1px solid rgba(239, 68, 68, 0.35);
+        }
+        .drm-sidebar-quick-btn.logout-btn:hover {
+          background: rgba(239, 68, 68, 0.35);
+          color: #ffffff;
+        }
+
         .drm-topbar {
           background: #fff;
           padding: 16px 28px;
@@ -1115,17 +1225,87 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           flex-wrap: wrap;
           gap: 12px;
         }
-        .drm-topbar h1 {
+        .drm-topbar-row-main {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+        .drm-topbar-title-group {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+        .drm-page-title {
           font-size: 17px;
           font-weight: 800;
           color: var(--primary);
           margin: 0;
+        }
+        .drm-topbar-right-meta {
+          display: flex;
+          align-items: center;
+          gap: 10px;
         }
         .drm-topbar-actions {
           display: flex;
           align-items: center;
           gap: 10px;
           flex-wrap: wrap;
+        }
+        .drm-topbar-actions-row,
+        .drm-topbar-actions-grid {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+        }
+        .btn-text-short {
+          display: none;
+        }
+        .btn-text-full {
+          display: inline;
+        }
+        .drm-presets-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-wrap: wrap;
+          margin-top: 6px;
+        }
+        .drm-sheets-sync-row {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+          margin-top: 8px;
+        }
+        .drm-status-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 14px;
+          border-radius: 50px;
+          font-size: 12.5px;
+          font-weight: 700;
+          white-space: nowrap;
+        }
+        .drm-status-badge.online {
+          background: #e6eaf0;
+          color: #a24d1f;
+        }
+        .drm-status-badge.offline {
+          background: #fee2e2;
+          color: #991b1b;
+        }
+        .drm-status-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #16a34a;
+          box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
+          display: inline-block;
+          flex-shrink: 0;
+        }
+        .drm-status-text-short {
+          display: none;
         }
         .drm-btn {
           display: inline-flex;
@@ -1190,7 +1370,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
         }
         .drm-card-header h3 { font-size: 14.5px; font-weight: 800; color: var(--primary); margin: 0; }
         .drm-card-body { padding: 22px; }
-        .drm-table-responsive { overflow-x: auto; }
+        .drm-table-responsive { overflow-x: auto; width: 100%; }
         .drm-table { width: 100%; border-collapse: collapse; text-align: right; }
         .drm-table th {
           background: #f8fafc;
@@ -1298,25 +1478,469 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           box-shadow: 0 10px 30px rgba(0,0,0,0.25);
           z-index: 200;
         }
+
+        /* Responsive Mobile Styles (Exact Dr Mahmoud Architecture) */
+        .drm-mobile-menu-btn {
+          display: none !important;
+          background: #ffffff;
+          color: var(--primary);
+          border: 1.5px solid var(--border);
+          padding: 7px 12px;
+          border-radius: 8px;
+          font-family: inherit;
+          font-size: 13px;
+          font-weight: 700;
+          cursor: pointer;
+          align-items: center;
+          gap: 6px;
+        }
+        .drm-sidebar-close-btn {
+          display: none;
+          background: rgba(255,255,255,0.15);
+          color: #fff;
+          border: none;
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          font-size: 16px;
+          font-weight: 700;
+          cursor: pointer;
+          align-items: center;
+          justify-content: center;
+        }
+        .drm-sidebar-backdrop {
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(15,23,42,0.65);
+          backdrop-filter: blur(2px);
+          z-index: 9998;
+          opacity: 0;
+          transition: opacity 0.25s ease;
+        }
+        .drm-sidebar-backdrop.open {
+          display: block;
+          opacity: 1;
+        }
+
         @media (max-width: 992px) {
+          .drm-mobile-menu-btn { display: inline-flex !important; }
+          .drm-sidebar-close-btn { display: flex; }
           .drm-sidebar {
             position: fixed;
-            right: -285px;
             top: 0;
+            right: 0;
             bottom: 0;
-            width: 270px;
-            transition: right 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 290px;
+            max-width: 85vw;
+            height: 100vh;
+            height: 100dvh;
+            transform: translateX(105%);
+            transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -8px 0 30px rgba(0,0,0,0.3);
+            z-index: 9999;
           }
-          .drm-sidebar.open { right: 0; }
+          .drm-sidebar.open {
+            transform: translateX(0);
+          }
+          .drm-main {
+            width: 100%;
+            min-width: 0;
+          }
+          .drm-topbar {
+            padding: 12px 16px;
+            gap: 10px;
+          }
+          .drm-topbar h1 {
+            font-size: 16px;
+          }
+          .drm-content {
+            padding: 16px 14px;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .drm-topbar {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            padding: 8px 10px !important;
+            gap: 6px !important;
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: #ffffff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+          }
+          .drm-topbar-row-main {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 6px !important;
+            width: 100% !important;
+            min-height: 30px;
+          }
+          .drm-topbar-title-group {
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            min-width: 0 !important;
+            flex: 1 1 auto !important;
+          }
+          .drm-mobile-menu-btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 4px !important;
+            padding: 4px 8px !important;
+            font-size: 11.5px !important;
+            font-weight: 700 !important;
+            border-radius: 6px !important;
+            white-space: nowrap !important;
+            flex-shrink: 0 !important;
+            height: 28px !important;
+          }
+          .drm-page-title {
+            font-size: 13.5px !important;
+            font-weight: 800 !important;
+            line-height: 1.25 !important;
+            margin: 0 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            color: var(--primary) !important;
+            max-width: 130px !important;
+          }
+          .drm-topbar-right-meta {
+            display: flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+            flex-shrink: 0 !important;
+          }
+          .drm-status-badge {
+            width: auto !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 3px 8px !important;
+            font-size: 10px !important;
+            gap: 4px !important;
+            border-radius: 99px !important;
+            box-sizing: border-box !important;
+            white-space: nowrap !important;
+            flex-shrink: 0 !important;
+            height: 26px !important;
+          }
+          .drm-status-text-full {
+            display: none !important;
+          }
+          .drm-status-text-short {
+            display: inline !important;
+            white-space: nowrap !important;
+          }
+          .drm-topbar-quick-exit {
+            display: flex !important;
+            align-items: center !important;
+            gap: 3px !important;
+            flex-shrink: 0 !important;
+          }
+          .drm-btn-quick-site {
+            padding: 4px 6px !important;
+            font-size: 11px !important;
+            height: 26px !important;
+            border-radius: 6px !important;
+            white-space: nowrap !important;
+          }
+          .drm-btn-quick-logout {
+            padding: 4px 6px !important;
+            font-size: 11px !important;
+            height: 26px !important;
+            border-radius: 6px !important;
+            white-space: nowrap !important;
+          }
+          .drm-topbar-actions {
+            width: 100% !important;
+            display: block !important;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+          .drm-topbar-actions-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 5px !important;
+            width: 100% !important;
+          }
+          .drm-topbar-actions-grid .drm-btn,
+          .drm-topbar-actions-grid .drm-action-btn {
+            width: 100% !important;
+            height: 32px !important;
+            padding: 6px 2px !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            justify-content: center !important;
+            text-align: center !important;
+            box-sizing: border-box !important;
+            border-radius: 7px !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+          }
+          .btn-text-full {
+            display: none !important;
+          }
+          .btn-text-short {
+            display: inline !important;
+            white-space: nowrap !important;
+          }
+          .drm-presets-row {
+            gap: 4px !important;
+          }
+          .drm-presets-row .drm-btn {
+            padding: 4px 7px !important;
+            font-size: 10.5px !important;
+          }
+          .drm-sheets-sync-row {
+            flex-direction: column !important;
+            gap: 8px !important;
+          }
+          .drm-sheets-sync-row input {
+            width: 100% !important;
+            min-width: 0 !important;
+          }
+          .drm-sheets-sync-row button {
+            width: 100% !important;
+            white-space: normal !important;
+            padding: 8px 10px !important;
+            font-size: 11.5px !important;
+            text-align: center !important;
+          }
+
+          .drm-content {
+            padding: 12px 10px;
+          }
+          .drm-card {
+            padding: 14px 12px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+          }
+          .drm-card-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+            padding: 14px 12px;
+          }
+          .drm-card-header > div {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+          }
+          .drm-card-header input,
+          .drm-card-header select {
+            width: 100% !important;
+            min-width: 0 !important;
+            box-sizing: border-box;
+          }
+          .drm-filters-bar {
+            flex-direction: column !important;
+            gap: 8px !important;
+            width: 100% !important;
+          }
+          .drm-filters-bar input,
+          .drm-filters-bar select {
+            width: 100% !important;
+            min-width: 0 !important;
+            box-sizing: border-box;
+          }
+          .drm-filters-bar .drm-btn {
+            width: 100% !important;
+            justify-content: center;
+          }
+
+          .drm-kpi-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 8px !important;
+            margin-bottom: 14px !important;
+          }
+          .drm-kpi-card {
+            padding: 10px 12px !important;
+            border-radius: 10px !important;
+          }
+          .drm-kpi-card .value {
+            font-size: 19px !important;
+            line-height: 1.2;
+          }
+          .drm-kpi-card .label {
+            font-size: 11px !important;
+            margin-bottom: 3px;
+            line-height: 1.3;
+          }
+          .drm-kpi-card .sub {
+            font-size: 10px !important;
+            margin-top: 3px;
+            line-height: 1.25;
+          }
+        }
+
+        @media (max-width: 420px) {
+          .menu-btn-label {
+            display: none !important;
+          }
+          .drm-page-title {
+            max-width: 100px !important;
+            font-size: 12px !important;
+          }
+          .quick-btn-label {
+            display: none !important;
+          }
+          .drm-btn-quick-site {
+            padding: 4px 6px !important;
+          }
+          .drm-btn-quick-logout {
+            padding: 4px 6px !important;
+          }
+          .drm-status-badge {
+            padding: 2px 5px !important;
+            font-size: 9.5px !important;
+          }
+
+          /* Responsive CRM Table -> Clean Mobile Cards (Exact Dr Mahmoud System) */
+          .responsive-cards-table,
+          .responsive-cards-table tbody,
+          .responsive-cards-table tr,
+          .responsive-cards-table td {
+            display: block !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+          }
+          .responsive-cards-table thead {
+            display: none !important;
+          }
+          .responsive-cards-table tr {
+            background: #ffffff !important;
+            border: 1.5px solid var(--border) !important;
+            border-radius: 14px !important;
+            padding: 14px !important;
+            margin-bottom: 14px !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03) !important;
+          }
+          .responsive-cards-table td {
+            padding: 8px 0 !important;
+            border-bottom: 1px dashed #e2e8f0 !important;
+            text-align: right !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+          }
+          .responsive-cards-table td:last-child {
+            border-bottom: none !important;
+            padding-top: 10px !important;
+          }
+          .responsive-cards-table td:before {
+            content: attr(data-label);
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--muted);
+            margin-bottom: 4px;
+          }
+          .responsive-cards-table td[data-label="إجراءات"]:before,
+          .responsive-cards-table td[data-label="تواصل سريع"]:before,
+          .responsive-cards-table td[data-label="معاينة الصفحة"]:before,
+          .responsive-cards-table td[data-label="حفظ ومعاينة"]:before,
+          .responsive-cards-table td[data-label="استرجاع للـ CRM"]:before {
+            display: none !important;
+          }
+          .responsive-cards-table td[data-label="إجراءات"] > div,
+          .responsive-cards-table td[data-label="تواصل سريع"] > div {
+            flex-direction: row !important;
+            flex-wrap: wrap;
+            gap: 6px;
+            width: 100%;
+          }
+          .responsive-cards-table td[data-label="إجراءات"] .drm-btn,
+          .responsive-cards-table td[data-label="تواصل سريع"] .drm-btn,
+          .responsive-cards-table td[data-label="معاينة الصفحة"] .drm-btn,
+          .responsive-cards-table td[data-label="حفظ ومعاينة"] .drm-btn,
+          .responsive-cards-table td[data-label="استرجاع للـ CRM"] .drm-btn {
+            flex: 1;
+            justify-content: center;
+            padding: 9px 12px !important;
+            font-size: 12.5px !important;
+            width: 100%;
+          }
+          .responsive-cards-table input,
+          .responsive-cards-table select,
+          .responsive-cards-table textarea {
+            width: 100% !important;
+            box-sizing: border-box !important;
+          }
+          .responsive-cards-table td[colspan] {
+            text-align: center !important;
+            border-bottom: none !important;
+            padding: 24px 12px !important;
+            color: #64748b;
+          }
+          .responsive-cards-table td[colspan]:before {
+            display: none !important;
+          }
+
+          .drm-modal {
+            padding: 16px !important;
+            max-width: 95vw !important;
+            border-radius: 14px !important;
+          }
+          .drm-form-grid {
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+          }
+          .drm-toast {
+            left: 12px !important;
+            right: 12px !important;
+            bottom: 16px !important;
+            text-align: center !important;
+          }
+          .drm-media-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 10px !important;
+          }
         }
       `}</style>
+
+      {/* Mobile Sidebar Overlay Backdrop */}
+      <div
+        className={`drm-sidebar-backdrop ${sidebarOpen ? 'open' : ''}`}
+        onClick={() => setSidebarOpen(false)}
+      />
 
       {/* Right Sticky Sidebar (Exact Dr Mahmoud Architecture) */}
       <aside className={`drm-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="drm-brand">
-          <span className="badge">v2.5 Automotive CRM</span>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+            <span className="badge">v2.5 Automotive CRM</span>
+            <button
+              className="drm-sidebar-close-btn"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="إغلاق القائمة"
+            >
+              ✕
+            </button>
+          </div>
           <h2>معرض أوتو محمد نبيل</h2>
           <p>نظام إدارة الأسطول والـ CRM</p>
+
+          <div className="drm-sidebar-quick-bar">
+            <button
+              onClick={() => { handleGoToSite('/'); setSidebarOpen(false); }}
+              className="drm-sidebar-quick-btn site-btn"
+            >
+              ← تصفح المعرض
+            </button>
+            <button
+              onClick={() => { onLogout(); setSidebarOpen(false); }}
+              className="drm-sidebar-quick-btn logout-btn"
+            >
+              🚪 تسجيل خروج
+            </button>
+          </div>
         </div>
 
         <nav className="drm-nav">
@@ -1409,60 +2033,86 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
       <div className="drm-main">
         {/* Topbar */}
         <header className="drm-topbar">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <button
-              className="drm-btn drm-btn-outline drm-btn-sm"
-              style={{ display: window.innerWidth <= 992 ? 'inline-flex' : 'none' }}
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
-              القائمة
-            </button>
-            <h1>{tabTitles[activeTab]}</h1>
+          <div className="drm-topbar-row-main">
+            <div className="drm-topbar-title-group">
+              <button
+                className="drm-mobile-menu-btn"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="القائمة"
+              >
+                <span>☰</span>
+                <span className="menu-btn-label">القائمة</span>
+              </button>
+              <h1 className="drm-page-title">{tabTitles[activeTab]}</h1>
+            </div>
+
+            <div className="drm-topbar-right-meta">
+              <span className={`drm-status-badge ${cloudConnected ? 'online' : 'offline'}`}>
+                <span className="drm-status-dot" />
+                <span className="drm-status-text-full">
+                  {cloudConnected
+                    ? `متصل بالسحابة (Zero Data Loss)${lastSyncTime ? ` • ${lastSyncTime}` : ''}`
+                    : 'جاري إعادة الاتصال بالسحابة...'}
+                </span>
+                <span className="drm-status-text-short">
+                  {cloudConnected ? 'متصل بالسحابة' : 'غير متصل'}
+                </span>
+              </span>
+
+              <div className="drm-topbar-quick-exit">
+                <button
+                  className="drm-btn-quick-site"
+                  onClick={() => handleGoToSite('/')}
+                  title="الخروج للمعرض وتصفح السيارات"
+                >
+                  <span>←</span>
+                  <span className="quick-btn-label">المعرض</span>
+                </button>
+                <button
+                  className="drm-btn-quick-logout"
+                  onClick={onLogout}
+                  title="تسجيل الخروج والعودة للمعرض"
+                >
+                  <span>🚪</span>
+                  <span className="quick-btn-label">خروج</span>
+                </button>
+              </div>
+            </div>
           </div>
 
           <div className="drm-topbar-actions">
-            <span
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '6px 12px',
-                borderRadius: '50px',
-                fontSize: '13.4px',
-                fontWeight: 700,
-                background: cloudConnected ? '#e6eaf0' : '#fee2e2',
-                color: cloudConnected ? '#a24d1f' : '#991b1b',
-              }}
-            >
-              {cloudConnected
-                ? ` متصل بالسحابة (Zero Data Loss)${lastSyncTime ? ` • ${lastSyncTime}` : ''}`
-                : ' جاري إعادة الاتصال بالسحابة...'}
-            </span>
+            <div className="drm-topbar-actions-grid">
+              <button
+                className="drm-btn drm-btn-outline drm-action-btn"
+                onClick={openAddCarModal}
+                title="إضافة سيارة جديدة للمعرض"
+              >
+                <span className="btn-text-full">+ إضافة سيارة جديدة</span>
+                <span className="btn-text-short">+ سيارة جديدة</span>
+              </button>
 
-            <button
-              className="drm-btn drm-btn-outline"
-              onClick={openAddCarModal}
-            >
-              + إضافة سيارة جديدة
-            </button>
+              <button
+                className="drm-btn drm-btn-primary drm-action-btn"
+                onClick={() => setLeadModalOpen(true)}
+                title="تسجيل حجز عميل يدوياً"
+              >
+                <span className="btn-text-full">+ تسجيل حجز عميل</span>
+                <span className="btn-text-short">+ تسجيل حجز</span>
+              </button>
 
-            <button
-              className="drm-btn drm-btn-primary"
-              onClick={() => setLeadModalOpen(true)}
-            >
-              + تسجيل حجز عميل يدوياً
-            </button>
-
-            <a
-              href="/"
-              onClick={(e) => {
-                e.preventDefault();
-                handleGoToSite('/');
-              }}
-              className="drm-btn drm-btn-accent"
-            >
-              معاينة الموقع الحي ↗
-            </a>
+              <a
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleGoToSite('/');
+                }}
+                className="drm-btn drm-btn-accent drm-action-btn"
+                title="معاينة الموقع الحي للمعرض"
+              >
+                <span className="btn-text-full">معاينة الموقع الحي ↗</span>
+                <span className="btn-text-short">معاينة المعرض ↗</span>
+              </a>
+            </div>
           </div>
         </header>
 
@@ -1503,7 +2153,9 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
 
                 <div className="drm-kpi-card">
                   <div className="label">تقييم الفحص المعتمد والثقة</div>
-                  <div className="value">100 نقطة </div>
+                  <div className="value">
+                    <span>100</span> <span style={{ fontSize: '15px', fontWeight: 700, color: 'var(--orange)' }}>نقطة</span>
+                  </div>
                   <div className="sub">مفعل في محركات البحث وبيانات Schema</div>
                 </div>
               </div>
@@ -1519,7 +2171,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                   </button>
                 </div>
                 <div className="drm-table-responsive">
-                  <table className="drm-table">
+                  <table className="drm-table responsive-cards-table">
                     <thead>
                       <tr>
                         <th>كود الحجز</th>
@@ -1534,7 +2186,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                     <tbody>
                       {activeCrmLeads.slice(0, 6).map((l) => (
                         <tr key={l.id}>
-                          <td>
+                          <td data-label="كود الحجز">
                             <code
                               style={{
                                 background: '#f1f5f9',
@@ -1547,10 +2199,10 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                {l.inquiry_ref || `#${String(l.id).slice(0, 6)}`}
                             </code>
                           </td>
-                          <td>
+                          <td data-label="اسم العميل">
                             <strong>{l.customer_name}</strong>
                           </td>
-                          <td dir="ltr">
+                          <td data-label="رقم الهاتف" dir="ltr">
                             <a
                               href={`tel:${l.customer_phone}`}
                               style={{
@@ -1562,12 +2214,12 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                {l.customer_phone}
                             </a>
                           </td>
-                          <td>
+                          <td data-label="السيارة المطلوبة">
                             <strong>{getCarLabelForLead(l)}</strong>
                           </td>
-                          <td>{formatInquiryTypeLabel(l.inquiry_type)}</td>
-                          <td>{formatStatusBadge(l.status)}</td>
-                          <td>
+                          <td data-label="نوع الطلب">{formatInquiryTypeLabel(l.inquiry_type)}</td>
+                          <td data-label="الحالة">{formatStatusBadge(l.status)}</td>
+                          <td data-label="تواصل سريع">
                             <a
                               className="drm-btn-whatsapp"
                               target="_blank"
@@ -1607,7 +2259,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                   </button>
                 </div>
                 <div className="drm-table-responsive">
-                  <table className="drm-table">
+                  <table className="drm-table responsive-cards-table">
                     <thead>
                       <tr>
                         <th>السيارة</th>
@@ -1621,21 +2273,21 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                     <tbody>
                       {cars.slice(0, 6).map((c) => (
                         <tr key={c.id}>
-                          <td>
+                          <td data-label="السيارة">
                             <strong>
                               {c.make} {c.model}
                             </strong>
                           </td>
-                          <td>{c.year}</td>
-                          <td>
+                          <td data-label="الموديل">{c.year}</td>
+                          <td data-label="السعر النقدي">
                             <strong>{Number(c.price).toLocaleString('ar-EG')} ج.م</strong>
                           </td>
-                          <td>
+                          <td data-label="فحص المعرض">
                             <span className="status-badge status-confirmed">
                                {c.inspection_score || '98%'}
                             </span>
                           </td>
-                          <td>
+                          <td data-label="الحالة">
                             <span
                               className={`status-badge ${
                                 c.status === 'available'
@@ -1652,7 +2304,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                 : 'مباعة'}
                             </span>
                           </td>
-                          <td>
+                          <td data-label="معاينة الصفحة">
                             <a
                               href={`/vehicles/${c.slug || c.id}`}
                               onClick={(e) => {
@@ -1751,7 +2403,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
               <div className="drm-card">
                 <div className="drm-card-header">
                   <h3> سجل حجوزات المعاينة، طلبات التقسيط، واستبدال السيارات (CRM)</h3>
-                  <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  <div className="drm-filters-bar" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                     <input
                       type="text"
                       placeholder="بحث بالاسم، الهاتف، السيارة، أو الكود..."
@@ -1810,7 +2462,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                 </div>
 
                 <div className="drm-table-responsive">
-                  <table className="drm-table">
+                  <table className="drm-table responsive-cards-table">
                     <thead>
                       <tr>
                         <th>رقم وكود الحجز</th>
@@ -1843,7 +2495,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                             }}
                           >
                             {/* 1. Booking Ref & Date */}
-                            <td>
+                            <td data-label="رقم وكود الحجز">
                               <strong>#{String(l.id).slice(0, 6)}</strong>
                               <div style={{ marginTop: '4px' }}>
                                 <code
@@ -1883,7 +2535,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                             </td>
 
                             {/* 2. Customer Name & Badges */}
-                            <td>
+                            <td data-label="اسم العميل">
                               <strong style={{ fontSize: '16.2px', color: 'var(--primary)' }}>
                                 {l.customer_name}
                               </strong>
@@ -1919,7 +2571,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                             </td>
 
                             {/* 3. Contact Info */}
-                            <td dir="ltr">
+                            <td data-label="بيانات الاتصال" dir="ltr">
                               <div style={{ marginBottom: '3px' }}>
                                 <a
                                   href={`tel:${l.customer_phone}`}
@@ -1945,7 +2597,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                             </td>
 
                             {/* 4. Car & Automotive Dossier */}
-                            <td>
+                            <td data-label="السيارة ونوع الطلب">
                               <div style={{ fontWeight: 700, color: 'var(--primary)' }}>
                                  {carTitle}
                               </div>
@@ -1974,12 +2626,12 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                             </td>
 
                             {/* 5. Message */}
-                            <td style={{ maxWidth: '230px', wordBreak: 'break-word', fontSize: '14.0px' }}>
+                            <td data-label="التفاصيل / الرسالة" style={{ maxWidth: '230px', wordBreak: 'break-word', fontSize: '14.0px' }}>
                               {l.message || 'طلب معاينة وتواصل مباشر'}
                             </td>
 
                             {/* 6. Inline CRM Controls (Exact Dr Mahmoud Style) */}
-                            <td style={{ minWidth: '250px' }}>
+                            <td data-label="الحالة وتقييم المبيعات (CRM)" style={{ minWidth: '250px' }}>
                               <div style={{ display: 'flex', gap: '4px', marginBottom: '5px' }}>
                                 <select
                                   className="drm-select"
@@ -2098,8 +2750,21 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                       })}
                       {filteredLeads.length === 0 && (
                         <tr>
-                          <td colSpan="7" style={{ textAlign: 'center', padding: '28px', color: '#64748b' }}>
-                            لا توجد حجوزات مطابقة للبحث حالياً
+                          <td colSpan="7" style={{ textAlign: 'center', padding: '36px 16px', color: '#64748b' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                              <span style={{ fontSize: '26px' }}>📋</span>
+                              <strong style={{ fontSize: '15px', color: '#1e293b' }}>لا توجد حجوزات مطابقة للبحث</strong>
+                              <p style={{ margin: 0, fontSize: '13px', maxWidth: '380px' }}>
+                                يمكنك إضافة حجز جديد يدوياً أو تصفية المعايير لعرض باقي الطلبات.
+                              </p>
+                              <button
+                                onClick={() => setLeadModalOpen(true)}
+                                className="drm-btn drm-btn-primary"
+                                style={{ marginTop: '6px' }}
+                              >
+                                + تسجيل حجز عميل جديد
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       )}
@@ -2145,7 +2810,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
               </div>
 
               <div className="drm-table-responsive">
-                <table className="drm-table">
+                <table className="drm-table responsive-cards-table">
                   <thead>
                     <tr>
                       <th># / التاريخ والمصدر</th>
@@ -2168,7 +2833,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
 
                       return (
                         <tr key={l.id} style={{ background: isArchived ? '#f8fafc' : undefined }}>
-                          <td>
+                          <td data-label="# / التاريخ والمصدر">
                             <strong>{l.inquiry_ref || `#${String(l.id).slice(0, 6)}`}</strong>
                             <span
                               style={{
@@ -2340,7 +3005,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                     إضافة وتعديل السيارات، الأسعار، تقارير الفحص 100 نقطة، وحالة التوفر بالمعرض مع تحديث فوري على الموقع.
                   </p>
                 </div>
-                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                <div className="drm-filters-bar" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                   <input
                     type="text"
                     placeholder="ابحث بالماركة، الموديل، أو السنة..."
@@ -2366,7 +3031,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
               </div>
 
               <div className="drm-table-responsive">
-                <table className="drm-table">
+                <table className="drm-table responsive-cards-table">
                   <thead>
                     <tr>
                       <th>الصورة</th>
@@ -2387,7 +3052,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                       const carPath = `/vehicles/${car.slug || car.id}`;
                       return (
                         <tr key={car.id}>
-                          <td>
+                          <td data-label="الصورة">
                             <img
                               src={thumb}
                               alt={car.model}
@@ -2400,7 +3065,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                               }}
                             />
                           </td>
-                          <td>
+                          <td data-label="السيارة والفئة">
                             <strong style={{ fontSize: '15.7px', color: 'var(--primary)' }}>
                               {car.variant || `${car.make} ${car.model}`}
                             </strong>
@@ -2408,7 +3073,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                               موديل {car.year} • {car.body_type || 'سيدان فاخرة'} • {car.color || 'ميتاليك'}
                             </div>
                           </td>
-                          <td dir="ltr">
+                          <td data-label="الرابط النظيف (Slug)" dir="ltr">
                             <code
                               style={{
                                 background: '#f8fafc',
@@ -2426,7 +3091,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                               {Number(car.price).toLocaleString('ar-EG')} ج.م
                             </strong>
                           </td>
-                          <td>
+                          <td data-label="الممشى والمحرك">
                             <div>{Number(car.mileage || 0).toLocaleString('ar-EG')} كم</div>
                             <small style={{ color: '#64748b' }}>
                               {car.engine_cc ? `${car.engine_cc} سي سي` : 'تيربو'} •{' '}
@@ -2517,7 +3182,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                 />
               </div>
               <div className="drm-table-responsive">
-                <table className="drm-table">
+                <table className="drm-table responsive-cards-table">
                   <thead>
                     <tr>
                       <th>اللغة</th>
@@ -2538,12 +3203,12 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                       )
                       .map((p) => (
                         <tr key={p.id}>
-                          <td>
+                          <td data-label="اللغة">
                             <span className="status-badge status-confirmed">
                               {p.lang.toUpperCase()}
                             </span>
                           </td>
-                          <td dir="ltr">
+                          <td data-label="مسار الصفحة (Clean URL)" dir="ltr">
                             <code
                               style={{
                                 background: '#f1f5f9',
@@ -2556,7 +3221,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                               {p.path}
                             </code>
                           </td>
-                          <td>
+                          <td data-label="عنوان الصفحة (SEO Title)">
                             <input
                               type="text"
                               className="drm-input"
@@ -2588,7 +3253,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                               }}
                             />
                           </td>
-                          <td>
+                          <td data-label="تعديل العنوان الرئيسي (H1)">
                             <input
                               type="text"
                               className="drm-input"
@@ -2745,36 +3410,33 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           {activeTab === 'settings' && (
             <div className="drm-card">
               <div className="drm-card-header">
-                <h3> إعدادات المعرض، بيانات التواصل، وشريط العروض الترويجية</h3>
+                <h3>⚙️ إعدادات المعرض، الربط الخارجي، وشريط العروض الترويجية</h3>
                 <button
                   className="drm-btn drm-btn-primary"
-                  onClick={() => {
+                  onClick={async () => {
                     try {
-                      localStorage.setItem(
-                        'mnabil_showroom_settings',
-                        JSON.stringify(settings)
-                      );
-                    } catch {
-                      // ignore
+                      localStorage.setItem('mnabil_showroom_settings', JSON.stringify(settings));
+                      await updateShowroomSettings(settings);
+                      appendAuditLog('تحديث إعدادات المعرض وربط Webhook وشريط الإعلانات ووضع الصيانة', 'settings');
+                      showToast('✓ تم حفظ إعدادات المعرض وتطبيقها حياً على الموقع!');
+                    } catch (err) {
+                      showToast(err.response?.data?.message || 'تم حفظ الإعدادات محلياً');
                     }
-                    appendAuditLog('تحديث إعدادات المعرض وشريط الإعلانات العلوي', 'settings');
-                    showToast(' تم حفظ إعدادات المعرض وتطبيقها حياً على الموقع!');
                   }}
                 >
-                   حفظ كافة الإعدادات وتطبيقها حياً
+                  💾 حفظ كافة الإعدادات وتطبيقها حياً
                 </button>
               </div>
               <div className="drm-card-body">
-                <div className="drm-form-grid">
+                {/* 1. Basic Showroom Info */}
+                <div className="drm-form-grid" style={{ marginBottom: '14px' }}>
                   <div className="drm-form-group">
                     <label>اسم المعرض (بالعربية)</label>
                     <input
                       type="text"
                       className="drm-input"
-                      value={settings.showroom_name_ar}
-                      onChange={(e) =>
-                        setSettings({ ...settings, showroom_name_ar: e.target.value })
-                      }
+                      value={settings.showroom_name_ar || ''}
+                      onChange={(e) => setSettings({ ...settings, showroom_name_ar: e.target.value })}
                     />
                   </div>
                   <div className="drm-form-group">
@@ -2783,10 +3445,8 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                       type="text"
                       className="drm-input"
                       dir="ltr"
-                      value={settings.showroom_name_en}
-                      onChange={(e) =>
-                        setSettings({ ...settings, showroom_name_en: e.target.value })
-                      }
+                      value={settings.showroom_name_en || ''}
+                      onChange={(e) => setSettings({ ...settings, showroom_name_en: e.target.value })}
                     />
                   </div>
                   <div className="drm-form-group">
@@ -2795,10 +3455,8 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                       type="text"
                       className="drm-input"
                       dir="ltr"
-                      value={settings.phone_primary}
-                      onChange={(e) =>
-                        setSettings({ ...settings, phone_primary: e.target.value })
-                      }
+                      value={settings.phone_primary || ''}
+                      onChange={(e) => setSettings({ ...settings, phone_primary: e.target.value })}
                     />
                   </div>
                   <div className="drm-form-group">
@@ -2807,10 +3465,8 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                       type="text"
                       className="drm-input"
                       dir="ltr"
-                      value={settings.whatsapp_number}
-                      onChange={(e) =>
-                        setSettings({ ...settings, whatsapp_number: e.target.value })
-                      }
+                      value={settings.whatsapp_number || ''}
+                      onChange={(e) => setSettings({ ...settings, whatsapp_number: e.target.value })}
                     />
                   </div>
                   <div className="drm-form-group">
@@ -2819,7 +3475,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                       type="email"
                       className="drm-input"
                       dir="ltr"
-                      value={settings.email}
+                      value={settings.email || ''}
                       onChange={(e) => setSettings({ ...settings, email: e.target.value })}
                     />
                   </div>
@@ -2828,102 +3484,278 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                     <input
                       type="text"
                       className="drm-input"
-                      value={settings.working_hours}
-                      onChange={(e) =>
-                        setSettings({ ...settings, working_hours: e.target.value })
-                      }
+                      value={settings.working_hours || ''}
+                      onChange={(e) => setSettings({ ...settings, working_hours: e.target.value })}
                     />
                   </div>
                 </div>
 
-                <div className="drm-form-group">
+                <div className="drm-form-group" style={{ marginBottom: '18px' }}>
                   <label>عنوان صالة العرض الرئيسي</label>
                   <input
                     type="text"
                     className="drm-input"
-                    value={settings.address}
+                    value={settings.address || ''}
                     onChange={(e) => setSettings({ ...settings, address: e.target.value })}
                   />
                 </div>
 
-                {/* Announcement Bar with Timer (Exact Dr Mahmoud Feature) */}
+                {/* 2. Announcement Bar (Exact Dr Mahmoud Style) */}
                 <div
                   style={{
                     background: '#f8fafc',
-                    border: '1px solid var(--border)',
+                    padding: '16px',
                     borderRadius: '12px',
-                    padding: '18px',
-                    margin: '18px 0',
+                    border: '1px solid #e2e8f0',
+                    marginBottom: '18px',
                   }}
                 >
-                  <div className="drm-form-group" style={{ marginBottom: '12px' }}>
-                    <label>
-                       نص شريط الإعلانات والعروض العلوية (Announcement Bar - اتركه فارغاً لإخفائه)
-                    </label>
-                    <input
-                      type="text"
-                      className="drm-input"
-                      placeholder="مثال: عروض خاصة على سيارات مرسيدس وبي إم دبليو كسر الزيرو..."
-                      value={settings.announcement_bar}
-                      onChange={(e) =>
-                        setSettings({ ...settings, announcement_bar: e.target.value })
-                      }
-                    />
-                  </div>
+                  <label style={{ fontSize: '14px', color: '#1e2530', fontWeight: 700, display: 'block', marginBottom: '8px' }}>
+                    📢 شريط إعلاني أعلى الموقع (Announcement Bar - يثبت أعلى جميع الصفحات أثناء التمرير)
+                  </label>
+                  <input
+                    type="text"
+                    className="drm-input"
+                    placeholder="مثال: عرض الجمعة البيضاء 30%"
+                    value={settings.announcement_bar || ''}
+                    onChange={(e) => setSettings({ ...settings, announcement_bar: e.target.value })}
+                    style={{ marginBottom: '12px' }}
+                  />
                   <div className="drm-form-grid" style={{ marginBottom: '10px' }}>
                     <div className="drm-form-group" style={{ marginBottom: 0 }}>
-                      <label> تاريخ ووقت بدء ظهور العرض (اختياري)</label>
+                      <label style={{ fontSize: '12.5px' }}>⏰ وقت بداية ظهور الإعلان (اختياري)</label>
                       <input
                         type="datetime-local"
                         className="drm-input"
                         dir="ltr"
-                        value={settings.announcement_start}
-                        onChange={(e) =>
-                          setSettings({ ...settings, announcement_start: e.target.value })
-                        }
+                        value={settings.announcement_start || ''}
+                        onChange={(e) => setSettings({ ...settings, announcement_start: e.target.value })}
                       />
                     </div>
                     <div className="drm-form-group" style={{ marginBottom: 0 }}>
-                      <label>⏳ تاريخ ووقت انتهاء العرض (يختفي تلقائياً)</label>
+                      <label style={{ fontSize: '12.5px' }}>⏳ وقت انتهاء الإعلان (يظهر عداد تنازلي ويتوقف تلقائياً بنهايته)</label>
                       <input
                         type="datetime-local"
                         className="drm-input"
                         dir="ltr"
-                        value={settings.announcement_end}
-                        onChange={(e) =>
-                          setSettings({ ...settings, announcement_end: e.target.value })
-                        }
+                        value={settings.announcement_end || ''}
+                        onChange={(e) => setSettings({ ...settings, announcement_end: e.target.value })}
                       />
                     </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: '13.4px', color: 'var(--muted)', fontWeight: 600 }}>
-                       ضبط مدة سريعة من الآن:
-                    </span>
-                    {[
-                      { label: '⏱ يوم واحد (24 ساعة)', hours: 24 },
-                      { label: '⏱ 3 أيام', hours: 72 },
-                      { label: '⏱ أسبوع (7 أيام)', hours: 168 },
-                      { label: '⏱ شهر (30 يوم)', hours: 720 },
-                    ].map((preset) => (
-                      <button
-                        key={preset.hours}
-                        type="button"
-                        className="drm-btn drm-btn-outline drm-btn-sm"
-                        onClick={() => {
-                          const now = new Date();
-                          const end = new Date(now.getTime() + preset.hours * 3600 * 1000);
-                          setSettings({
-                            ...settings,
-                            announcement_start: now.toISOString().slice(0, 16),
-                            announcement_end: end.toISOString().slice(0, 16),
-                          });
-                          showToast('⏱ تم ضبط مؤقت العرض — اضغط حفظ الإعدادات للتطبيق');
-                        }}
-                      >
-                        {preset.label}
-                      </button>
-                    ))}
+                  <div className="drm-presets-row">
+                    <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 600 }}>⚡ ضبط سريع للمدة من الآن:</span>
+                    <button
+                      type="button"
+                      className="drm-btn drm-btn-outline drm-btn-sm"
+                      onClick={() => {
+                        const now = new Date();
+                        const end = new Date(now.getTime() + 24 * 3600 * 1000);
+                        setSettings({
+                          ...settings,
+                          announcement_start: now.toISOString().slice(0, 16),
+                          announcement_end: end.toISOString().slice(0, 16),
+                        });
+                        showToast('تم ضبط المدة: 24 ساعة');
+                      }}
+                    >
+                      لمدة 24 ساعة
+                    </button>
+                    <button
+                      type="button"
+                      className="drm-btn drm-btn-outline drm-btn-sm"
+                      onClick={() => {
+                        const now = new Date();
+                        const end = new Date(now.getTime() + 72 * 3600 * 1000);
+                        setSettings({
+                          ...settings,
+                          announcement_start: now.toISOString().slice(0, 16),
+                          announcement_end: end.toISOString().slice(0, 16),
+                        });
+                        showToast('تم ضبط المدة: 3 أيام');
+                      }}
+                    >
+                      لمدة 3 أيام
+                    </button>
+                    <button
+                      type="button"
+                      className="drm-btn drm-btn-outline drm-btn-sm"
+                      onClick={() => {
+                        const now = new Date();
+                        const end = new Date(now.getTime() + 168 * 3600 * 1000);
+                        setSettings({
+                          ...settings,
+                          announcement_start: now.toISOString().slice(0, 16),
+                          announcement_end: end.toISOString().slice(0, 16),
+                        });
+                        showToast('تم ضبط المدة: أسبوع (7 أيام)');
+                      }}
+                    >
+                      لمدة أسبوع (7 أيام)
+                    </button>
+                    <button
+                      type="button"
+                      className="drm-btn drm-btn-outline drm-btn-sm"
+                      onClick={() => {
+                        const now = new Date();
+                        const end = new Date(now.getTime() + 720 * 3600 * 1000);
+                        setSettings({
+                          ...settings,
+                          announcement_start: now.toISOString().slice(0, 16),
+                          announcement_end: end.toISOString().slice(0, 16),
+                        });
+                        showToast('تم ضبط المدة: شهر');
+                      }}
+                    >
+                      لمدة شهر
+                    </button>
+                    <button
+                      type="button"
+                      className="drm-btn drm-btn-danger drm-btn-sm"
+                      onClick={() => {
+                        setSettings({
+                          ...settings,
+                          announcement_start: '',
+                          announcement_end: '',
+                        });
+                        showToast('تم مسح مؤقت الإعلان');
+                      }}
+                    >
+                      مسح المؤقت
+                    </button>
+                  </div>
+                </div>
+
+                {/* 3. External Webhook Integration */}
+                <div className="drm-form-group" style={{ marginBottom: '18px' }}>
+                  <label style={{ fontSize: '13.5px', fontWeight: 700, color: '#1e293b' }}>
+                    🔗 رابط Webhook خارجي (خاص بمطور النظام فقط — Make / Zapier / CRM)
+                  </label>
+                  <input
+                    type="url"
+                    dir="ltr"
+                    className="drm-input"
+                    placeholder="https://hook.eu1.make.com/123456"
+                    value={settings.webhook_url || ''}
+                    onChange={(e) => setSettings({ ...settings, webhook_url: e.target.value })}
+                  />
+                </div>
+
+                {/* 4. Google Sheets Direct Server Sync (Exact Dr Mahmoud Green Card) */}
+                <div
+                  style={{
+                    background: '#f0fdf4',
+                    padding: '16px',
+                    borderRadius: '12px',
+                    border: '1.5px solid #86efac',
+                    marginBottom: '18px',
+                  }}
+                >
+                  <label style={{ fontSize: '14px', color: '#166534', fontWeight: 700, display: 'block', marginBottom: '8px' }}>
+                    📊 ربط السيرفر المباشر مع Google Sheets عبر Apps Script (خاص بمطور النظام فقط — Server-Side Append-Only)
+                  </label>
+                  <div className="drm-sheets-sync-row">
+                    <input
+                      type="url"
+                      className="drm-input"
+                      dir="ltr"
+                      placeholder="https://script.google.com/macros/s/.../exec"
+                      value={settings.google_sheets_webhook_url || ''}
+                      onChange={(e) => setSettings({ ...settings, google_sheets_webhook_url: e.target.value })}
+                      style={{ flex: 1, minWidth: '280px' }}
+                    />
+                    <button
+                      type="button"
+                      className="drm-btn drm-btn-primary"
+                      disabled={isSyncingSheets}
+                      onClick={async () => {
+                        const url = (settings.google_sheets_webhook_url || '').trim();
+                        if (!url) {
+                          alert('يرجى لصق رابط Google Apps Script Web App أولاً (https://script.google.com/macros/s/.../exec)');
+                          return;
+                        }
+                        setIsSyncingSheets(true);
+                        try {
+                          const res = await syncAllToGoogleSheets(url);
+                          showToast(res.message || 'تم إرسال كافة السجلات إلى Google Sheets بنجاح!');
+                          appendAuditLog('مزامنة شاملة لكل سجلات المعرض مع Google Sheets', 'sync');
+                        } catch (err) {
+                          alert(err.response?.data?.message || err.message || 'تعذر الاتصال بـ Google Sheets');
+                        } finally {
+                          setIsSyncingSheets(false);
+                        }
+                      }}
+                      style={{ whiteSpace: 'nowrap' }}
+                    >
+                      {isSyncingSheets ? '⏳ جاري الإرسال...' : '💾 حفظ وإرسال كل السجلات الحالية إلى Google Sheets الآن'}
+                    </button>
+                  </div>
+                  <small style={{ display: 'block', marginTop: '6px', color: '#15803d', fontWeight: 600 }}>
+                    هذا القسم مخفي تماماً عن جميع المستخدمين ولا يظهر إلا لحساب المطور الأساسي.
+                  </small>
+                </div>
+
+                {/* 5. Custom Tracking Code in <head> */}
+                <div className="drm-form-group" style={{ marginBottom: '18px' }}>
+                  <label style={{ fontSize: '13.5px', fontWeight: 700, color: '#1e293b' }}>
+                    💻 أكواد التتبع المخصصة داخل &lt;head&gt; (خاص بمطور النظام فقط — Meta Pixel / Google Analytics / TikTok Pixel)
+                  </label>
+                  <textarea
+                    rows={4}
+                    className="drm-input"
+                    dir="ltr"
+                    style={{ fontFamily: 'monospace', fontSize: '12.5px', lineHeight: 1.5 }}
+                    placeholder="<!-- Paste Meta Pixel or Google Tag Manager code here -->"
+                    value={settings.custom_head_code || ''}
+                    onChange={(e) => setSettings({ ...settings, custom_head_code: e.target.value })}
+                  />
+                </div>
+
+                {/* 6. Temporary Maintenance Mode (Exact Dr Mahmoud Orange Card) */}
+                <div
+                  style={{
+                    background: '#fff7ed',
+                    padding: '16px',
+                    borderRadius: '12px',
+                    border: '1.5px solid #fed7aa',
+                    marginTop: '20px',
+                  }}
+                >
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: 700, color: '#9a3412', fontSize: '14px' }}>
+                    <input
+                      type="checkbox"
+                      checked={Boolean(settings.maintenance_mode)}
+                      onChange={(e) => setSettings({ ...settings, maintenance_mode: e.target.checked })}
+                      style={{ width: '20px', height: '20px', accentColor: '#c2410c' }}
+                    />
+                    <span>تفعيل وضع الصيانة المؤقت للزوار (متاح للمطور و Admin و Super Admin فقط)</span>
+                  </label>
+                  <div style={{ marginTop: '10px', fontSize: '12.5px', color: '#7c2d12', lineHeight: 1.7 }}>
+                    ℹ️ <strong>تنبيه هام للإدارة:</strong> عند تفعيل هذا الخيار وحفظ الإعدادات، سيُغلق الموقع تماماً أمام الزوار والحسابات العادية وتظهر لهم صفحة الصيانة مع أرقام الحجز والواتساب. أما حسابات الإدارة العليا (المطور، Super Admin، Admin)، فسيبقى الموقع يفتح معهم بشكل طبيعي لمعاينته، وسيظهر شريط تنبيه أحمر بالأسفل يذكّر بأن وضع الصيانة مفعل للعامة.
+                  </div>
+                  <div style={{ marginTop: '12px' }}>
+                    <a
+                      href="/maintenance-preview"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleGoToSite('/maintenance-preview');
+                      }}
+                      className="drm-btn"
+                      style={{
+                        background: '#c2410c',
+                        color: '#fff',
+                        borderRadius: '8px',
+                        padding: '7px 14px',
+                        textDecoration: 'none',
+                        fontWeight: 700,
+                        fontSize: '12px',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                      }}
+                    >
+                      👁️ معاينة صفحة الصيانة كما يراها الزوار ↗
+                    </a>
                   </div>
                 </div>
               </div>
@@ -2952,7 +3784,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                   </button>
                 </div>
                 <div className="drm-table-responsive">
-                  <table className="drm-table">
+                  <table className="drm-table responsive-cards-table">
                     <thead>
                       <tr>
                         <th>#</th>
@@ -2967,15 +3799,15 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                     <tbody>
                       {staffUsers.map((u) => (
                         <tr key={u.id}>
-                          <td>#{u.id}</td>
-                          <td>
+                          <td data-label="#">#{u.id}</td>
+                          <td data-label="الاسم">
                             <strong>{u.display_name}</strong>
                           </td>
-                          <td>
+                          <td data-label="اسم المستخدم">
                             <code>{u.username}</code>
                           </td>
-                          <td>{u.role}</td>
-                          <td>
+                          <td data-label="الدور الوظيفي (Role)">{u.role}</td>
+                          <td data-label="حالة الحساب">
                             <span className={`status-badge ${u.account_status === 'active' ? 'status-confirmed' : 'status-cancelled'}`}>
                               {u.account_status === 'active' ? 'نشط (Active)' : 'معطّل (Inactive)'}
                             </span>
@@ -3037,7 +3869,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                   </div>
                 </div>
                 <div className="drm-table-responsive">
-                  <table className="drm-table">
+                  <table className="drm-table responsive-cards-table">
                     <thead>
                       <tr>
                         <th>رقم وكود الحجز</th>
@@ -3051,15 +3883,15 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                     <tbody>
                       {archivedCrmLeads.map((l) => (
                         <tr key={l.id} style={{ background: '#fffafa' }}>
-                          <td>
+                          <td data-label="رقم وكود الحجز">
                             <strong>#{String(l.id).slice(0, 6)}</strong>{' '}
                             <code style={{ fontSize: '12.3px' }}>[{l.inquiry_ref}]</code>
                           </td>
-                          <td>
+                          <td data-label="اسم العميل">
                             <strong>{l.customer_name}</strong>
                           </td>
-                          <td dir="ltr">{l.customer_phone}</td>
-                          <td>{getCarLabelForLead(l)}</td>
+                          <td data-label="رقم الهاتف" dir="ltr">{l.customer_phone}</td>
+                          <td data-label="السيارة المطلوبة">{getCarLabelForLead(l)}</td>
                           <td>{new Date(l.created_at).toLocaleString('ar-EG')}</td>
                           <td>
                             <button
@@ -3115,7 +3947,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                   </div>
                 </div>
                 <div className="drm-table-responsive">
-                  <table className="drm-table">
+                  <table className="drm-table responsive-cards-table">
                     <thead>
                       <tr>
                         <th>التوقيت</th>

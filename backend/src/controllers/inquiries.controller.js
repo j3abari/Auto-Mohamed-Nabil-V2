@@ -130,6 +130,33 @@ const createInquiry = catchAsync(async (req, res) => {
         supabase.rpc('increment_inquiries', { car_id_input: car_id }).then();
     }
 
+    // Dispatch to Webhook / Google Sheets if configured
+    try {
+        const { readSettings, postJsonFollowRedirect } = require('./settings.controller');
+        const curSettings = readSettings();
+        const syncPayload = {
+            event: 'new_inquiry',
+            category: 'lead_created',
+            timestamp: new Date().toISOString(),
+            inquiry_ref: inquiry.inquiry_ref,
+            customer_name: inquiry.customer_name,
+            customer_phone: inquiry.customer_phone,
+            inquiry_type: inquiry.inquiry_type,
+            car: car_snapshot ? `${car_snapshot.make} ${car_snapshot.model} ${car_snapshot.year}` : 'استفسار عام',
+            message: inquiry.message,
+            staff_notes: inquiry.staff_notes || '',
+            ip
+        };
+        if (curSettings.webhook_url) {
+            postJsonFollowRedirect(curSettings.webhook_url, syncPayload);
+        }
+        if (curSettings.google_sheets_webhook_url) {
+            postJsonFollowRedirect(curSettings.google_sheets_webhook_url, syncPayload);
+        }
+    } catch (e) {
+        logger.warn('[Inquiries] Webhook forward error:', e.message);
+    }
+
     logger.info(`[Inquiries] New inquiry ${inquiry_ref} for car ${car_id || 'general'} from ${ip}`);
 
     return apiResponse.created(res, {

@@ -80,6 +80,20 @@ export async function submitInquiry(inquiryData) {
   }
 }
 
+// Settings API (Announcement, Maintenance, Contact)
+export async function fetchPublicSettings() {
+  try {
+    const res = await api.get('/settings');
+    if (res.data && res.data.success) {
+      return res.data.data;
+    }
+    return null;
+  } catch (error) {
+    console.warn('[API] Failed to fetch settings, using defaults:', error.message);
+    return null;
+  }
+}
+
 // Fallback Cars Data from old website (6 verified vehicles)
 export const FALLBACK_CARS = [
   {
