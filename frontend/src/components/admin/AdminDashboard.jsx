@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   fetchAnalyticsOverview,
   fetchAdminInquiries,
@@ -2982,7 +2982,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                           </td>
                           <td>{u.email}</td>
                           <td>
-                            {u.role_key === 'developer' ? (
+                            {u.username === 'performax' ? (
                               <small style={{ color: '#64748b' }}>
                                  حساب المطور الأساسي (محمي)
                               </small>
