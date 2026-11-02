@@ -111,6 +111,26 @@ export async function toggleCarFeature(id) {
   return res.data?.data;
 }
 
+// Staff User Management
+export async function fetchStaffUsers() {
+  try {
+    const res = await api.get('/auth/users');
+    return res.data?.data || [];
+  } catch {
+    return [];
+  }
+}
+
+export async function createStaffUser(userData) {
+  const res = await api.post('/auth/users', userData);
+  return res.data?.data;
+}
+
+export async function toggleStaffUserStatus(id, is_active) {
+  const res = await api.patch(`/auth/users/${id}`, { is_active });
+  return res.data?.data;
+}
+
 // Audit Logs
 export async function fetchAuditLogs(limit = 200) {
   try {

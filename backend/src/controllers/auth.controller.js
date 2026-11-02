@@ -175,3 +175,88 @@ const me = catchAsync(async (req, res) => {
 });
 
 module.exports = { login, refresh, logout, me, loginValidation };
+
+// ─── POST /api/auth/users — Create staff account (admin only) ─────────────────
+const createStaffUser = catchAsync(async (req, res) => {
+    const { display_name, username, password, role, email } = req.body;
+
+    if (!username || !password || !display_name) {
+        return apiResponse.error(res, 400, 'الاسم الكامل واسم المستخدم وكلمة المرور مطلوبة');
+    }
+    if (password.length < 8) {
+        return apiResponse.error(res, 400, 'كلمة المرور يجب أن تكون 8 أحرف على الأقل');
+    }
+
+    const validRoles = ['admin', 'staff'];
+    const assignedRole = validRoles.includes(role) ? role : 'staff';
+
+    // Check username uniqueness
+    const { data: existing } = await supabase
+        .from('admin_users')
+        .select('id')
+        .eq('username', username.toLowerCase().trim())
+        .single();
+    if (existing) {
+        return apiResponse.error(res, 409, 'اسم المستخدم مستخدم بالفعل');
+    }
+
+    const password_hash = await bcrypt.hash(password, 12);
+
+    const { data: newUser, error } = await supabase.from('admin_users').insert({
+        username:      username.toLowerCase().trim(),
+        email:         email || `${username.toLowerCase().trim()}@autonabil.com`,
+        password_hash,
+        full_name:     display_name.trim(),
+        role:          assignedRole,
+        is_active:     true,
+    }).select('id, username, full_name, role, email, created_at').single();
+
+    if (error) throw error;
+
+    // Audit log
+    supabase.from('audit_logs').insert({
+        user_id:     req.user?.id || null,
+        user_email:  req.user?.email || req.user?.username || 'admin',
+        action:      `إضافة حساب موظف جديد (${username})`,
+        entity_type: 'security',
+        client_ip:   getClientIp(req),
+    }).then(() => {});
+
+    return apiResponse.success(res, newUser, 'تم إنشاء حساب الموظف بنجاح', 201);
+});
+
+// ─── GET /api/auth/users — List all staff accounts (admin only) ──────────────
+const listStaffUsers = catchAsync(async (req, res) => {
+    const { data, error } = await supabase
+        .from('admin_users')
+        .select('id, username, full_name, role, email, is_active, last_login, created_at')
+        .order('created_at', { ascending: true });
+
+    if (error) throw error;
+    return apiResponse.success(res, data || []);
+});
+
+// ─── PATCH /api/auth/users/:id — Toggle active/inactive (admin only) ─────────
+const toggleStaffStatus = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const { is_active } = req.body;
+
+    // Prevent self-deactivation
+    if (id === req.user?.id && is_active === false) {
+        return apiResponse.error(res, 400, 'لا يمكنك تعطيل حسابك الخاص');
+    }
+
+    const { data, error } = await supabase
+        .from('admin_users')
+        .update({ is_active: Boolean(is_active) })
+        .eq('id', id)
+        .select('id, username, is_active')
+        .single();
+
+    if (error) throw error;
+    if (!data) return apiResponse.notFound(res, 'المستخدم غير موجود');
+
+    return apiResponse.success(res, data, is_active ? 'تم تفعيل الحساب' : 'تم تعطيل الحساب');
+});
+
+module.exports = { login, refresh, logout, me, loginValidation, createStaffUser, listStaffUsers, toggleStaffStatus };

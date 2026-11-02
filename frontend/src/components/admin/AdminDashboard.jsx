@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+﻿import React, { useState, useEffect, useMemo } from 'react';
 import {
   fetchAnalyticsOverview,
   fetchAdminInquiries,
@@ -13,6 +13,9 @@ import {
   toggleCarFeature,
   fetchAuditLogs,
   postAuditLog,
+  fetchStaffUsers,
+  createStaffUser as createStaffUserApi,
+  toggleStaffUserStatus,
 } from '../../services/adminApi';
 import { SHOWROOM_CONTACT, FALLBACK_CARS } from '../../services/api';
 
@@ -278,26 +281,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
   });
 
   // Staff & Security Audit Log State
-  const [staffUsers, setStaffUsers] = useState([
-    {
-      id: 1,
-      display_name: 'حساب المطور الأساسي (Performax)',
-      username: 'performax',
-      role: 'Super Admin / Developer',
-      role_key: 'developer',
-      account_status: 'active',
-      email: 'admin@autonabil.com',
-    },
-    {
-      id: 2,
-      display_name: 'إدارة مبيعات المعرض',
-      username: 'sales_manager',
-      role: 'مدير المبيعات والـ CRM',
-      role_key: 'admin',
-      account_status: 'active',
-      email: 'sales@autonabil.com',
-    },
-  ]);
+  const [staffUsers, setStaffUsers] = useState([]);
   const [userModalOpen, setUserModalOpen] = useState(false);
   const [newUserForm, setNewUserForm] = useState({
     display_name: '',
@@ -339,11 +323,12 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
   const loadAllData = async () => {
     setLoading(true);
     try {
-      const [overviewRes, inqRes, carsRes, logsRes] = await Promise.allSettled([
+      const [overviewRes, inqRes, carsRes, logsRes, staffRes] = await Promise.allSettled([
         fetchAnalyticsOverview(),
         fetchAdminInquiries({ limit: 100 }),
         fetchAdminCars({ limit: 100 }),
         fetchAuditLogs(200),
+        fetchStaffUsers(),
       ]);
 
       if (overviewRes.status === 'fulfilled' && overviewRes.value) {
@@ -387,6 +372,20 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           user_email: l.user_email || 'admin',
           client_ip: l.client_ip || 'Supabase Cloud',
           entity_type: l.entity_type || 'admin_action',
+        })));
+      }
+
+      // Load real staff users from Supabase
+      if (staffRes.status === 'fulfilled' && Array.isArray(staffRes.value) && staffRes.value.length > 0) {
+        setStaffUsers(staffRes.value.map((u) => ({
+          id: u.id,
+          display_name: u.full_name || u.username,
+          username: u.username,
+          role: u.role === 'admin' ? 'مدير المعرض (Full Admin)' : 'مستشار مبيعات واستقبال (CRM)',
+          role_key: u.role,
+          account_status: u.is_active ? 'active' : 'inactive',
+          email: u.email,
+          last_login: u.last_login,
         })));
       }
 
@@ -2977,7 +2976,9 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                           </td>
                           <td>{u.role}</td>
                           <td>
-                            <span className="status-badge status-confirmed">نشط (Active)</span>
+                            <span className={`status-badge ${u.account_status === 'active' ? 'status-confirmed' : 'status-cancelled'}`}>
+                              {u.account_status === 'active' ? 'نشط (Active)' : 'معطّل (Inactive)'}
+                            </span>
                           </td>
                           <td>{u.email}</td>
                           <td>
@@ -2987,15 +2988,29 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                               </small>
                             ) : (
                               <button
-                                className="drm-btn drm-btn-danger drm-btn-sm"
-                                onClick={() => {
-                                  setStaffUsers((prev) =>
-                                    prev.filter((item) => item.id !== u.id)
-                                  );
-                                  showToast('تم حذف حساب الموظف');
+                                className={`drm-btn drm-btn-sm ${u.account_status === 'active' ? 'drm-btn-danger' : 'drm-btn-outline'}`}
+                                onClick={async () => {
+                                  const newStatus = u.account_status !== 'active';
+                                  try {
+                                    await toggleStaffUserStatus(u.id, newStatus);
+                                    setStaffUsers((prev) =>
+                                      prev.map((item) =>
+                                        item.id === u.id
+                                          ? { ...item, account_status: newStatus ? 'active' : 'inactive' }
+                                          : item
+                                      )
+                                    );
+                                    appendAuditLog(
+                                      `${newStatus ? 'تفعيل' : 'تعطيل'} حساب الموظف (${u.username})`,
+                                      'security'
+                                    );
+                                    showToast(newStatus ? 'تم تفعيل الحساب' : 'تم تعطيل الحساب');
+                                  } catch (err) {
+                                    showToast(err.response?.data?.message || 'تعذّر تغيير حالة الحساب');
+                                  }
                                 }}
                               >
-                                 حذف
+                                {u.account_status === 'active' ? ' تعطيل' : ' تفعيل'}
                               </button>
                             )}
                           </td>
@@ -3474,6 +3489,20 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                 />
               </div>
               <div className="drm-form-group">
+                <label>كلمة المرور <span style={{ color: 'var(--danger)', fontSize: '11px' }}>*</span></label>
+                <input
+                  type="password"
+                  dir="ltr"
+                  className="drm-input"
+                  placeholder="••••••••"
+                  autoComplete="new-password"
+                  value={newUserForm.password}
+                  onChange={(e) =>
+                    setNewUserForm({ ...newUserForm, password: e.target.value })
+                  }
+                />
+              </div>
+              <div className="drm-form-group">
                 <label>الصلاحية والدور الوظيفي (Role)</label>
                 <select
                   className="drm-select"
@@ -3517,23 +3546,31 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
               <button
                 type="button"
                 className="drm-btn drm-btn-primary"
-                onClick={() => {
-                  if (!newUserForm.display_name || !newUserForm.username) return;
-                  setStaffUsers((prev) => [
-                    ...prev,
-                    {
-                      id: prev.length + 1,
+                onClick={async () => {
+                  if (!newUserForm.display_name || !newUserForm.username) {
+                    showToast(' الاسم الكامل واسم المستخدم مطلوبان');
+                    return;
+                  }
+                  if (!newUserForm.password || newUserForm.password.length < 8) {
+                    showToast(' كلمة المرور يجب أن تكون 8 أحرف على الأقل');
+                    return;
+                  }
+                  try {
+                    await createStaffUserApi({
                       display_name: newUserForm.display_name,
                       username: newUserForm.username,
-                      role: newUserForm.role,
-                      role_key: 'staff',
-                      account_status: 'active',
-                      email: newUserForm.email || `${newUserForm.username}@autonabil.com`,
-                    },
-                  ]);
-                  setUserModalOpen(false);
-                  appendAuditLog(`إضافة حساب موظف جديد (${newUserForm.username})`, 'security');
-                  showToast(' تم إنشاء حساب الموظف بنجاح!');
+                      password: newUserForm.password,
+                      role: newUserForm.role === 'مدير المعرض (Full Admin)' ? 'admin' : 'staff',
+                      email: newUserForm.email,
+                    });
+                    setUserModalOpen(false);
+                    setNewUserForm({ display_name: '', username: '', password: '', role: 'مستشار مبيعات واستقبال (CRM)', email: '' });
+                    appendAuditLog(`إضافة حساب موظف جديد (${newUserForm.username})`, 'security');
+                    showToast(' تم إنشاء حساب الموظف بنجاح!');
+                    loadAllData();
+                  } catch (err) {
+                    showToast(err.response?.data?.message || 'تعذّر إنشاء الحساب');
+                  }
                 }}
               >
                  إنشاء الحساب
