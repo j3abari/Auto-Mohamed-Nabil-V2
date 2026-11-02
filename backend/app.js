@@ -39,8 +39,16 @@ const hasFrontendDist = fs.existsSync(publicDistPath);
 
 if (hasFrontendDist) {
     app.use(express.static(publicDistPath, {
-        maxAge: '1h',
-        etag: true
+        etag: true,
+        setHeaders: (res, filePath) => {
+            if (filePath.endsWith('.html')) {
+                res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+                res.setHeader('Pragma', 'no-cache');
+                res.setHeader('Expires', '0');
+            } else if (filePath.includes('assets')) {
+                res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+            }
+        }
     }));
 }
 
@@ -145,6 +153,9 @@ app.use('/api/settings',   settingsRoutes);
 if (hasFrontendDist) {
     app.get('*', (req, res, next) => {
         if (req.path.startsWith('/api/')) return next();
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
         res.sendFile(path.join(publicDistPath, 'index.html'));
     });
 } else {

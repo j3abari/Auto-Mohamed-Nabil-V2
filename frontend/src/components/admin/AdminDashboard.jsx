@@ -1107,6 +1107,27 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           flex-direction: column;
           gap: 8px;
         }
+        .drm-sidebar-logout-btn {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          background: rgba(239, 68, 68, 0.15);
+          color: #fca5a5;
+          border: 1px solid rgba(239, 68, 68, 0.3);
+          border-radius: 8px;
+          padding: 8px 12px;
+          font-family: inherit;
+          font-size: 12px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .drm-sidebar-logout-btn:hover {
+          background: rgba(239, 68, 68, 0.3);
+          color: #ffffff;
+        }
         .drm-sidebar-footer a, .drm-sidebar-footer button {
           color: #cbd5e1;
           text-decoration: none;
@@ -1927,20 +1948,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           <h2>معرض أوتو محمد نبيل</h2>
           <p>نظام إدارة الأسطول والـ CRM</p>
 
-          <div className="drm-sidebar-quick-bar">
-            <button
-              onClick={() => { handleGoToSite('/'); setSidebarOpen(false); }}
-              className="drm-sidebar-quick-btn site-btn"
-            >
-              ← تصفح المعرض
-            </button>
-            <button
-              onClick={() => { onLogout(); setSidebarOpen(false); }}
-              className="drm-sidebar-quick-btn logout-btn"
-            >
-              🚪 تسجيل خروج
-            </button>
-          </div>
+
         </div>
 
         <nav className="drm-nav">
@@ -2008,23 +2016,15 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
         </nav>
 
         <div className="drm-sidebar-footer">
-          <div style={{ fontSize: '13.4px', color: '#f3c9ad', marginBottom: '6px' }}>
-             متصل كـ: <strong>{currentAdmin.full_name || currentAdmin.username}</strong>
+          <div style={{ fontSize: '12.5px', color: '#94a3b8', marginBottom: '8px' }}>
+            👤 متصل كـ: <strong style={{ color: '#f1f5f9' }}>{currentAdmin.full_name || currentAdmin.username}</strong>
           </div>
-          <a
-            href="/"
-            onClick={(e) => {
-              e.preventDefault();
-              handleGoToSite('/');
-            }}
-          >
-             فتح الموقع الرئيسي (معاينة حية)
-          </a>
           <button
             onClick={onLogout}
-            style={{ color: '#f3c9ad', marginTop: '4px' }}
+            className="drm-sidebar-logout-btn"
+            title="تسجيل الخروج والعودة لصفحة الدخول"
           >
-             تسجيل الخروج الآمن
+            🚪 تسجيل الخروج
           </button>
         </div>
       </aside>
@@ -2046,38 +2046,17 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
               <h1 className="drm-page-title">{tabTitles[activeTab]}</h1>
             </div>
 
-            <div className="drm-topbar-right-meta">
-              <span className={`drm-status-badge ${cloudConnected ? 'online' : 'offline'}`}>
-                <span className="drm-status-dot" />
-                <span className="drm-status-text-full">
-                  {cloudConnected
-                    ? `متصل بالسحابة (Zero Data Loss)${lastSyncTime ? ` • ${lastSyncTime}` : ''}`
-                    : 'جاري إعادة الاتصال بالسحابة...'}
-                </span>
-                <span className="drm-status-text-short">
-                  {cloudConnected ? 'متصل بالسحابة' : 'غير متصل'}
-                </span>
+            <span className={`drm-status-badge ${cloudConnected ? 'online' : 'offline'}`}>
+              <span className="drm-status-dot" />
+              <span className="drm-status-text-full">
+                {cloudConnected
+                  ? `متصل بالسحابة (Zero Data Loss)${lastSyncTime ? ` • ${lastSyncTime}` : ''}`
+                  : 'جاري إعادة الاتصال بالسحابة...'}
               </span>
-
-              <div className="drm-topbar-quick-exit">
-                <button
-                  className="drm-btn-quick-site"
-                  onClick={() => handleGoToSite('/')}
-                  title="الخروج للمعرض وتصفح السيارات"
-                >
-                  <span>←</span>
-                  <span className="quick-btn-label">المعرض</span>
-                </button>
-                <button
-                  className="drm-btn-quick-logout"
-                  onClick={onLogout}
-                  title="تسجيل الخروج والعودة للمعرض"
-                >
-                  <span>🚪</span>
-                  <span className="quick-btn-label">خروج</span>
-                </button>
-              </div>
-            </div>
+              <span className="drm-status-text-short">
+                {cloudConnected ? 'متصل بالسحابة' : 'غير متصل'}
+              </span>
+            </span>
           </div>
 
           <div className="drm-topbar-actions">
