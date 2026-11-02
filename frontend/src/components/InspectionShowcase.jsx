@@ -13,7 +13,7 @@ export default function InspectionShowcase({ onOpenInquiry }) {
   ];
 
   return (
-    <section id="inspection" className="py-24 bg-[#faf8f3] border-t border-black/10 relative">
+    <section id="inspection" className="py-24 bg-[#faf8f3] border-t border-black/[0.07] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
@@ -22,7 +22,7 @@ export default function InspectionShowcase({ onOpenInquiry }) {
             معايير الجودة والضمان • Inspection Standards
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1f2937] tracking-tight mt-2">
-            فحص فني معتمد <span className="text-[#9a7226]">100 نقطة</span> لكل سيارة.
+            فحص فني معتمد <span className="text-[#c2602b]">100 نقطة</span> لكل سيارة.
           </h2>
           <p className="text-sm text-[#4b5563] mt-3 leading-relaxed font-light">
             في سوق أوتو محمد نبيل، لا تدخل صالة العرض أي سيارة إلا بعد اجتياز فحص فني صارم يشمل كافة التفاصيل الدقيقة. نضمن لك سيارة بحالة الزيرو وفابريكا بالكامل.
@@ -34,10 +34,10 @@ export default function InspectionShowcase({ onOpenInquiry }) {
           {points.map((pt, i) => (
             <div
               key={i}
-              className="luxury-card p-6 rounded-2xl border border-black/10 hover:border-[#9a7226]/30 transition-all duration-300"
+              className="luxury-card p-6 rounded-2xl border border-black/[0.07] hover:border-[#c2602b]/30 transition-all duration-300"
             >
               <div className="flex items-start gap-3.5">
-                <div className="w-9 h-9 rounded-xl bg-[#9a7226]/10 border border-[#9a7226]/25 flex items-center justify-center shrink-0 text-[#9a7226] mt-0.5">
+                <div className="w-9 h-9 rounded-xl bg-[#c2602b]/10 border border-[#c2602b]/25 flex items-center justify-center shrink-0 text-[#c2602b] mt-0.5">
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
                 <div>
@@ -50,9 +50,9 @@ export default function InspectionShowcase({ onOpenInquiry }) {
         </div>
 
         {/* Certificate / Verification Banner */}
-        <div className="luxury-card p-6 sm:p-8 rounded-3xl border border-[#9a7226]/30 flex flex-wrap items-center justify-between gap-6 bg-gradient-to-r from-[#ffffff] via-[#ffffff] to-[#ffffff]">
+        <div className="luxury-card p-6 sm:p-8 rounded-3xl border border-[#c2602b]/30 flex flex-wrap items-center justify-between gap-6 bg-gradient-to-r from-[#ffffff] via-[#ffffff] to-[#ffffff]">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-[#9a7226]/15 border border-[#9a7226]/30 flex items-center justify-center text-[#9a7226] shrink-0">
+            <div className="w-14 h-14 rounded-2xl bg-[#c2602b]/15 border border-[#c2602b]/30 flex items-center justify-center text-[#c2602b] shrink-0">
               <FileCheck className="w-7 h-7" />
             </div>
             <div>
@@ -70,7 +70,7 @@ export default function InspectionShowcase({ onOpenInquiry }) {
               window.history.pushState({}, '', '/viewing');
               window.dispatchEvent(new PopStateEvent('popstate'));
             }}
-            className="px-6 py-3 rounded-xl bg-[#9a7226] hover:bg-[#7d5c1c] text-white font-bold text-xs sm:text-sm shadow-md shadow-[#9a7226]/25 transition-all whitespace-nowrap"
+            className="px-6 py-3 rounded-xl bg-[#c2602b] hover:bg-[#a24d1f] text-white font-bold text-xs sm:text-sm shadow-md shadow-[#c2602b]/25 transition-all whitespace-nowrap"
           >
             تحديد موعد فحص ومعاينة
           </a>

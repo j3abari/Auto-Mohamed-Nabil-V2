@@ -259,9 +259,9 @@ export default function App() {
   const selectCar = (car) => navigate(`/vehicles/${car.slug || car.id}`);
   const inquireCar = (car) => setInquiryContext({ carId: car.id, title: `استفسار عن ${car.make} ${car.model}` });
   const crumb = (label) => (
-    <div className="bg-[#f4f0e6] border-b border-black/10 py-3.5">
+    <div className="bg-[#f4f0e6] border-b border-black/[0.07] py-3.5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-2 text-xs text-[#4b5563]">
-        <a href="/" onClick={goto('/')} className="hover:text-[#9a7226]">الرئيسية</a>
+        <a href="/" onClick={goto('/')} className="hover:text-[#c2602b]">الرئيسية</a>
         <span>/</span>
         <span className="text-[#1f2937] font-bold">{label}</span>
       </div>
@@ -282,12 +282,12 @@ export default function App() {
       case '/about':
         return (<>{crumb('عن المعرض')}<WhyChooseUs /></>);
       case '/contact':
-        return (<>{crumb('موقعنا')}<section className="py-20"><div className="max-w-3xl mx-auto px-4 text-center space-y-4"><h2 className="text-3xl font-bold text-[#1f2937]">تفضل بزيارة صالة العرض</h2><p className="text-[#4b5563]">{SHOWROOM_CONTACT.address}</p><p className="text-[#4b5563]">{SHOWROOM_CONTACT.workingHours}</p><div className="flex justify-center gap-3 pt-4"><a href={SHOWROOM_CONTACT.mapsUrl} target="_blank" rel="noopener noreferrer" className="px-6 py-3 rounded-xl bg-[#9a7226] text-white font-bold text-sm">الاتجاهات على الخريطة</a><a href={`tel:${SHOWROOM_CONTACT.phone}`} className="px-6 py-3 rounded-xl border border-black/10 text-[#1f2937] font-bold text-sm">اتصال مباشر</a></div></div></section></>);
+        return (<>{crumb('موقعنا')}<section className="py-20"><div className="max-w-3xl mx-auto px-4 text-center space-y-4"><h2 className="text-3xl font-bold text-[#1f2937]">تفضل بزيارة صالة العرض</h2><p className="text-[#4b5563]">{SHOWROOM_CONTACT.address}</p><p className="text-[#4b5563]">{SHOWROOM_CONTACT.workingHours}</p><div className="flex justify-center gap-3 pt-4"><a href={SHOWROOM_CONTACT.mapsUrl} target="_blank" rel="noopener noreferrer" className="px-6 py-3 rounded-xl bg-[#c2602b] text-white font-bold text-sm">الاتجاهات على الخريطة</a><a href={`tel:${SHOWROOM_CONTACT.phone}`} className="px-6 py-3 rounded-xl border border-black/[0.07] text-[#1f2937] font-bold text-sm">اتصال مباشر</a></div></div></section></>);
       default:
         return (<>
           <HeroSection filters={heroFilters} setFilters={setHeroFilters} onSearchSubmit={handleHeroSearch} availableMakes={availableMakes} onNavigate={navigate} />
           <InventorySection cars={filteredCars.slice(0, 6)} loading={loading} onSelectCar={selectCar} onInquire={inquireCar} />
-          <div className="text-center pb-16"><a href="/inventory" onClick={goto('/inventory')} className="inline-flex px-8 py-3.5 rounded-xl bg-[#9a7226] hover:bg-[#7d5c1c] text-white font-bold text-sm">عرض كل الأسطول</a></div>
+          <div className="text-center pb-16"><a href="/inventory" onClick={goto('/inventory')} className="inline-flex px-8 py-3.5 rounded-xl bg-[#c2602b] hover:bg-[#a24d1f] text-white font-bold text-sm">عرض كل الأسطول</a></div>
           <ShowroomServices />
           <WhyChooseUs />
         </>);
@@ -296,7 +296,7 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen bg-[#faf8f3] text-[#1f2937] font-sans selection:bg-[#9a7226] selection:text-white"
+      className="min-h-screen bg-[#faf8f3] text-[#1f2937] font-sans selection:bg-[#c2602b] selection:text-white"
       dir="rtl"
     >
       {/* Luxury Sticky Navbar (Clean Paths, Zero #) */}
@@ -336,7 +336,7 @@ export default function App() {
         {showScrollTop && (
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="w-11 h-11 rounded-full bg-[#ffffff]/90 border border-black/10 text-[#1f2937] hover:text-[#9a7226] hover:border-[#9a7226]/50 shadow-xl flex items-center justify-center transition-all backdrop-blur-md"
+            className="w-11 h-11 rounded-full bg-[#ffffff]/90 border border-black/[0.07] text-[#1f2937] hover:text-[#c2602b] hover:border-[#c2602b]/50 shadow-xl flex items-center justify-center transition-all backdrop-blur-md"
             aria-label="العودة لأعلى الصفحة"
           >
             <ArrowUp className="w-5 h-5" />
@@ -349,7 +349,7 @@ export default function App() {
           )}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="relative group p-3.5 rounded-full bg-[#9a7226] hover:bg-[#9a7226] text-white shadow-2xl shadow-[#9a7226]/50 hover:scale-110 active:scale-95 transition-all flex items-center justify-center"
+          className="relative group p-3.5 rounded-full bg-[#c2602b] hover:bg-[#c2602b] text-white shadow-2xl shadow-[#c2602b]/50 hover:scale-110 active:scale-95 transition-all flex items-center justify-center"
           title="تواصل مباشرة عبر واتساب"
           aria-label="محادثة واتساب مباشرة"
         >

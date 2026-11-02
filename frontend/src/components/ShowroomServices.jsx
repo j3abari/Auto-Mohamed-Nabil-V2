@@ -38,7 +38,7 @@ export default function ShowroomServices() {
   ];
 
   return (
-    <section id="services" className="py-24 bg-[#faf8f3] border-t border-black/10 relative">
+    <section id="services" className="py-24 bg-[#faf8f3] border-t border-black/[0.07] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -48,7 +48,7 @@ export default function ShowroomServices() {
               خدمات المعرض الفاخرة • The Showroom Services
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1f2937] tracking-tight mt-2">
-              خدمات متكاملة تليق <span className="text-[#9a7226]">بأصحاب الذوق الرفيع.</span>
+              خدمات متكاملة تليق <span className="text-[#c2602b]">بأصحاب الذوق الرفيع.</span>
             </h2>
           </div>
           <p className="text-sm text-[#4b5563] max-w-md leading-relaxed">
@@ -63,31 +63,31 @@ export default function ShowroomServices() {
             return (
               <div
                 key={idx}
-                className="luxury-card rounded-2xl p-8 border border-black/10 hover:border-[#9a7226]/40 transition-all duration-300 relative group"
+                className="luxury-card rounded-2xl p-8 border border-black/[0.07] hover:border-[#c2602b]/40 transition-all duration-300 relative group"
               >
                 <div className="flex items-start justify-between mb-6">
-                  <div className="w-14 h-14 rounded-xl bg-black/5 border border-black/10 flex items-center justify-center text-[#9a7226] group-hover:scale-110 group-hover:bg-[#9a7226]/10 transition-all">
+                  <div className="w-14 h-14 rounded-xl bg-black/5 border border-black/[0.07] flex items-center justify-center text-[#c2602b] group-hover:scale-110 group-hover:bg-[#c2602b]/10 transition-all">
                     <Icon className="w-7 h-7" />
                   </div>
-                  <span className="font-mono text-3xl font-black text-[#1f2937] group-hover:text-[#9a7226]/30 transition-colors">
+                  <span className="font-mono text-3xl font-black text-[#1f2937] group-hover:text-[#c2602b]/30 transition-colors">
                     {srv.number}
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-[#1f2937] mb-1 group-hover:text-[#9a7226] transition-colors">
+                <h3 className="text-xl font-bold text-[#1f2937] mb-1 group-hover:text-[#c2602b] transition-colors">
                   {srv.title}
                 </h3>
-                <p className="text-xs font-medium text-[#9a7226] mb-3">
+                <p className="text-xs font-medium text-[#c2602b] mb-3">
                   {srv.subtitle}
                 </p>
                 <p className="text-xs text-[#6b7280] leading-relaxed mb-6">
                   {srv.desc}
                 </p>
 
-                <div className="space-y-2 pt-4 border-t border-black/10">
+                <div className="space-y-2 pt-4 border-t border-black/[0.07]">
                   {srv.points.map((pt, pIdx) => (
                     <div key={pIdx} className="flex items-center gap-2 text-xs text-[#4b5563]">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#9a7226] flex-shrink-0" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#c2602b] flex-shrink-0" />
                       <span>{pt}</span>
                     </div>
                   ))}

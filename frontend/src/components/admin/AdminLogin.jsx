@@ -41,7 +41,7 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
       dir="rtl"
       style={{
         fontFamily: "'Alexandria', 'Cairo', sans-serif",
-        background: 'linear-gradient(135deg, #7d5c1c 0%, #9a7226 55%, #9a7226 100%)',
+        background: 'linear-gradient(135deg, #141a22 0%, #1e2530 55%, #1e2530 100%)',
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
@@ -65,7 +65,7 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
           style={{
             display: 'inline-block',
             background: '#fdf8f3',
-            color: '#9a7226',
+            color: '#1e2530',
             border: '1px solid #f0e1d0',
             padding: '4px 14px',
             borderRadius: '50px',
@@ -88,7 +88,7 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
               margin: '0 auto 14px',
               display: 'block',
               objectFit: 'cover',
-              border: '2px solid #f3e2b8',
+              border: '2px solid #e8935f',
               background: '#0A0C0B',
               padding: '2px',
             }}
@@ -97,7 +97,7 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
 
         <h1
           style={{
-            color: '#9a7226',
+            color: '#1e2530',
             fontSize: '23.5px',
             fontWeight: 800,
             marginBottom: '6px',
@@ -206,7 +206,7 @@ export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, on
             disabled={loading}
             style={{
               width: '100%',
-              background: '#9a7226',
+              background: '#1e2530',
               color: '#ffffff',
               border: 'none',
               padding: '13px',

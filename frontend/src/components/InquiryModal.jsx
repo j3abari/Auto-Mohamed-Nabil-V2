@@ -51,9 +51,9 @@ export default function InquiryModal({ context, onClose, cars = [] }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg bg-dark-900 border border-black/10 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden my-auto">
+      <div className="relative w-full max-w-lg bg-dark-900 border border-black/[0.07] rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden my-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 sm:p-5 border-b border-black/10 bg-dark-950">
+        <div className="flex items-center justify-between p-4 sm:p-5 border-b border-black/[0.07] bg-dark-950">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-brand-orange/15 border border-brand-orange/30 flex items-center justify-center text-brand-orange">
               <Sparkles className="w-4 h-4" />
@@ -77,7 +77,7 @@ export default function InquiryModal({ context, onClose, cars = [] }) {
         <div className="p-5 sm:p-6">
           {successResult ? (
             <div className="text-center py-4 space-y-4">
-              <div className="w-16 h-16 rounded-full bg-[#9a7226]/20 border border-[#9a7226]/40 text-[#9a7226] flex items-center justify-center mx-auto">
+              <div className="w-16 h-16 rounded-full bg-[#c2602b]/20 border border-[#c2602b]/40 text-[#c2602b] flex items-center justify-center mx-auto">
                 <CheckCircle className="w-9 h-9" />
               </div>
               <h4 className="text-xl font-black text-[#1f2937]">تم استلام طلبك بنجاح!</h4>
@@ -92,7 +92,7 @@ export default function InquiryModal({ context, onClose, cars = [] }) {
                   href={`${SHOWROOM_CONTACT.whatsappLink}?text=${encodeURIComponent(`مرحباً أوتو محمد نبيل، قمت بإرسال طلب استفسار برقم مرجعي: ${successResult.data?.ref}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3 px-4 rounded-xl bg-[#9a7226] hover:bg-[#9a7226] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition-all"
+                  className="w-full py-3 px-4 rounded-xl bg-[#c2602b] hover:bg-[#c2602b] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition-all"
                 >
                   <MessageCircle className="w-4 h-4 fill-current" />
                   <span>تأكيد الطلب مباشرة عبر الواتساب</span>
@@ -123,7 +123,7 @@ export default function InquiryModal({ context, onClose, cars = [] }) {
                   placeholder="مثال: أحمد محمود"
                   value={formData.customer_name}
                   onChange={(e) => setFormData({ ...formData, customer_name: e.target.value })}
-                  className="w-full bg-dark-950 border border-black/10 rounded-xl px-3.5 py-2.5 text-[#1f2937] placeholder-gray-500 focus:outline-none focus:border-brand-orange transition-colors"
+                  className="w-full bg-dark-950 border border-black/[0.07] rounded-xl px-3.5 py-2.5 text-[#1f2937] placeholder-gray-500 focus:outline-none focus:border-brand-orange transition-colors"
                 />
               </div>
 
@@ -137,7 +137,7 @@ export default function InquiryModal({ context, onClose, cars = [] }) {
                   placeholder="01012345678"
                   value={formData.customer_phone}
                   onChange={(e) => setFormData({ ...formData, customer_phone: e.target.value })}
-                  className="w-full bg-dark-950 border border-black/10 rounded-xl px-3.5 py-2.5 text-[#1f2937] placeholder-gray-500 text-right focus:outline-none focus:border-brand-orange transition-colors"
+                  className="w-full bg-dark-950 border border-black/[0.07] rounded-xl px-3.5 py-2.5 text-[#1f2937] placeholder-gray-500 text-right focus:outline-none focus:border-brand-orange transition-colors"
                 />
                 <span className="text-[0.6250rem] text-gray-500 mt-1 block">رقم للتواصل عليه عبر الاتصال أو الواتساب</span>
               </div>
@@ -148,7 +148,7 @@ export default function InquiryModal({ context, onClose, cars = [] }) {
                 <select
                   value={formData.car_id}
                   onChange={(e) => setFormData({ ...formData, car_id: e.target.value })}
-                  className="w-full bg-dark-950 border border-black/10 rounded-xl px-3 py-2.5 text-[#1f2937] focus:outline-none focus:border-brand-orange transition-colors"
+                  className="w-full bg-dark-950 border border-black/[0.07] rounded-xl px-3 py-2.5 text-[#1f2937] focus:outline-none focus:border-brand-orange transition-colors"
                 >
                   <option value="">استفسار عام / تشكيلة المعرض كاملة</option>
                   {cars.map((c) => (
@@ -166,7 +166,7 @@ export default function InquiryModal({ context, onClose, cars = [] }) {
                   <select
                     value={formData.inquiry_type}
                     onChange={(e) => setFormData({ ...formData, inquiry_type: e.target.value })}
-                    className="w-full bg-dark-950 border border-black/10 rounded-xl px-3 py-2 text-[#1f2937] focus:outline-none focus:border-brand-orange transition-colors"
+                    className="w-full bg-dark-950 border border-black/[0.07] rounded-xl px-3 py-2 text-[#1f2937] focus:outline-none focus:border-brand-orange transition-colors"
                   >
                     <option value="general">استفسار عام</option>
                     <option value="price">شراء كاش</option>
@@ -182,7 +182,7 @@ export default function InquiryModal({ context, onClose, cars = [] }) {
                     type="text"
                     value={formData.customer_city}
                     onChange={(e) => setFormData({ ...formData, customer_city: e.target.value })}
-                    className="w-full bg-dark-950 border border-black/10 rounded-xl px-3 py-2 text-[#1f2937] focus:outline-none focus:border-brand-orange transition-colors"
+                    className="w-full bg-dark-950 border border-black/[0.07] rounded-xl px-3 py-2 text-[#1f2937] focus:outline-none focus:border-brand-orange transition-colors"
                   />
                 </div>
               </div>
@@ -195,7 +195,7 @@ export default function InquiryModal({ context, onClose, cars = [] }) {
                   placeholder="اكتب استفسارك هنا..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full bg-dark-950 border border-black/10 rounded-xl p-2.5 text-[#1f2937] placeholder-gray-500 focus:outline-none focus:border-brand-orange transition-colors"
+                  className="w-full bg-dark-950 border border-black/[0.07] rounded-xl p-2.5 text-[#1f2937] placeholder-gray-500 focus:outline-none focus:border-brand-orange transition-colors"
                 />
               </div>
 

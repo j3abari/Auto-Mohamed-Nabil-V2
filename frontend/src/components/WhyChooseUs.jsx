@@ -10,7 +10,7 @@ export default function WhyChooseUs() {
   ];
 
   return (
-    <section id="about" className="py-24 bg-gradient-to-b from-[#faf8f3] via-[#f4f0e6] to-[#faf8f3] border-t border-black/10 relative overflow-hidden">
+    <section id="about" className="py-24 bg-gradient-to-b from-[#faf8f3] via-[#f4f0e6] to-[#faf8f3] border-t border-black/[0.07] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main Content Grid */}
@@ -23,7 +23,7 @@ export default function WhyChooseUs() {
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1f2937] tracking-tight mt-2 mb-6">
               سوق أوتو محمد نبيل.<br />
-              <span className="text-[#9a7226]">حيث تلتقي الفخامة بالثقة.</span>
+              <span className="text-[#c2602b]">حيث تلتقي الفخامة بالثقة.</span>
             </h2>
 
             <div className="space-y-4 text-sm text-[#4b5563] leading-relaxed font-light">
@@ -36,21 +36,21 @@ export default function WhyChooseUs() {
             </div>
 
             {/* Checkpoints */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-8 pt-6 border-t border-black/10 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-8 pt-6 border-t border-black/[0.07] text-xs">
               <div className="flex items-center gap-2 text-[#1f2937]">
-                <CheckCircle2 className="w-4 h-4 text-[#9a7226] flex-shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#c2602b] flex-shrink-0" />
                 <span>تقارير فحص فنية معتمدة وموثقة</span>
               </div>
               <div className="flex items-center gap-2 text-[#1f2937]">
-                <CheckCircle2 className="w-4 h-4 text-[#9a7226] flex-shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#c2602b] flex-shrink-0" />
                 <span>استبدال فوري بأعلى تقييم سوقي</span>
               </div>
               <div className="flex items-center gap-2 text-[#1f2937]">
-                <CheckCircle2 className="w-4 h-4 text-[#9a7226] flex-shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#c2602b] flex-shrink-0" />
                 <span>تعاقد مباشر مع أكبر البنوك المصرية</span>
               </div>
               <div className="flex items-center gap-2 text-[#1f2937]">
-                <CheckCircle2 className="w-4 h-4 text-[#9a7226] flex-shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#c2602b] flex-shrink-0" />
                 <span>ضمان سلامة الهيكل والمحرك والفتيس</span>
               </div>
             </div>
@@ -61,9 +61,9 @@ export default function WhyChooseUs() {
             {stats.map((s, idx) => (
               <div
                 key={idx}
-                className="luxury-card rounded-2xl p-6 sm:p-8 border border-black/10 text-center flex flex-col justify-center items-center hover:border-[#9a7226]/30 transition-colors"
+                className="luxury-card rounded-2xl p-6 sm:p-8 border border-black/[0.07] text-center flex flex-col justify-center items-center hover:border-[#c2602b]/30 transition-colors"
               >
-                <span className="font-mono text-3xl sm:text-4xl font-black text-[#9a7226] mb-1">
+                <span className="font-mono text-3xl sm:text-4xl font-black text-[#c2602b] mb-1">
                   {s.value}
                 </span>
                 <h4 className="text-sm font-bold text-[#1f2937] mb-1">

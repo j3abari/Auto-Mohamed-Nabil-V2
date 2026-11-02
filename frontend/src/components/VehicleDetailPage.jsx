@@ -46,7 +46,7 @@ export default function VehicleDetailPage({
             e.preventDefault();
             onNavigate('/inventory');
           }}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#9a7226] text-white font-bold text-sm"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#c2602b] text-white font-bold text-sm"
         >
           <span>العودة إلى أسطول السيارات</span>
         </a>
@@ -96,7 +96,7 @@ export default function VehicleDetailPage({
   return (
     <div className="bg-[#faf8f3] min-h-screen pb-24">
       {/* Breadcrumb Bar (Sharaf Reference Style) */}
-      <div className="bg-[#f4f0e6] border-b border-black/10 py-3.5">
+      <div className="bg-[#f4f0e6] border-b border-black/[0.07] py-3.5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between flex-wrap gap-3 text-xs text-[#4b5563]">
           <div className="flex items-center gap-2">
             <a
@@ -105,7 +105,7 @@ export default function VehicleDetailPage({
                 e.preventDefault();
                 onNavigate('/');
               }}
-              className="hover:text-[#9a7226] transition-colors"
+              className="hover:text-[#c2602b] transition-colors"
             >
               الرئيسية
             </a>
@@ -116,7 +116,7 @@ export default function VehicleDetailPage({
                 e.preventDefault();
                 onNavigate('/inventory');
               }}
-              className="hover:text-[#9a7226] transition-colors"
+              className="hover:text-[#c2602b] transition-colors"
             >
               أسطول المعرض
             </a>
@@ -132,7 +132,7 @@ export default function VehicleDetailPage({
               e.preventDefault();
               onNavigate('/inventory');
             }}
-            className="inline-flex items-center gap-1.5 text-[#9a7226] hover:text-[#9a7226] font-semibold transition-colors"
+            className="inline-flex items-center gap-1.5 text-[#c2602b] hover:text-[#c2602b] font-semibold transition-colors"
           >
             <ArrowRight className="w-3.5 h-3.5" />
             <span>العودة لكل السيارات</span>
@@ -146,7 +146,7 @@ export default function VehicleDetailPage({
           {/* Right / Main Column: Gallery + Dossier (7 cols) */}
           <div className="lg:col-span-7 space-y-8">
             {/* Main Stage Photo */}
-            <div className="luxury-card rounded-2xl overflow-hidden border border-black/10">
+            <div className="luxury-card rounded-2xl overflow-hidden border border-black/[0.07]">
               <div className="relative h-72 sm:h-[420px] bg-[#f4f0e6]">
                 <img
                   src={currentImage}
@@ -157,11 +157,11 @@ export default function VehicleDetailPage({
 
                 <div className="absolute top-4 right-4 flex flex-wrap gap-2">
                   <span className="badge-orange text-xs font-bold px-3 py-1.5 rounded-xl backdrop-blur-md flex items-center gap-1.5 shadow-lg">
-                    <Sparkles className="w-3.5 h-3.5 text-[#9a7226]" />
+                    <Sparkles className="w-3.5 h-3.5 text-[#c2602b]" />
                     <span>فابريكا بالكامل • كسر زيرو</span>
                   </span>
                   <span className="badge-gold text-xs font-bold px-3 py-1.5 rounded-xl backdrop-blur-md flex items-center gap-1.5 shadow-lg">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#9a7226]" />
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#c2602b]" />
                     <span>فحص معتمد {car.inspection_score || '98%'}</span>
                   </span>
                 </div>
@@ -169,7 +169,7 @@ export default function VehicleDetailPage({
 
               {/* Thumbnails Strip */}
               {images.length > 1 && (
-                <div className="p-4 bg-[#121513] border-t border-black/10 flex gap-3 overflow-x-auto">
+                <div className="p-4 bg-[#121513] border-t border-black/[0.07] flex gap-3 overflow-x-auto">
                   {images.map((img, i) => (
                     <button
                       key={i}
@@ -177,8 +177,8 @@ export default function VehicleDetailPage({
                       onClick={() => setActiveImageIdx(i)}
                       className={`relative w-24 h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${
                         activeImageIdx === i
-                          ? 'border-[#9a7226] scale-105 shadow-md shadow-[#9a7226]/30'
-                          : 'border-black/10 opacity-65 hover:opacity-100'
+                          ? 'border-[#c2602b] scale-105 shadow-md shadow-[#c2602b]/30'
+                          : 'border-black/[0.07] opacity-65 hover:opacity-100'
                       }`}
                     >
                       <img
@@ -193,7 +193,7 @@ export default function VehicleDetailPage({
             </div>
 
             {/* Vehicle Description & Features Dossier */}
-            <div className="luxury-card rounded-2xl p-6 sm:p-8 border border-black/10 space-y-6">
+            <div className="luxury-card rounded-2xl p-6 sm:p-8 border border-black/[0.07] space-y-6">
               <div>
                 <span className="gx-kicker gx-kicker-orange mb-2">
                   ملف السيارة والتجهيزات • Vehicle Dossier
@@ -208,18 +208,18 @@ export default function VehicleDetailPage({
               </div>
 
               {car.features && car.features.length > 0 && (
-                <div className="pt-6 border-t border-black/10">
+                <div className="pt-6 border-t border-black/[0.07]">
                   <h3 className="text-base font-bold text-[#1f2937] mb-4 flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-[#9a7226]" />
+                    <Sparkles className="w-4 h-4 text-[#c2602b]" />
                     <span>أبرز التجهيزات والمواصفات الفاخرة</span>
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {car.features.map((feat, idx) => (
                       <div
                         key={idx}
-                        className="flex items-start gap-2.5 bg-[#f4f0e6] border border-black/10 p-3.5 rounded-xl text-xs text-[#1f2937]"
+                        className="flex items-start gap-2.5 bg-[#f4f0e6] border border-black/[0.07] p-3.5 rounded-xl text-xs text-[#1f2937]"
                       >
-                        <CheckCircle2 className="w-4 h-4 text-[#9a7226] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-4 h-4 text-[#c2602b] shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </div>
                     ))}
@@ -229,10 +229,10 @@ export default function VehicleDetailPage({
             </div>
 
             {/* 100-Point Certified Inspection Report Card */}
-            <div className="luxury-card rounded-2xl p-6 sm:p-8 border border-[#9a7226]/25 space-y-5">
-              <div className="flex items-center justify-between flex-wrap gap-4 border-b border-black/10 pb-4">
+            <div className="luxury-card rounded-2xl p-6 sm:p-8 border border-[#c2602b]/25 space-y-5">
+              <div className="flex items-center justify-between flex-wrap gap-4 border-b border-black/[0.07] pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-[#9a7226]/15 border border-[#9a7226]/30 flex items-center justify-center text-[#9a7226]">
+                  <div className="w-12 h-12 rounded-xl bg-[#c2602b]/15 border border-[#c2602b]/30 flex items-center justify-center text-[#c2602b]">
                     <FileCheck className="w-6 h-6" />
                   </div>
                   <div>
@@ -244,7 +244,7 @@ export default function VehicleDetailPage({
                     </p>
                   </div>
                 </div>
-                <div className="bg-[#9a7226]/15 border border-[#9a7226]/30 text-[#9a7226] px-4 py-1.5 rounded-xl text-sm font-black">
+                <div className="bg-[#c2602b]/15 border border-[#c2602b]/30 text-[#c2602b] px-4 py-1.5 rounded-xl text-sm font-black">
                   نتيجة الفحص: {car.inspection_score || '98%'}
                 </div>
               </div>
@@ -253,10 +253,10 @@ export default function VehicleDetailPage({
                 {inspectionPoints.map((pt, i) => (
                   <div
                     key={i}
-                    className="p-3.5 rounded-xl bg-[#f4f0e6] border border-black/10 flex items-center justify-between text-xs"
+                    className="p-3.5 rounded-xl bg-[#f4f0e6] border border-black/[0.07] flex items-center justify-between text-xs"
                   >
                     <span className="text-[#4b5563]">{pt.label}:</span>
-                    <span className="font-bold text-[#9a7226]">{pt.value}</span>
+                    <span className="font-bold text-[#c2602b]">{pt.value}</span>
                   </div>
                 ))}
               </div>
@@ -265,13 +265,13 @@ export default function VehicleDetailPage({
 
           {/* Left / Sticky Summary Column (5 cols) */}
           <div className="lg:col-span-5 lg:sticky lg:top-24 space-y-6">
-            <div className="luxury-card rounded-2xl p-6 sm:p-8 border border-black/10 shadow-2xl space-y-6">
+            <div className="luxury-card rounded-2xl p-6 sm:p-8 border border-black/[0.07] shadow-2xl space-y-6">
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#9a7226]">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#c2602b]">
                     {car.make} • {car.body_type || 'سيدان فاخرة'}
                   </span>
-                  <span className="px-2.5 py-0.5 rounded-md bg-[#9a7226]/15 text-[#9a7226] border border-[#9a7226]/30 text-[0.6875rem] font-bold">
+                  <span className="px-2.5 py-0.5 rounded-md bg-[#c2602b]/15 text-[#c2602b] border border-[#c2602b]/30 text-[0.6875rem] font-bold">
                     متاحة للتسليم الفوري
                   </span>
                 </div>
@@ -284,18 +284,18 @@ export default function VehicleDetailPage({
               </div>
 
               {/* Price & Instalment Box */}
-              <div className="p-5 rounded-2xl bg-[#f4f0e6] border border-black/10 space-y-3">
+              <div className="p-5 rounded-2xl bg-[#f4f0e6] border border-black/[0.07] space-y-3">
                 <div className="flex items-baseline justify-between">
                   <span className="text-xs text-[#6b7280]">السعر النقدي (كاش):</span>
                   <span className="text-2xl sm:text-3xl font-black text-[#1f2937]">
                     {formatPrice(car.price)}
                   </span>
                 </div>
-                <div className="pt-3 border-t border-black/10 flex items-center justify-between text-xs">
-                  <span className="text-[#9a7226] font-semibold">
+                <div className="pt-3 border-t border-black/[0.07] flex items-center justify-between text-xs">
+                  <span className="text-[#c2602b] font-semibold">
                     القسط الشهري التقديري (بمقدم 30%):
                   </span>
-                  <span className="font-bold text-[#9a7226] bg-[#9a7226]/10 px-2.5 py-1 rounded-lg border border-[#9a7226]/25">
+                  <span className="font-bold text-[#c2602b] bg-[#c2602b]/10 px-2.5 py-1 rounded-lg border border-[#c2602b]/25">
                     {calcEstimatedInstalment(car.price)} ج.م / شهرياً
                   </span>
                 </div>
@@ -303,16 +303,16 @@ export default function VehicleDetailPage({
 
               {/* 4 Key Specs Grid */}
               <div className="grid grid-cols-2 gap-3 text-xs">
-                <div className="p-3.5 rounded-xl bg-[#f4f0e6] border border-black/10 flex items-center gap-3">
-                  <Calendar className="w-4 h-4 text-[#9a7226] shrink-0" />
+                <div className="p-3.5 rounded-xl bg-[#f4f0e6] border border-black/[0.07] flex items-center gap-3">
+                  <Calendar className="w-4 h-4 text-[#c2602b] shrink-0" />
                   <div>
                     <span className="text-[0.6250rem] text-[#6b7280] block">سنة الصنع</span>
                     <strong className="text-[#1f2937]">{car.year}</strong>
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-[#f4f0e6] border border-black/10 flex items-center gap-3">
-                  <Gauge className="w-4 h-4 text-[#9a7226] shrink-0" />
+                <div className="p-3.5 rounded-xl bg-[#f4f0e6] border border-black/[0.07] flex items-center gap-3">
+                  <Gauge className="w-4 h-4 text-[#c2602b] shrink-0" />
                   <div>
                     <span className="text-[0.6250rem] text-[#6b7280] block">المسافة المقطوعة</span>
                     <strong className="text-[#1f2937]">
@@ -321,8 +321,8 @@ export default function VehicleDetailPage({
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-[#f4f0e6] border border-black/10 flex items-center gap-3">
-                  <Cog className="w-4 h-4 text-[#9a7226] shrink-0" />
+                <div className="p-3.5 rounded-xl bg-[#f4f0e6] border border-black/[0.07] flex items-center gap-3">
+                  <Cog className="w-4 h-4 text-[#c2602b] shrink-0" />
                   <div>
                     <span className="text-[0.6250rem] text-[#6b7280] block">ناقل الحركة</span>
                     <strong className="text-[#1f2937]">
@@ -331,8 +331,8 @@ export default function VehicleDetailPage({
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-[#f4f0e6] border border-black/10 flex items-center gap-3">
-                  <Fuel className="w-4 h-4 text-[#9a7226] shrink-0" />
+                <div className="p-3.5 rounded-xl bg-[#f4f0e6] border border-black/[0.07] flex items-center gap-3">
+                  <Fuel className="w-4 h-4 text-[#c2602b] shrink-0" />
                   <div>
                     <span className="text-[0.6250rem] text-[#6b7280] block">المحرك والقوة</span>
                     <strong className="text-[#1f2937]">
@@ -354,7 +354,7 @@ export default function VehicleDetailPage({
                       title: `حجز معاينة خاصة: ${car.make} ${car.model} (${car.year})`,
                     })
                   }
-                  className="w-full py-3.5 px-5 rounded-xl bg-[#9a7226] hover:bg-[#7d5c1c] text-white font-bold text-sm shadow-xl shadow-[#9a7226]/25 transition-all flex items-center justify-center gap-2"
+                  className="w-full py-3.5 px-5 rounded-xl bg-[#c2602b] hover:bg-[#a24d1f] text-white font-bold text-sm shadow-xl shadow-[#c2602b]/25 transition-all flex items-center justify-center gap-2"
                 >
                   <CalendarCheck className="w-4 h-4" />
                   <span>حجز موعد معاينة وتجربة قيادة VIP</span>
@@ -364,7 +364,7 @@ export default function VehicleDetailPage({
                   href={waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3.5 px-5 rounded-xl bg-[#9a7226] hover:bg-[#9a7226] text-white font-bold text-sm shadow-lg transition-all flex items-center justify-center gap-2"
+                  className="w-full py-3.5 px-5 rounded-xl bg-[#c2602b] hover:bg-[#c2602b] text-white font-bold text-sm shadow-lg transition-all flex items-center justify-center gap-2"
                 >
                   <MessageCircle className="w-4 h-4" />
                   <span>تواصل مباشر عبر واتساب حول السيارة</span>
@@ -377,25 +377,25 @@ export default function VehicleDetailPage({
                       e.preventDefault();
                       onNavigate('/finance');
                     }}
-                    className="py-2.5 px-3 rounded-xl bg-black/5 hover:bg-black/5 border border-black/10 text-xs font-semibold text-[#1f2937] flex items-center justify-center gap-1.5 transition-colors"
+                    className="py-2.5 px-3 rounded-xl bg-black/5 hover:bg-black/5 border border-black/[0.07] text-xs font-semibold text-[#1f2937] flex items-center justify-center gap-1.5 transition-colors"
                   >
-                    <Calculator className="w-3.5 h-3.5 text-[#9a7226]" />
+                    <Calculator className="w-3.5 h-3.5 text-[#c2602b]" />
                     <span>حاسبة التقسيط</span>
                   </a>
 
                   <a
                     href={`tel:${SHOWROOM_CONTACT.phone}`}
-                    className="py-2.5 px-3 rounded-xl bg-black/5 hover:bg-black/5 border border-black/10 text-xs font-semibold text-[#1f2937] flex items-center justify-center gap-1.5 transition-colors"
+                    className="py-2.5 px-3 rounded-xl bg-black/5 hover:bg-black/5 border border-black/[0.07] text-xs font-semibold text-[#1f2937] flex items-center justify-center gap-1.5 transition-colors"
                   >
-                    <Phone className="w-3.5 h-3.5 text-[#9a7226]" />
+                    <Phone className="w-3.5 h-3.5 text-[#c2602b]" />
                     <span dir="ltr">{SHOWROOM_CONTACT.phoneFormatted}</span>
                   </a>
                 </div>
               </div>
 
               {/* Showroom Location Note */}
-              <div className="pt-4 border-t border-black/10 text-[0.7188rem] text-[#6b7280] flex items-start gap-2">
-                <MapPin className="w-4 h-4 text-[#9a7226] shrink-0 mt-0.5" />
+              <div className="pt-4 border-t border-black/[0.07] text-[0.7188rem] text-[#6b7280] flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-[#c2602b] shrink-0 mt-0.5" />
                 <span>
                   السيارة متواجدة حالياً في صالة العرض: {SHOWROOM_CONTACT.address}. متاح الكشف في أي مركز معتمد.
                 </span>
@@ -406,7 +406,7 @@ export default function VehicleDetailPage({
 
         {/* Related Vehicles */}
         {relatedCars.length > 0 && (
-          <div className="mt-20 pt-12 border-t border-black/10">
+          <div className="mt-20 pt-12 border-t border-black/[0.07]">
             <div className="flex items-center justify-between mb-8">
               <div>
                 <span className="gx-kicker gx-kicker-orange mb-2">
@@ -422,7 +422,7 @@ export default function VehicleDetailPage({
                   e.preventDefault();
                   onNavigate('/inventory');
                 }}
-                className="text-xs font-bold text-[#9a7226] hover:underline"
+                className="text-xs font-bold text-[#c2602b] hover:underline"
               >
                 عرض كل الأسطول ←
               </a>

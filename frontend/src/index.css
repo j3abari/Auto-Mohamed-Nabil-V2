@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-orange: #9a7226;
-  --color-brand-hover: #7d5c1c;
-  --color-brand-dark: #6b4f17;
-  --color-brand-subtle: rgba(154, 114, 38, 0.12);
-  --color-brand-border: rgba(154, 114, 38, 0.35);
+  --color-brand-orange: #c2602b;
+  --color-brand-hover: #a24d1f;
+  --color-brand-dark: #8a4119;
+  --color-brand-subtle: rgba(194, 96, 43, 0.12);
+  --color-brand-border: rgba(194, 96, 43, 0.35);
 
-  --color-brand-gold: #9a7226;
-  --color-brand-gold-subtle: rgba(154, 114, 38, 0.12);
+  --color-brand-gold: #c2602b;
+  --color-brand-gold-subtle: rgba(194, 96, 43, 0.12);
   --color-brand-paper: #1f2937;
   --color-brand-muted: #4b5563;
 
@@ -21,8 +21,8 @@
 
   --font-cairo: 'Alexandria', sans-serif;
   --font-sans: 'Alexandria', sans-serif;
-  --shadow-brand: 0 10px 30px -10px rgba(154, 114, 38, 0.35);
-  --shadow-gold: 0 10px 30px -10px rgba(154, 114, 38, 0.25);
+  --shadow-brand: 0 10px 30px -10px rgba(194, 96, 43, 0.35);
+  --shadow-gold: 0 10px 30px -10px rgba(194, 96, 43, 0.25);
 }
 
 html {
@@ -40,10 +40,10 @@ body {
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: #f4f0e6; }
 ::-webkit-scrollbar-thumb { background: #d9ccaa; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #9a7226; }
+::-webkit-scrollbar-thumb:hover { background: #c2602b; }
 
 .gx-kicker {
-  color: #9a7226;
+  color: #c2602b;
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -51,7 +51,7 @@ body {
   align-items: center;
   gap: 8px;
 }
-.gx-kicker-orange { color: #9a7226; }
+.gx-kicker-orange { color: #c2602b; }
 .gx-kicker::before {
   content: '';
   display: inline-block;
@@ -73,13 +73,13 @@ body {
   transition: all 0.3s ease;
 }
 .luxury-card:hover {
-  border-color: rgba(154, 114, 38, 0.5);
-  box-shadow: 0 14px 30px -14px rgba(154, 114, 38, 0.3);
+  border-color: rgba(194, 96, 43, 0.5);
+  box-shadow: 0 14px 30px -14px rgba(194, 96, 43, 0.3);
   transform: translateY(-3px);
 }
 
 .badge-orange, .badge-gold, .badge-green {
   background: rgba(255, 255, 255, 0.92);
-  color: #7d5c1c;
-  border: 1px solid rgba(154, 114, 38, 0.35);
+  color: #a24d1f;
+  border: 1px solid rgba(194, 96, 43, 0.35);
 }

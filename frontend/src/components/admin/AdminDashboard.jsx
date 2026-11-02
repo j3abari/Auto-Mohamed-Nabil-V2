@@ -971,16 +971,16 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
     <div className="drm-admin-root" dir="rtl">
       <style>{`
         .drm-admin-root {
-          --primary: #9a7226;
-          --primary-dark: #7d5c1c;
-          --accent: #f3e2b8;
-          --orange: #9a7226;
+          --primary: #1e2530;
+          --primary-dark: #141a22;
+          --accent: #e8935f;
+          --orange: #c2602b;
           --bg: #f3f6f5;
           --card: #ffffff;
           --text: #1e293b;
           --muted: #64748b;
           --border: #e2e8f0;
-          --success: #16a34a;
+          --success: #c2602b;
           --warning: #d97706;
           --danger: #dc2626;
           font-family: 'Alexandria', 'Cairo', sans-serif;
@@ -988,7 +988,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           color: var(--text);
           display: flex;
           min-height: 100vh;
-          overflow-x: hidden;
+          overflow-x: clip;
           direction: rtl;
         }
         .drm-admin-root * {
@@ -1003,6 +1003,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           flex-shrink: 0;
           position: sticky;
           top: 0;
+          align-self: flex-start;
           height: 100vh;
           overflow-y: auto;
           box-shadow: -4px 0 20px rgba(0,0,0,0.08);
@@ -1065,8 +1066,8 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           color: #fff;
         }
         .drm-nav-item.active {
-          border-right: 4px solid var(--accent);
-          background: rgba(212, 163, 115, 0.18);
+          background: rgba(232, 147, 95, 0.16);
+          color: #ffd7bd;
         }
         .drm-nav-item span.count {
           margin-right: auto;
@@ -1151,7 +1152,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
         .drm-btn-outline:hover { border-color: var(--primary); background: #f8fafc; }
         .drm-btn-danger { background: #fee2e2; color: var(--danger); }
         .drm-btn-sm { padding: 6px 11px; font-size: 13.4px; border-radius: 7px; }
-        .drm-btn-whatsapp { background: #25D366; color: #fff; padding: 5px 10px; border-radius: 6px; font-size: 12.9px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; border: none; cursor: pointer; }
+        .drm-btn-whatsapp { background: #374151; color: #fff; padding: 5px 10px; border-radius: 6px; font-size: 12.9px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; border: none; cursor: pointer; }
         .drm-content {
           padding: 28px;
           max-width: 1440px;
@@ -1219,9 +1220,9 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           font-size: 12.9px;
           font-weight: 700;
         }
-        .status-new { background: #dbeafe; color: #1d4ed8; }
-        .status-contacted { background: #fef3c7; color: #b45309; }
-        .status-confirmed { background: #dcfce7; color: #7d5c1c; }
+        .status-new { background: #e5e7eb; color: #374151; }
+        .status-contacted { background: #fdebe0; color: #a24d1f; }
+        .status-confirmed { background: #e6eaf0; color: #141a22; }
         .status-cancelled { background: #fee2e2; color: #b91c1c; }
         .drm-input, .drm-select, .drm-textarea {
           padding: 9px 12px;
@@ -1387,7 +1388,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
         </nav>
 
         <div className="drm-sidebar-footer">
-          <div style={{ fontSize: '13.4px', color: '#a7f3d0', marginBottom: '6px' }}>
+          <div style={{ fontSize: '13.4px', color: '#f3c9ad', marginBottom: '6px' }}>
              متصل كـ: <strong>{currentAdmin.full_name || currentAdmin.username}</strong>
           </div>
           <a
@@ -1401,7 +1402,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
           </a>
           <button
             onClick={onLogout}
-            style={{ color: '#fca5a5', marginTop: '4px' }}
+            style={{ color: '#f3c9ad', marginTop: '4px' }}
           >
              تسجيل الخروج الآمن
           </button>
@@ -1433,8 +1434,8 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                 borderRadius: '50px',
                 fontSize: '13.4px',
                 fontWeight: 700,
-                background: cloudConnected ? '#dcfce7' : '#fee2e2',
-                color: cloudConnected ? '#166534' : '#991b1b',
+                background: cloudConnected ? '#e6eaf0' : '#fee2e2',
+                color: cloudConnected ? '#a24d1f' : '#991b1b',
               }}
             >
               {cloudConnected
@@ -1544,7 +1545,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                 padding: '3px 8px',
                                 borderRadius: '6px',
                                 fontWeight: 700,
-                                color: '#9a7226',
+                                color: '#1e2530',
                               }}
                             >
                                {l.inquiry_ref || `#${String(l.id).slice(0, 6)}`}
@@ -1685,7 +1686,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
               <div
                 className="drm-card"
                 style={{
-                  background: 'linear-gradient(135deg, #9a7226, #7d5c1c)',
+                  background: 'linear-gradient(135deg, #1e2530, #141a22)',
                   color: '#fff',
                   border: 'none',
                   marginBottom: '20px',
@@ -1703,7 +1704,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                   }}
                 >
                   <div>
-                    <h3 style={{ color: '#f3e2b8', fontSize: '17.9px', marginBottom: '4px' }}>
+                    <h3 style={{ color: '#e8935f', fontSize: '17.9px', marginBottom: '4px' }}>
                        بوابة التحقق السريع من كود حجز العميل (Reference Code Verification)
                     </h3>
                     <p style={{ fontSize: '14.0px', color: '#cbd5e1', margin: 0 }}>
@@ -1855,7 +1856,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                     padding: '2px 6px',
                                     borderRadius: '6px',
                                     fontWeight: 700,
-                                    color: '#9a7226',
+                                    color: '#1e2530',
                                   }}
                                 >
                                    {l.inquiry_ref || 'INQ-2026'}
@@ -1866,7 +1867,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                   style={{
                                     marginTop: '3px',
                                     fontSize: '12.3px',
-                                    color: '#16a34a',
+                                    color: '#c2602b',
                                     fontWeight: 700,
                                   }}
                                 >
@@ -1899,7 +1900,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                 {d.priority === 'vip' && (
                                   <span
                                     className="status-badge"
-                                    style={{ background: '#fef3c7', color: '#92400e' }}
+                                    style={{ background: '#fdebe0', color: '#a24d1f' }}
                                   >
                                     VIP
                                   </span>
@@ -1967,7 +1968,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                   style={{
                                     marginTop: '3px',
                                     fontSize: '12.3px',
-                                    color: '#b45309',
+                                    color: '#a24d1f',
                                     fontWeight: 600,
                                   }}
                                 >
@@ -2204,7 +2205,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                               {isArchived ? (
                                 <span
                                   className="status-badge"
-                                  style={{ background: '#dcfce7', color: '#166534' }}
+                                  style={{ background: '#e6eaf0', color: '#a24d1f' }}
                                 >
                                    مؤرشفة بعد الرد
                                 </span>
@@ -2299,7 +2300,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                   <>
                                     <button
                                       className="drm-btn drm-btn-primary drm-btn-sm"
-                                      style={{ flex: 1, justifyContent: 'center', background: '#7d5c1c' }}
+                                      style={{ flex: 1, justifyContent: 'center', background: '#141a22' }}
                                       onClick={() => handleReplyAndArchiveMessage(l, true)}
                                     >
                                        تم الرد وأرشفة الرسالة
@@ -2461,7 +2462,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                               {car.is_featured && (
                                 <span
                                   className="status-badge"
-                                  style={{ background: '#fef3c7', color: '#92400e' }}
+                                  style={{ background: '#fdebe0', color: '#a24d1f' }}
                                 >
                                   مميزة
                                 </span>
@@ -2553,7 +2554,7 @@ export default function AdminDashboard({ user, adminUser, onLogout, onClose, onS
                                 padding: '3px 8px',
                                 borderRadius: '6px',
                                 fontWeight: 700,
-                                color: '#9a7226',
+                                color: '#1e2530',
                               }}
                             >
                               {p.path}
