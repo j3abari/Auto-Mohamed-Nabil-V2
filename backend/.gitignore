@@ -1,0 +1,21 @@
+# Auto Mohamed Nabil V2
+
+# Ignore secrets
+.env
+*.env.local
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Uploads
+uploads/temp/*
+!uploads/temp/.gitkeep
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

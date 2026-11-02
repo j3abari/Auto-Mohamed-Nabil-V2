@@ -1,0 +1,31 @@
+# Auto Mohamed Nabil V2 — .gitignore
+
+# ─── Secrets (CRITICAL) ─────────
+.env
+*.env.local
+*.env.production
+
+# ─── Node ───────────────────────
+node_modules/
+npm-debug.log*
+yarn-error.log
+
+# ─── Uploads ────────────────────
+backend/uploads/temp/*
+!backend/uploads/temp/.gitkeep
+
+# ─── Logs ───────────────────────
+backend/logs/
+*.log
+
+# ─── Build output ───────────────
+frontend/dist/
+frontend/.vite/
+
+# ─── OS ─────────────────────────
+.DS_Store
+Thumbs.db
+
+# ─── IDE ────────────────────────
+.vscode/settings.json
+.idea/
