@@ -1,130 +1,259 @@
 import React, { useState } from 'react';
-import { Lock, User, Eye, EyeOff, Loader2, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 import { loginAdmin } from '../../services/adminApi';
 
-export default function AdminLogin({ onLoginSuccess, onBackToSite }) {
-  const [username, setUsername] = useState('Performax');
+export default function AdminLogin({ onLoginSuccess, onSuccess, onBackToSite, onClose }) {
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const handleBack = (e) => {
+    if (e) e.preventDefault();
+    if (onBackToSite) onBackToSite();
+    else if (onClose) onClose();
+    else {
+      window.history.pushState({}, '', '/');
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
-    if (!username.trim() || !password) {
-      setError('يرجى إدخال اسم المستخدم وكلمة المرور');
-      return;
-    }
-
     setLoading(true);
     try {
       const user = await loginAdmin(username.trim(), password);
-      onLoginSuccess(user);
+      if (onLoginSuccess) onLoginSuccess(user);
+      else if (onSuccess) onSuccess(user);
     } catch (err) {
-      setError(err.response?.data?.message || err.message || 'فشل تسجيل الدخول، يرجى التأكد من البيانات');
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          'اسم المستخدم أو كلمة المرور غير صحيحة'
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-dark-950 flex flex-col justify-center items-center p-4 relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-1/4 right-1/3 w-96 h-96 bg-brand-orange/15 rounded-full blur-3xl pointer-events-none -z-10" />
-
-      <div className="w-full max-w-md">
-        {/* Back button */}
-        <button
-          onClick={onBackToSite}
-          className="inline-flex items-center gap-2 text-xs text-gray-400 hover:text-white mb-6 transition-colors"
+    <div
+      dir="rtl"
+      style={{
+        fontFamily: "'Alexandria', 'Cairo', sans-serif",
+        background: 'linear-gradient(135deg, #0d1714 0%, #1b3b36 55%, #12211e 100%)',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '20px',
+        color: '#1e293b',
+      }}
+    >
+      <div
+        style={{
+          background: '#ffffff',
+          width: '100%',
+          maxWidth: '435px',
+          borderRadius: '18px',
+          padding: '38px 32px',
+          boxShadow: '0 25px 60px rgba(0, 0, 0, 0.38)',
+          textAlign: 'center',
+        }}
+      >
+        <div
+          style={{
+            display: 'inline-block',
+            background: '#fdf8f3',
+            color: '#b58350',
+            border: '1px solid #f0e1d0',
+            padding: '4px 14px',
+            borderRadius: '50px',
+            fontSize: '12px',
+            fontWeight: 700,
+            marginBottom: '14px',
+          }}
         >
-          <ArrowRight className="w-4 h-4" />
-          <span>العودة لموقع المعرض الرئيسي</span>
-        </button>
-
-        {/* Login Card */}
-        <div className="glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl border border-white/10">
-          <div className="text-center mb-6">
-            <img
-              src="/images/logo.jpg"
-              alt="M. Nabil"
-              className="w-16 h-16 rounded-full mx-auto mb-3 border-2 border-brand-orange shadow-brand object-cover"
-            />
-            <h1 className="text-xl font-black text-white">بوابة إدارة المعرض والـ CRM</h1>
-            <p className="text-xs text-gray-400 mt-1">سوق أوتو محمد نبيل للسيارات • منذ 2007</p>
-          </div>
-
-          {error && (
-            <div className="mb-4 p-3 rounded-xl bg-red-500/15 border border-red-500/30 text-red-300 text-xs text-center">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-            {/* Username */}
-            <div>
-              <label className="block text-gray-300 font-semibold mb-1">اسم المستخدم</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  required
-                  placeholder="اسم المستخدم"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="w-full bg-dark-950 border border-white/10 rounded-xl pr-10 pl-3.5 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-orange transition-colors"
-                />
-                <User className="w-4 h-4 text-gray-500 absolute right-3.5 top-3" />
-              </div>
-            </div>
-
-            {/* Password */}
-            <div>
-              <label className="block text-gray-300 font-semibold mb-1">كلمة المرور المشفرة</label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  placeholder="••••••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-dark-950 border border-white/10 rounded-xl pr-10 pl-10 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-orange transition-colors"
-                  dir="ltr"
-                />
-                <Lock className="w-4 h-4 text-gray-500 absolute right-3.5 top-3" />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute left-3 top-3 text-gray-500 hover:text-white"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full mt-2 py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-hover text-white font-extrabold text-sm shadow-brand hover:brightness-110 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>جاري تسجيل الدخول...</span>
-                </>
-              ) : (
-                <span>دخول لوحة التحكم</span>
-              )}
-            </button>
-          </form>
-
-          <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-center gap-1.5 text-[10px] text-gray-500">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>نظام مشفر ومحمي برمز جلسة JWT مشفر 256-bit</span>
-          </div>
+          سوق أوتو محمد نبيل للسيارات • منذ 2007
         </div>
+
+        <div>
+          <img
+            src="/favicon.png"
+            alt="Auto Mohamed Nabil"
+            style={{
+              width: '74px',
+              height: '74px',
+              borderRadius: '50%',
+              margin: '0 auto 14px',
+              display: 'block',
+              objectFit: 'cover',
+              border: '2px solid #d4a373',
+              background: '#0A0C0B',
+              padding: '2px',
+            }}
+          />
+        </div>
+
+        <h1
+          style={{
+            color: '#1b3b36',
+            fontSize: '21px',
+            fontWeight: 800,
+            marginBottom: '6px',
+          }}
+        >
+          لوحة إدارة معرض أوتو محمد نبيل
+        </h1>
+        <p
+          style={{
+            color: '#64748b',
+            fontSize: '13px',
+            marginBottom: '26px',
+            lineHeight: 1.6,
+          }}
+        >
+          نظام إدارة أسطول السيارات، حجوزات المعاينة، العملاء (CRM)، ومحركات البحث
+        </p>
+
+        {error && (
+          <div
+            style={{
+              background: '#fee2e2',
+              color: '#b91c1c',
+              padding: '12px',
+              borderRadius: '10px',
+              fontSize: '13px',
+              marginBottom: '18px',
+              fontWeight: 600,
+            }}
+          >
+            ⚠️ {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          <div style={{ textAlign: 'right', marginBottom: '18px' }}>
+            <label
+              style={{
+                display: 'block',
+                fontSize: '13px',
+                fontWeight: 600,
+                color: '#334155',
+                marginBottom: '6px',
+              }}
+            >
+              اسم المستخدم أو البريد الإلكتروني
+            </label>
+            <input
+              type="text"
+              required
+              autoComplete="username"
+              placeholder="أدخل اسم المستخدم"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '12px 14px',
+                border: '1.5px solid #e2e8f0',
+                borderRadius: '10px',
+                fontFamily: 'inherit',
+                fontSize: '14px',
+                color: '#0f172a',
+                background: '#ffffff',
+                outline: 'none',
+                transition: '0.2s',
+              }}
+            />
+          </div>
+
+          <div style={{ textAlign: 'right', marginBottom: '18px' }}>
+            <label
+              style={{
+                display: 'block',
+                fontSize: '13px',
+                fontWeight: 600,
+                color: '#334155',
+                marginBottom: '6px',
+              }}
+            >
+              كلمة المرور
+            </label>
+            <input
+              type="password"
+              required
+              autoComplete="current-password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '12px 14px',
+                border: '1.5px solid #e2e8f0',
+                borderRadius: '10px',
+                fontFamily: 'inherit',
+                fontSize: '14px',
+                color: '#0f172a',
+                background: '#ffffff',
+                outline: 'none',
+                transition: '0.2s',
+              }}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              width: '100%',
+              background: '#1b3b36',
+              color: '#ffffff',
+              border: 'none',
+              padding: '13px',
+              borderRadius: '10px',
+              fontFamily: 'inherit',
+              fontSize: '15px',
+              fontWeight: 700,
+              cursor: loading ? 'wait' : 'pointer',
+              transition: '0.2s',
+              marginTop: '6px',
+              opacity: loading ? 0.75 : 1,
+            }}
+          >
+            {loading ? 'جاري التحقق من الصلاحيات...' : 'دخول آمن للوحة التحكم 🔒'}
+          </button>
+        </form>
+
+        <div
+          style={{
+            marginTop: '22px',
+            background: '#f8fafc',
+            border: '1px dashed #cbd5e1',
+            padding: '12px',
+            borderRadius: '10px',
+            fontSize: '12px',
+            color: '#475569',
+            textAlign: 'right',
+            lineHeight: 1.6,
+          }}
+        >
+          🛡️ <strong>حماية قصوى (Brute-Force Protection):</strong> يتم حظر عنوان الـ IP تلقائياً لمدة 15 دقيقة بعد محاولات الدخول الخاطئة، مع تشفير الجلسات بنظام JWT و RBAC.
+        </div>
+
+        <a
+          href="/"
+          onClick={handleBack}
+          style={{
+            display: 'inline-block',
+            marginTop: '18px',
+            color: '#64748b',
+            textDecoration: 'none',
+            fontSize: '13px',
+            fontWeight: 600,
+          }}
+        >
+          ← العودة للموقع الرئيسي
+        </a>
       </div>
     </div>
   );

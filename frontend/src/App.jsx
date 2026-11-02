@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import InventorySection from './components/InventorySection';
@@ -8,24 +8,46 @@ import FinanceCalculator from './components/FinanceCalculator';
 import InspectionShowcase from './components/InspectionShowcase';
 import WhyChooseUs from './components/WhyChooseUs';
 import Footer from './components/Footer';
-import CarDetailModal from './components/CarDetailModal';
+import VehicleDetailPage from './components/VehicleDetailPage';
 import InquiryModal from './components/InquiryModal';
 import AdminLogin from './components/admin/AdminLogin';
 import AdminDashboard from './components/admin/AdminDashboard';
-import { fetchCars, SHOWROOM_CONTACT } from './services/api';
+import { fetchCars, SHOWROOM_CONTACT, FALLBACK_CARS } from './services/api';
 import { getCurrentAdmin, logoutAdmin } from './services/adminApi';
-import { MessageCircle, Phone, ArrowUp } from 'lucide-react';
+import { MessageCircle, ArrowUp } from 'lucide-react';
+
+// Convert any legacy #hash URL into a clean path (Zero # in URLs)
+function normalizeLocationToCleanPath() {
+  const hash = window.location.hash.replace(/^#\/?/, '').trim().toLowerCase();
+  if (hash) {
+    const hashToPathMap = {
+      admin: '/admin',
+      login: '/login',
+      crm: '/admin',
+      inventory: '/inventory',
+      viewing: '/viewing',
+      services: '/services',
+      calculator: '/finance',
+      finance: '/finance',
+      inspection: '/inspection',
+      about: '/about',
+      contact: '/contact',
+      hero: '/',
+    };
+    const cleanTarget = hashToPathMap[hash] || `/${hash}`;
+    window.history.replaceState({}, '', cleanTarget);
+    return cleanTarget;
+  }
+  const pathname = window.location.pathname || '/';
+  return pathname.length > 1 ? pathname.replace(/\/+$/, '') : '/';
+}
 
 export default function App() {
-  // Admin View state - strictly triggered by direct URL navigation (/admin or #admin) or shortcut
-  const [isAdminView, setIsAdminView] = useState(() => {
-    return window.location.pathname.startsWith('/admin') || window.location.hash === '#admin';
-  });
-  const [adminUser, setAdminUser] = useState(getCurrentAdmin());
+  const [currentPath, setCurrentPath] = useState(() => normalizeLocationToCleanPath());
+  const [adminUser, setAdminUser] = useState(() => getCurrentAdmin());
 
-  const [cars, setCars] = useState([]);
+  const [cars, setCars] = useState(FALLBACK_CARS);
   const [loading, setLoading] = useState(true);
-  const [selectedCar, setSelectedCar] = useState(null);
   const [inquiryContext, setInquiryContext] = useState(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -33,35 +55,66 @@ export default function App() {
   const [heroFilters, setHeroFilters] = useState({
     make: '',
     body_type: '',
-    price_max: ''
+    price_max: '',
   });
 
-  // Listen to hash changes and keyboard shortcut (Ctrl+Shift+A) for authorized staff access
+  // Clean navigation helper (HTML5 History API, zero #)
+  const navigate = useCallback((path) => {
+    const cleanPath = path.startsWith('/') ? path : `/${path}`;
+    if (window.location.pathname !== cleanPath || window.location.hash) {
+      window.history.pushState({}, '', cleanPath);
+    }
+    setCurrentPath(cleanPath);
+
+    // Map clean paths to section IDs when on the main showroom layout
+    const sectionMap = {
+      '/inventory': 'inventory',
+      '/viewing': 'viewing',
+      '/services': 'services',
+      '/finance': 'calculator',
+      '/inspection': 'inspection',
+      '/about': 'about',
+      '/contact': 'contact',
+    };
+
+    const targetSectionId = sectionMap[cleanPath];
+    if (targetSectionId) {
+      setTimeout(() => {
+        const el = document.getElementById(targetSectionId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }, 60);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, []);
+
+  // Listen to popstate, legacy hashchange, and secret staff shortcut (Ctrl+Shift+A)
   useEffect(() => {
-    const handleHashChange = () => {
-      if (window.location.hash === '#admin' || window.location.pathname.startsWith('/admin')) {
-        setIsAdminView(true);
-      } else if (window.location.hash !== '#admin' && !window.location.pathname.startsWith('/admin')) {
-        setIsAdminView(false);
-      }
+    const handleRouteSync = () => {
+      const clean = normalizeLocationToCleanPath();
+      setCurrentPath(clean);
     };
 
     const handleKeyDown = (e) => {
-      // Secret staff shortcut: Ctrl + Shift + A
       if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
         e.preventDefault();
-        window.location.hash = '#admin';
-        setIsAdminView(true);
+        navigate('/admin');
       }
     };
 
-    window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handleRouteSync);
+    window.addEventListener('hashchange', handleRouteSync);
     window.addEventListener('keydown', handleKeyDown);
     return () => {
-      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('popstate', handleRouteSync);
+      window.removeEventListener('hashchange', handleRouteSync);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [navigate]);
 
   // Fetch cars on mount
   useEffect(() => {
@@ -87,13 +140,42 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Scroll to target section if user lands directly on /inventory, /viewing, /finance, etc.
+  useEffect(() => {
+    const sectionMap = {
+      '/inventory': 'inventory',
+      '/viewing': 'viewing',
+      '/services': 'services',
+      '/finance': 'calculator',
+      '/inspection': 'inspection',
+      '/about': 'about',
+      '/contact': 'contact',
+    };
+    const targetId = sectionMap[currentPath];
+    if (targetId) {
+      const timer = setTimeout(() => {
+        const el = document.getElementById(targetId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 120);
+      return () => clearTimeout(timer);
+    }
+  }, [currentPath]);
+
   // Filter cars based on hero search inputs
   const filteredCars = useMemo(() => {
     return cars.filter((car) => {
-      if (heroFilters.make && (car.make || '').toLowerCase() !== heroFilters.make.toLowerCase()) {
+      if (
+        heroFilters.make &&
+        (car.make || '').toLowerCase() !== heroFilters.make.toLowerCase()
+      ) {
         return false;
       }
-      if (heroFilters.body_type && !(car.body_type || '').toLowerCase().includes(heroFilters.body_type.toLowerCase())) {
+      if (
+        heroFilters.body_type &&
+        !(car.body_type || '')
+          .toLowerCase()
+          .includes(heroFilters.body_type.toLowerCase())
+      ) {
         return false;
       }
       if (heroFilters.price_max && car.price > Number(heroFilters.price_max)) {
@@ -106,114 +188,143 @@ export default function App() {
   // Available makes for dropdown
   const availableMakes = useMemo(() => {
     const set = new Set();
-    cars.forEach(c => { if (c.make) set.add(c.make); });
+    cars.forEach((c) => {
+      if (c.make) set.add(c.make);
+    });
     return Array.from(set);
   }, [cars]);
 
   const handleHeroSearch = () => {
-    const el = document.getElementById('inventory');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const handleCloseAdmin = () => {
-    setIsAdminView(false);
-    if (window.location.hash === '#admin') {
-      window.location.hash = '';
-    }
+    navigate('/inventory');
   };
 
   const handleLogoutAdmin = () => {
     logoutAdmin();
     setAdminUser(null);
+    navigate('/login');
   };
 
   // ----------------------------------------------------
-  // ADMIN PORTAL & CRM (Isolated, accessed via /admin or #admin)
+  // 1. ADMIN PORTAL & CRM (Clean URLs: /admin, /login, /crm)
   // ----------------------------------------------------
-  if (isAdminView) {
+  const isAdminRoute =
+    currentPath === '/admin' ||
+    currentPath.startsWith('/admin/') ||
+    currentPath === '/login' ||
+    currentPath === '/crm';
+
+  if (isAdminRoute) {
     if (!adminUser) {
       return (
         <AdminLogin
-          onSuccess={(user) => setAdminUser(user)}
-          onClose={handleCloseAdmin}
+          onLoginSuccess={(user) => {
+            setAdminUser(user);
+            navigate('/admin');
+          }}
+          onSuccess={(user) => {
+            setAdminUser(user);
+            navigate('/admin');
+          }}
+          onBackToSite={() => navigate('/')}
+          onClose={() => navigate('/')}
         />
       );
     }
     return (
       <AdminDashboard
         user={adminUser}
+        adminUser={adminUser}
         onLogout={handleLogoutAdmin}
-        onClose={handleCloseAdmin}
+        onClose={() => navigate('/')}
+        onSwitchToSite={() => navigate('/')}
       />
     );
   }
 
   // ----------------------------------------------------
-  // PUBLIC CLIENT SHOWROOM (100% Focused on Customer Journey)
+  // 2. DEDICATED VEHICLE DOSSIER PAGE (/vehicles/:slug)
   // ----------------------------------------------------
+  const isVehicleDetailRoute = currentPath.startsWith('/vehicles/');
+  const activeVehicle = useMemo(() => {
+    if (!isVehicleDetailRoute) return null;
+    const slug = decodeURIComponent(currentPath.replace('/vehicles/', '')).trim();
+    return (
+      cars.find((c) => c.slug === slug || String(c.id) === slug) ||
+      FALLBACK_CARS.find((c) => c.slug === slug || String(c.id) === slug) ||
+      null
+    );
+  }, [isVehicleDetailRoute, currentPath, cars]);
+
   return (
-    <div className="min-h-screen bg-[#0A0C0B] text-[#F1EEE6] font-sans selection:bg-[#FF4B16] selection:text-white" dir="rtl">
-      
-      {/* Luxury Sticky Navbar (NO admin leaks) */}
+    <div
+      className="min-h-screen bg-[#0A0C0B] text-[#F1EEE6] font-sans selection:bg-[#FF4B16] selection:text-white"
+      dir="rtl"
+    >
+      {/* Luxury Sticky Navbar (Clean Paths, Zero #) */}
       <Navbar
+        currentPath={currentPath}
+        onNavigate={navigate}
         onOpenInquiry={(ctx) => setInquiryContext(ctx || {})}
       />
 
-      {/* Main Content Sections (Sharaf Reference Architecture) */}
-      <main>
-        {/* 1. Cinematic Luxury Hero */}
-        <HeroSection
-          filters={heroFilters}
-          setFilters={setHeroFilters}
-          onSearchSubmit={handleHeroSearch}
-          availableMakes={availableMakes}
-        />
+      {isVehicleDetailRoute ? (
+        <main>
+          <VehicleDetailPage
+            car={activeVehicle}
+            allCars={cars}
+            onNavigate={navigate}
+            onInquire={(ctx) => setInquiryContext(ctx)}
+          />
+        </main>
+      ) : (
+        <main>
+          {/* 1. Cinematic Luxury Hero */}
+          <HeroSection
+            filters={heroFilters}
+            setFilters={setHeroFilters}
+            onSearchSubmit={handleHeroSearch}
+            availableMakes={availableMakes}
+            onNavigate={navigate}
+          />
 
-        {/* 2. Showroom Collection & Inventory */}
-        <InventorySection
-          cars={filteredCars}
-          loading={loading}
-          onSelectCar={(car) => setSelectedCar(car)}
-          onInquire={(car) => setInquiryContext({ car_id: car.id, title: `استفسار عن ${car.make} ${car.model}` })}
-        />
+          {/* 2. Showroom Collection & Inventory */}
+          <InventorySection
+            cars={filteredCars}
+            loading={loading}
+            onSelectCar={(car) => navigate(`/vehicles/${car.slug || car.id}`)}
+            onInquire={(car) =>
+              setInquiryContext({
+                carId: car.id,
+                title: `استفسار عن ${car.make} ${car.model}`,
+              })
+            }
+          />
 
-        {/* 3. Private Viewing & VIP Test Drive Booking Form */}
-        <PrivateViewingSection
-          cars={cars}
-        />
+          {/* 3. Private Viewing & VIP Test Drive Booking Form */}
+          <PrivateViewingSection cars={cars} />
 
-        {/* 4. Showroom Premium Services */}
-        <ShowroomServices />
+          {/* 4. Showroom Premium Services */}
+          <ShowroomServices />
 
-        {/* 5. Finance & Instalment Calculator */}
-        <FinanceCalculator
-          onOpenInquiry={(ctx) => setInquiryContext(ctx || {})}
-        />
+          {/* 5. Finance & Instalment Calculator */}
+          <FinanceCalculator
+            onOpenInquiry={(ctx) => setInquiryContext(ctx || {})}
+          />
 
-        {/* 6. 100-Point Certified Inspection Showcase */}
-        <InspectionShowcase
-          onOpenInquiry={(ctx) => setInquiryContext(ctx || {})}
-        />
+          {/* 6. 100-Point Certified Inspection Showcase */}
+          <InspectionShowcase
+            onOpenInquiry={(ctx) => setInquiryContext(ctx || {})}
+          />
 
-        {/* 7. Heritage & Showroom Story (18+ Years Trust) */}
-        <WhyChooseUs />
-      </main>
-
-      {/* 8. Luxury Footer (NO admin links) */}
-      <Footer />
-
-      {/* Modals */}
-      {selectedCar && (
-        <CarDetailModal
-          car={selectedCar}
-          onClose={() => setSelectedCar(null)}
-          onInquire={(car) => {
-            setSelectedCar(null);
-            setInquiryContext({ car_id: car.id, title: `حجز سيارة ${car.make} ${car.model}` });
-          }}
-        />
+          {/* 7. Heritage & Showroom Story */}
+          <WhyChooseUs />
+        </main>
       )}
 
+      {/* 8. Luxury Footer (Clean Paths, Zero #, Zero Admin Leaks) */}
+      <Footer onNavigate={navigate} />
+
+      {/* Inquiry Modal */}
       {inquiryContext && (
         <InquiryModal
           context={inquiryContext}
@@ -224,7 +335,6 @@ export default function App() {
 
       {/* Floating Action Buttons */}
       <div className="fixed bottom-6 left-6 z-40 flex flex-col items-center gap-3">
-        {/* Back to top */}
         {showScrollTop && (
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -235,9 +345,10 @@ export default function App() {
           </button>
         )}
 
-        {/* Floating WhatsApp CTA */}
         <a
-          href={`https://wa.me/${SHOWROOM_CONTACT.whatsapp}?text=${encodeURIComponent('مرحباً، أود الاستفسار عن سيارات المعرض المتاحة.')}`}
+          href={`https://wa.me/${SHOWROOM_CONTACT.whatsapp}?text=${encodeURIComponent(
+            'مرحباً، أود الاستفسار عن سيارات المعرض المتاحة.'
+          )}`}
           target="_blank"
           rel="noopener noreferrer"
           className="relative group p-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-2xl shadow-emerald-900/50 hover:scale-110 active:scale-95 transition-all flex items-center justify-center"
@@ -249,7 +360,6 @@ export default function App() {
           <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-[#0A0C0B]" />
         </a>
       </div>
-
     </div>
   );
 }

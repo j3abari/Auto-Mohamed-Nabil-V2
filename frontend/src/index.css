@@ -19,7 +19,8 @@
   --color-dark-750: #202421;
   --color-dark-700: #282D29;
 
-  --font-cairo: 'Cairo', sans-serif;
+  --font-cairo: 'Alexandria', 'Cairo', sans-serif;
+  --font-sans: 'Alexandria', 'Cairo', sans-serif;
   --shadow-brand: 0 10px 40px -10px rgba(255, 75, 22, 0.3);
   --shadow-gold: 0 10px 40px -10px rgba(201, 179, 126, 0.25);
 }
@@ -35,7 +36,7 @@
 body {
   background-color: #0A0C0B;
   color: #F1EEE6;
-  font-family: 'Cairo', sans-serif;
+  font-family: 'Alexandria', 'Cairo', sans-serif;
   -webkit-font-smoothing: antialiased;
   direction: rtl;
 }
@@ -61,7 +62,7 @@ body {
   color: #C9B37E;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -86,7 +87,7 @@ body {
 }
 
 .glass-nav {
-  background: rgba(10, 12, 11, 0.92);
+  background: rgba(10, 12, 11, 0.94);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);

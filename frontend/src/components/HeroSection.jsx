@@ -1,7 +1,16 @@
 import React from 'react';
 import { ShieldCheck, Award, Zap, Repeat, Search, ChevronDown, Sparkles, CalendarCheck, ChevronLeft } from 'lucide-react';
 
-export default function HeroSection({ filters, setFilters, onSearchSubmit, availableMakes = [] }) {
+export default function HeroSection({ filters, setFilters, onSearchSubmit, availableMakes = [], onNavigate }) {
+  const handleNav = (e, path) => {
+    e.preventDefault();
+    if (onNavigate) onNavigate(path);
+    else {
+      window.history.pushState({}, '', path);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    }
+  };
+
   return (
     <section id="hero" className="relative pt-12 pb-20 lg:pt-20 lg:pb-28 overflow-hidden bg-[#0A0C0B]">
       
@@ -28,7 +37,7 @@ export default function HeroSection({ filters, setFilters, onSearchSubmit, avail
 
         {/* Grand Headline (Sharaf Reference Style) */}
         <div className="text-center max-w-4xl mx-auto mb-10">
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-[#F1EEE6] leading-[1.1] tracking-tight mb-6">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-[#F1EEE6] leading-[1.15] tracking-tight mb-6">
             السيارات الفاخرة،
             <span className="block mt-2 bg-gradient-to-r from-[#FF4B16] via-orange-400 to-[#C9B37E] bg-clip-text text-transparent">
               كما ينبغي أن تكون.
@@ -38,10 +47,11 @@ export default function HeroSection({ filters, setFilters, onSearchSubmit, avail
             مجموعة حصرية من نخبة السيارات الألمانية والعالمية بحالة الزيرو وفحص فني معتمد 100 نقطة. تسليم فوري في نفس اليوم مع تسهيلات بنكية واستبدال مباشر.
           </p>
 
-          {/* Dual Action CTAs */}
+          {/* Dual Action CTAs (Clean URLs, Zero #) */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
             <a
-              href="#inventory"
+              href="/inventory"
+              onClick={(e) => handleNav(e, '/inventory')}
               className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#FF4B16] hover:bg-[#E03E0F] text-white font-bold text-sm shadow-xl shadow-[#FF4B16]/25 transition-all flex items-center justify-center gap-2 hover:scale-[1.02]"
             >
               <span>استكشف أسطول السيارات المتاح</span>
@@ -49,7 +59,8 @@ export default function HeroSection({ filters, setFilters, onSearchSubmit, avail
             </a>
 
             <a
-              href="#viewing"
+              href="/viewing"
+              onClick={(e) => handleNav(e, '/viewing')}
               className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-[#F1EEE6] border border-white/15 font-semibold text-sm transition-all flex items-center justify-center gap-2 backdrop-blur-sm"
             >
               <CalendarCheck className="w-4 h-4 text-[#C9B37E]" />
@@ -133,7 +144,7 @@ export default function HeroSection({ filters, setFilters, onSearchSubmit, avail
           </div>
         </div>
 
-        {/* 4 Pillars Trust Strip (Sharaf Reference) */}
+        {/* 4 Pillars Trust Strip */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
           <div className="bg-[#141715]/80 border border-white/8 p-4 rounded-xl flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-[#FF4B16]/15 border border-[#FF4B16]/30 flex items-center justify-center shrink-0 text-[#FF4B16]">

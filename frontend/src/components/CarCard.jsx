@@ -1,33 +1,47 @@
 import React from 'react';
-import { ShieldCheck, Gauge, Calendar, Fuel, Cog, ArrowLeft, MessageCircle, Sparkles, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Gauge, Fuel, Cog, ArrowLeft, MessageCircle, Sparkles, CheckCircle2 } from 'lucide-react';
 import { SHOWROOM_CONTACT } from '../services/api';
 
-export default function CarCard({ car, onSelectCar, onInquire }) {
+export default function CarCard({ car, onSelectCar }) {
   const formatPrice = (p) => {
     return new Intl.NumberFormat('ar-EG').format(p) + ' ج.م';
   };
 
-  // Estimate monthly instalment (assuming 30% down, 3 years, ~15% simple interest)
   const calcEstimatedInstalment = (price) => {
     const loan = price * 0.7;
-    const totalWithInterest = loan * (1 + 0.15 * 3);
+    const totalWithInterest = loan * (1 + 0.12 * 3);
     const monthly = Math.round(totalWithInterest / 36);
     return new Intl.NumberFormat('ar-EG').format(monthly);
   };
 
-  const primaryImage = (car.images && car.images[0]?.url) ||
+  const primaryImage =
+    (car.images && car.images[0]?.url) ||
     'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&q=85&auto=format&fit=crop';
 
   const waMessage = encodeURIComponent(
     `مرحباً سوق أوتو محمد نبيل، أود الاستفسار عن سيارة ${car.make} ${car.model} موديل ${car.year} المعروضة بسعر ${formatPrice(car.price)}`
   );
   const waUrl = `https://wa.me/${SHOWROOM_CONTACT.whatsapp}?text=${waMessage}`;
+  const cleanCarUrl = `/vehicles/${car.slug || car.id}`;
+
+  const handleOpenCar = (e) => {
+    if (e) e.preventDefault();
+    if (onSelectCar) {
+      onSelectCar(car);
+    } else {
+      window.history.pushState({}, '', cleanCarUrl);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    }
+  };
 
   return (
     <div className="luxury-card rounded-2xl overflow-hidden flex flex-col group relative border border-white/8 hover:border-[#FF4B16]/40 transition-all duration-300">
-      
       {/* Top Media & Badges */}
-      <div className="relative h-60 sm:h-64 overflow-hidden bg-[#0E1110] cursor-pointer" onClick={() => onSelectCar(car)}>
+      <a
+        href={cleanCarUrl}
+        onClick={handleOpenCar}
+        className="relative h-60 sm:h-64 overflow-hidden bg-[#0E1110] block cursor-pointer"
+      >
         <img
           src={primaryImage}
           alt={`${car.make} ${car.model}`}
@@ -52,44 +66,52 @@ export default function CarCard({ car, onSelectCar, onInquire }) {
         <div className="absolute bottom-3 right-3 z-10 flex items-center gap-1.5 bg-black/80 border border-white/10 px-2.5 py-1 rounded-lg text-xs backdrop-blur-md">
           <ShieldCheck className="w-3.5 h-3.5 text-[#FF4B16]" />
           <span className="text-[#B7B9B0] text-[11px]">فحص معتمد:</span>
-          <span className="font-extrabold text-[#FF4B16] text-[11px]">{car.inspection_score || '98%'}</span>
+          <span className="font-extrabold text-[#FF4B16] text-[11px]">
+            {car.inspection_score || '98%'}
+          </span>
         </div>
 
         {/* Year Badge */}
         <div className="absolute bottom-3 left-3 z-10 bg-white/10 border border-white/15 px-2.5 py-0.5 rounded-md text-xs font-bold text-white backdrop-blur-md">
           {car.year}
         </div>
-      </div>
+      </a>
 
       {/* Content Area */}
       <div className="p-5 flex-1 flex flex-col justify-between">
         <div>
-          {/* Brand & Model Headline */}
           <div className="mb-2">
             <span className="text-[11px] font-bold text-[#FF4B16] tracking-wider uppercase block">
               {car.make}
             </span>
-            <h3
-              onClick={() => onSelectCar(car)}
-              className="text-lg font-bold text-[#F1EEE6] group-hover:text-[#FF4B16] transition-colors cursor-pointer line-clamp-1"
+            <a
+              href={cleanCarUrl}
+              onClick={handleOpenCar}
+              className="text-lg font-bold text-[#F1EEE6] group-hover:text-[#FF4B16] transition-colors cursor-pointer line-clamp-1 block"
             >
               {car.variant || `${car.make} ${car.model}`}
-            </h3>
+            </a>
           </div>
 
           {/* Quick Specs Grid */}
           <div className="grid grid-cols-3 gap-2 py-3 border-y border-white/5 my-3 text-xs text-[#B7B9B0]">
             <div className="flex items-center gap-1.5">
               <Gauge className="w-3.5 h-3.5 text-[#C9B37E] shrink-0" />
-              <span className="truncate">{car.mileage ? `${car.mileage.toLocaleString()} كم` : 'كسر زيرو'}</span>
+              <span className="truncate">
+                {car.mileage ? `${car.mileage.toLocaleString()} كم` : 'كسر زيرو'}
+              </span>
             </div>
             <div className="flex items-center gap-1.5">
               <Cog className="w-3.5 h-3.5 text-[#C9B37E] shrink-0" />
-              <span className="truncate">{car.transmission === 'automatic' ? 'أوتوماتيك' : 'يدوي'}</span>
+              <span className="truncate">
+                {car.transmission === 'automatic' ? 'أوتوماتيك' : 'يدوي'}
+              </span>
             </div>
             <div className="flex items-center gap-1.5">
               <Fuel className="w-3.5 h-3.5 text-[#C9B37E] shrink-0" />
-              <span className="truncate">{car.engine_cc ? `${car.engine_cc}cc` : 'تربو'}</span>
+              <span className="truncate">
+                {car.engine_cc ? `${car.engine_cc}cc` : 'تربو'}
+              </span>
             </div>
           </div>
         </div>
@@ -97,7 +119,9 @@ export default function CarCard({ car, onSelectCar, onInquire }) {
         {/* Price & Instalment */}
         <div>
           <div className="mb-4">
-            <span className="text-[11px] text-[#9EA199] block mb-0.5">السعر النقدي (كاش):</span>
+            <span className="text-[11px] text-[#9EA199] block mb-0.5">
+              السعر النقدي (كاش):
+            </span>
             <div className="flex items-baseline justify-between">
               <div className="text-xl font-black text-[#F1EEE6]">
                 {formatPrice(car.price)}
@@ -108,15 +132,16 @@ export default function CarCard({ car, onSelectCar, onInquire }) {
             </div>
           </div>
 
-          {/* Dual CTAs */}
+          {/* Dual CTAs (Clean URL, Zero #) */}
           <div className="grid grid-cols-2 gap-2">
-            <button
-              onClick={() => onSelectCar(car)}
+            <a
+              href={cleanCarUrl}
+              onClick={handleOpenCar}
               className="w-full py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 text-[#F1EEE6] font-semibold text-xs flex items-center justify-center gap-1.5 transition-all border border-white/10"
             >
-              <span>تفاصيل الفحص</span>
+              <span>ملف وتفاصيل الفحص</span>
               <ArrowLeft className="w-3.5 h-3.5 text-[#C9B37E]" />
-            </button>
+            </a>
 
             <a
               href={waUrl}
@@ -129,7 +154,6 @@ export default function CarCard({ car, onSelectCar, onInquire }) {
             </a>
           </div>
         </div>
-
       </div>
     </div>
   );

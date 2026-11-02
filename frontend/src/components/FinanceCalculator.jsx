@@ -140,7 +140,12 @@ export default function FinanceCalculator({ onOpenInquiry }) {
               </div>
 
               <a
-                href="#viewing"
+                href="/viewing"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.history.pushState({}, '', '/viewing');
+                  window.dispatchEvent(new PopStateEvent('popstate'));
+                }}
                 className="mt-6 w-full py-3.5 px-4 rounded-xl bg-[#FF4B16] hover:bg-[#E03E0F] text-white font-bold text-xs sm:text-sm text-center shadow-lg shadow-[#FF4B16]/20 transition-all flex items-center justify-center gap-2"
               >
                 <span>طلب تمويل أو استبدال للسيارة</span>

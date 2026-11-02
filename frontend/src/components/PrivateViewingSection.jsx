@@ -37,16 +37,16 @@ export default function PrivateViewingSection({ cars = [] }) {
     try {
       const selectedCarObj = cars.find(c => c.id === formData.car_id);
       const res = await submitInquiry({
-        name: formData.name.trim(),
-        phone: cleanPhone,
+        customer_name: formData.name.trim(),
+        customer_phone: cleanPhone,
         car_id: formData.car_id || null,
         inquiry_type: 'test_drive',
         source: 'website',
-        notes: `[طلب معاينة خاصة وتجربة قيادة] - الموعد المفضل: ${formData.preferred_date || 'غير محدد'} - السيارة: ${selectedCarObj ? `${selectedCarObj.make} ${selectedCarObj.model} (${selectedCarObj.year})` : 'معاينة عامة'} - ملاحظات: ${formData.notes || 'لا يوجد'}`
+        message: `[طلب معاينة خاصة وتجربة قيادة] - الموعد المفضل: ${formData.preferred_date || 'غير محدد'} - السيارة: ${selectedCarObj ? `${selectedCarObj.make} ${selectedCarObj.model} (${selectedCarObj.year})` : 'معاينة عامة'} - ملاحظات: ${formData.notes || 'لا يوجد'}`
       });
 
       if (res.success && res.data) {
-        setSuccessRef(res.data.inquiry_ref);
+        setSuccessRef(res.data.inquiry_ref || res.data.ref);
         setFormData({ name: '', phone: '', car_id: '', preferred_date: '', notes: '' });
       } else {
         setErrorMsg(res.message || 'حدث خطأ أثناء إرسال الطلب، يرجى المحاولة مجدداً');

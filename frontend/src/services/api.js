@@ -13,14 +13,19 @@ const api = axios.create({
 
 export const SHOWROOM_CONTACT = {
   name: 'سوق أوتو محمد نبيل للسيارات',
+  nameEn: 'Auto Mohamed Nabil Showroom',
   established: '2007',
   phone: '01201298587',
   phoneDisplay: '01201298587',
+  phoneFormatted: '0120 129 8587',
   phoneHref: 'tel:01201298587',
   whatsapp: '201107108185',
   whatsappDisplay: '01107108185',
+  whatsappFormatted: '+20 11 0710 8185',
   whatsappLink: 'https://wa.me/201107108185',
+  email: 'info@autonabil.com',
   address: 'طريق ميت غمر الزقازيق - بجوار بنك قناة السويس، ميت غمر، الدقهلية',
+  mapsUrl: 'https://maps.google.com/?q=طريق+ميت+غمر+الزقازيق+بجوار+بنك+قناة+السويس+ميت+غمر+الدقهلية',
   workingHours: 'يومياً من 11:00 صباحاً حتى 11:00 مساءً',
 };
 

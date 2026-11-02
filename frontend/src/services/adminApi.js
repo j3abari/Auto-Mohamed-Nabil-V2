@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: '/api',
-  timeout: 10000,
+  timeout: 12000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -60,9 +60,14 @@ export async function fetchAnalyticsOverview() {
 }
 
 // Inquiries / Leads
-export async function fetchAdminInquiries(params = {}) {
+export async function fetchAdminInquiries(params = { limit: 100 }) {
   const res = await api.get('/inquiries', { params });
   return res.data || { data: [], pagination: {} };
+}
+
+export async function createManualInquiry(inquiryData) {
+  const res = await api.post('/inquiries', inquiryData);
+  return res.data?.data;
 }
 
 export async function updateInquiryStatus(id, updateData) {
@@ -70,8 +75,13 @@ export async function updateInquiryStatus(id, updateData) {
   return res.data?.data;
 }
 
+export async function verifyAdminInquiryRef(code) {
+  const res = await api.post('/inquiries/verify-ref', { code });
+  return res.data?.data;
+}
+
 // Cars Management
-export async function fetchAdminCars(params = {}) {
+export async function fetchAdminCars(params = { limit: 100 }) {
   const res = await api.get('/cars/admin/all', { params });
   return res.data || { data: [], pagination: {} };
 }

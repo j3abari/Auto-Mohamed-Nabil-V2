@@ -64,7 +64,12 @@ export default function InspectionShowcase({ onOpenInquiry }) {
           </div>
 
           <a
-            href="#viewing"
+            href="/viewing"
+            onClick={(e) => {
+              e.preventDefault();
+              window.history.pushState({}, '', '/viewing');
+              window.dispatchEvent(new PopStateEvent('popstate'));
+            }}
             className="px-6 py-3 rounded-xl bg-[#FF4B16] hover:bg-[#E03E0F] text-white font-bold text-xs sm:text-sm shadow-md shadow-[#FF4B16]/25 transition-all whitespace-nowrap"
           >
             تحديد موعد فحص ومعاينة
