@@ -63,7 +63,7 @@ export default function InventorySection({ cars = [], loading = false, onSelectC
             <span className="gx-kicker gx-kicker-orange mb-3">
               المجموعة المتاحة للتسليم الفوري • The Showroom Collection
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1f2937] tracking-tight mt-2">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1f2937]  mt-2">
               أسطول استثنائي <span className="text-[#c2602b]">منتقى بعناية.</span>
             </h2>
             <p className="text-sm text-[#4b5563] mt-2 max-w-xl leading-relaxed">

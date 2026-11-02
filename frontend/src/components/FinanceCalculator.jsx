@@ -27,7 +27,7 @@ export default function FinanceCalculator({ onOpenInquiry }) {
           <span className="gx-kicker gx-kicker-orange mb-3">
             حاسبة التمويل والأقساط • Instalment Calculator
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1f2937] tracking-tight mt-2">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1f2937]  mt-2">
             احسب قسط سيارتك <span className="text-[#c2602b]">بكل شفافية.</span>
           </h2>
           <p className="text-sm text-[#4b5563] mt-2 font-light">

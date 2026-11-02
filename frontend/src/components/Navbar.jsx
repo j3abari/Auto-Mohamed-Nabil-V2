@@ -61,7 +61,7 @@ export default function Navbar({ currentPath = '/', onNavigate }) {
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
-                <span className="text-lg sm:text-xl font-bold tracking-tight text-[#1f2937] group-hover:text-[#c2602b] transition-colors">
+                <span className="text-lg sm:text-xl font-bold  text-[#1f2937] group-hover:text-[#c2602b] transition-colors">
                   أوتو محمد نبيل
                 </span>
                 <span className="text-[0.6250rem] uppercase tracking-widest px-1.5 py-0.5 rounded bg-[#c2602b]/15 text-[#c2602b] font-semibold border border-[#c2602b]/30">
@@ -99,7 +99,7 @@ export default function Navbar({ currentPath = '/', onNavigate }) {
           </nav>
 
           {/* Action CTAs */}
-          <div className="hidden sm:flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-2 whitespace-nowrap">
             <a
               href={`tel:${SHOWROOM_CONTACT.phone}`}
               className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-black/5 hover:bg-black/5 text-[#1f2937] hover:text-[#1f2937] transition-all border border-black/[0.07] text-xs font-medium"
@@ -128,7 +128,7 @@ export default function Navbar({ currentPath = '/', onNavigate }) {
           </div>
 
           {/* Mobile Hamburger Toggle */}
-          <div className="flex items-center gap-2 lg:hidden">
+          <div className="flex items-center gap-2 xl:hidden">
             <a
               href={`https://wa.me/${SHOWROOM_CONTACT.whatsapp}`}
               target="_blank"
@@ -150,7 +150,7 @@ export default function Navbar({ currentPath = '/', onNavigate }) {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#f4f0e6] border-b border-black/[0.07] px-5 py-6 space-y-4">
+        <div className="xl:hidden bg-[#f4f0e6] border-b border-black/[0.07] px-5 py-6 space-y-4">
           <nav className="flex flex-col gap-2.5 text-sm font-medium text-[#4b5563]">
             {navItems.map((item) => (
               <a

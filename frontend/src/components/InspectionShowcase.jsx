@@ -21,7 +21,7 @@ export default function InspectionShowcase({ onOpenInquiry }) {
           <span className="gx-kicker gx-kicker-orange mb-3">
             معايير الجودة والضمان • Inspection Standards
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1f2937] tracking-tight mt-2">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1f2937]  mt-2">
             فحص فني معتمد <span className="text-[#c2602b]">100 نقطة</span> لكل سيارة.
           </h2>
           <p className="text-sm text-[#4b5563] mt-3 leading-relaxed font-light">
