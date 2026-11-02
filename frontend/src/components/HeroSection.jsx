@@ -37,7 +37,7 @@ export default function HeroSection({ filters, setFilters, onSearchSubmit, avail
 
         {/* Grand Headline (Sharaf Reference Style) */}
         <div className="text-center max-w-4xl mx-auto mb-10">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1f2937] leading-[1.5]  mb-6">
+          <h1 className="text-2xl sm:text-3xl lg:text-[2.4rem] font-black text-[#1f2937] leading-[1.45] mb-5">
             السيارات الفاخرة،
             <span className="block mt-2 bg-gradient-to-r from-[#c2602b] via-[#c2602b] to-[#c2602b] bg-clip-text text-transparent">
               كما ينبغي أن تكون.

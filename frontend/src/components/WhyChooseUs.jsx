@@ -21,7 +21,7 @@ export default function WhyChooseUs() {
             <span className="gx-kicker gx-kicker-orange mb-3">
               منذ 2008 • الريادة والمصداقية
             </span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1f2937]  mt-2 mb-6">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1f2937] mt-2 mb-5">
               سوق أوتو محمد نبيل.<br />
               <span className="text-[#c2602b]">حيث تلتقي الفخامة بالثقة.</span>
             </h2>

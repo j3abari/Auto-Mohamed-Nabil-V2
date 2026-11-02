@@ -71,7 +71,7 @@ export default function PrivateViewingSection({ cars = [] }) {
           <span className="gx-kicker gx-kicker-orange mb-3">
             معاينة خاصة • تجربة قيادة VIP
           </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1f2937]  mt-2 mb-4">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1f2937] mt-2 mb-4">
             بعض التفاصيل تستحق أن <span className="text-[#c2602b]">تراها بنفسك.</span>
           </h2>
           <p className="text-sm sm:text-base text-[#4b5563] leading-relaxed">

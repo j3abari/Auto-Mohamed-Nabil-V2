@@ -47,7 +47,7 @@ export default function ShowroomServices() {
             <span className="gx-kicker gx-kicker-orange mb-3">
               خدمات المعرض الفاخرة • The Showroom Services
             </span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1f2937]  mt-2">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1f2937] mt-2">
               خدمات متكاملة تليق <span className="text-[#c2602b]">بأصحاب الذوق الرفيع.</span>
             </h2>
           </div>
